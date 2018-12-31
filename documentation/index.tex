@@ -1,0 +1,93 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Primordial Machine's Matrices Library
+% Copyright (C) 2017-2019 Michael Heilmann
+%
+% This software is provided 'as-is', without any express or implied warranty.
+% In no event will the authors be held liable for any damages arising from the
+% use of this software.
+%
+% Permission is granted to anyone to use this software for any purpose,
+% including commercial applications, and to alter it and redistribute it
+% freely, subject to the following restrictions:
+%
+% 1. The origin of this software must not be misrepresented;
+%    you must not claim that you wrote the original software.
+%    If you use this software in a product, an acknowledgment
+%    in the product documentation would be appreciated but is not required.
+%
+% 2. Altered source versions must be plainly marked as such,
+%    and must not be misrepresented as being the original software.
+%
+% 3. This notice may not be removed or altered from any source distribution.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[oneside]{book}
+
+\input{common}
+
+
+\SetOrganization{Primordial Machine's}
+\SetLibraryName{Matrices Library}
+
+\SetLibraryIncludeFileName{include.hpp}
+\SetLibraryIncludesDirectoryPath{primordialmachine/matrices/\newline\$(PlatformTarget.toLower())/\$(Configuration.toLower())/includes}
+
+\SetLibraryIncludeDirectiveFilePath{primordialmachine/matrices/include.hpp}
+
+\SetLibraryStaticLibrariesDirectoryPath{primordialmachine/matrices/\newline\$(PlatformTarget.toLower())/\$(Configuration.toLower())/libraries}
+\SetLibraryStaticLibraryFileName{matrices.lib}
+
+
+\SetLibraryVersion{v1.0}
+\SetLibraryRepository{https://github.com/primordialmachine/matrices}
+\SetAuthor{Michael Heilmann}
+\SetEmail{michaelheilmann@primordialmachine.com}
+
+\begin{document}
+\maketitle
+\tableofcontents
+\chapter{Synopsis}
+C++ 17 library providing floating point vectors over $n$ dimensions.
+The library is made available publicly on
+\href{\GetLibraryRepository}{Github}
+under the
+\href{\GetLibraryRepository/blob/master/LICENSE}{MIT License}.
+
+\chapter{Limitations and Restrictions}
+The library officially only supports Visual Studio 2017 and Windows 10.
+
+\chapter{Introductory example}
+\textit{\color{orange}This library does not provide any examples yet.}
+%Examples are located in the \href{\GetLibraryRepository/blob/master/examples}{examples} directory.
+
+\input{building_visual_studio_2017}
+
+\chapter{Library Interface Documentation}
+
+\section{\texttt{namespace primordialmachine}}
+The namespace this library is adding its declarations/definitions to.
+The added namespace elements are documented below.
+
+\input{binary_functor}
+
+\section{\texttt{struct matrix\_traits}}
+\begin{verbatim}
+template<typename ELEMENT_TYPE, size_t NUMBER_OF_COLUMNS, size_t NUMBER_OF_ROWS>
+struct matrix_traits;
+\end{verbatim}
+
+\section{\texttt{struct matrix}}
+\begin{verbatim}
+template<typename TRAITS, typename ENABLED = void>
+struct matrix;
+\end{verbatim}
+
+\section{Members}
+
+\section{Non members}
+\subsection{\texttt{struct transpose\_functor}}
+\subsection{\texttt{struct trace\_functor}}
+
+\end{document}

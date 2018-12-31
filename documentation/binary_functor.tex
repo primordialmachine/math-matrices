@@ -1,0 +1,82 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Primordial Machine's Matrices Library
+% Copyright (C) 2017-2019 Michael Heilmann
+%
+% This software is provided 'as-is', without any express or implied warranty.
+% In no event will the authors be held liable for any damages arising from the
+% use of this software.
+%
+% Permission is granted to anyone to use this software for any purpose,
+% including commercial applications, and to alter it and redistribute it
+% freely, subject to the following restrictions:
+%
+% 1. The origin of this software must not be misrepresented;
+%    you must not claim that you wrote the original software.
+%    If you use this software in a product, an acknowledgment
+%    in the product documentation would be appreciated but is not required.
+%
+% 2. Altered source versions must be plainly marked as such,
+%    and must not be misrepresented as being the original software.
+%
+% 3. This notice may not be removed or altered from any source distribution.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{\textit{concept $n,m$-ary-Functor}}
+A \textit{$n,m$-ary-Functor} is a \textit{Functor} which provides an constant \texttt{operator()} with $n+m, m, n \geq 0$ parameters.\newline
+
+\noindent{}The first $n$ parameters are inputs to the computation.
+The remaining $m$ parameters are parameters to the computation.
+The types of all parameters are determined by template parameters.
+
+%\begin{example}
+\noindent{}The following example provides a partial specialization of an \texttt{equal\_to\_functor} which is a $2,1$ functor.
+The functor determines wether two \texttt{std::array} values are are equal by testing wether the corresponding elements
+are equal. The first $2$ parameters of the functor determine the inputs to the computation (2-dimensional vectors) and
+the last parameter determines how the elements are compared.
+\begin{verbatim}
+// Base of 2,1 functor.
+template<typename LEFT_OPERAND, typename RIGHT_OPERAND, typename EQUAL_TO, typename ENABLED = void>
+struct equal_to_functor;
+
+// 2,1 functor
+template<size_t LEFT_ELEMENT, size_t LEFT_NUMBER_OF_ELEMENTS,
+         size_t RIGHT_ELEMENT, size_t RIGHT_NUMBER_OF_ELEMENTS,
+         typename EQUAL_TO>
+struct equal_to_functor<std::array<LEFT_ELEMENT, LEFT_NUMBER_OF_ELEMENTS>,
+                        std::array<RIGHT_ELEMENT, RIGHT_NUMBER_OF_ELEMENTS>,
+                        EQUAL_TO,
+                        std::enable_if_t<std::is_same_v<LEFT_ELEMENT, RIGHT_ELEMENT> &&
+                                         LEFT_NUMBER_OF_ELEMENTS == 2                &&
+                                         RIGHT_NUMBER_OF_ELEMENTS == 2>>
+{
+   using left_operand_type = std::array<LEFT_ELEMENT, LEFT_DIMENSIONALITY>;
+   using right_operand_type = std::array<RIGHT_ELEMENT, RIGHT_DIMENSIONALITY>;
+   using equal_to_type = EQUAL_TO;
+   auto operator(const left_operand_type& u, const right_operand_type& v, equal_to_type equal_to) const
+   {
+     return equal_to(u[0], v[0])
+         && equal_to(u[1], v[1]);
+   }
+};
+\end{verbatim}
+%\end{example}
+
+\noindent{}The provided \texttt{operator()} shall be qualified as \texttt{noexcept} and \texttt{constexpr} if possible.\newline
+
+\noindent{}$n,m$-functors are frequently (partial) specializations of a base functor.
+The base functor shall provide a \texttt{ENABLED} template parameter with a default value \texttt{void} which used to perform SFINAE.
+\noindent{}The return value of the \texttt{operator()} represents                the operation
+$f : V_1 \times \ldots \times V_n \times P_1 \times \ldots \times P_m \rightarrow(partial) R$.
+where $V_i$ is the type of the $i$-th input and $P_j$ the type of the $j$-th parameter. $R$ is
+the result of the computation.
+
+\subsection{\textit{concept $m$-BinaryFunctor}}
+An \textit{$m$-BinaryFunctor} is a \textit{$2,m$-Ary-Functor}.
+
+\subsection{\textit{concept $m$-UnaryFunctor}}
+An \textit{$m$-UnaryFunctor} is a \textit{$1,m$-Ary-Functor}.
+
+\subsection{\textit{concept $m$-NullaryFunctor}}
+An \textit{$m$-NullaryFunctor} is a \textit{$0,m$-Ary-Functor}.
