@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Primordial Machine's Relational Functors Library
-// Copyright (C) 2017-2018 Michael Heilmann
+// Copyright (C) 2017-2019 Michael Heilmann
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the
@@ -39,6 +39,9 @@ struct lower_than_or_equal_to_functor<
   std::enable_if_t<std::is_floating_point_v<LEFT_OPERAND> &&
                    std::is_floating_point_v<RIGHT_OPERAND>>>
 {
+  using left_operand_type = LEFT_OPERAND;
+  using right_operand_type = RIGHT_OPERAND;
+  using result_type = bool;
   auto operator()(LEFT_OPERAND x, RIGHT_OPERAND y) const
     noexcept(noexcept(x <= y))
   {
