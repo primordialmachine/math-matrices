@@ -50,10 +50,10 @@
 #   Example: 'https://github.com/csoltenborn/GoogleTestAdapter/releases/download/v0.14.0/GoogleTestAdapter-0.14.0.vsix'.
 # MIKTEX_FILENAME
 #   The filename of the archive of MikTex.
-#   Example: 'miktex-portable-2.9.6753.exe'.
+#   Example: 'miktex-portable-2.9.6942.exe'.
 # MIKTEX_URL
 #   The URL of the archive of MikTex.
-#   Example: 'https://miktex.org/download/ctan/systems/win32/miktex/setup/windows-x86/miktex-portable-2.9.6753.exe'.
+#   Example: 'https://miktex.org/download/ctan/systems/win32/miktex/setup/windows-x86/miktex-portable-2.9.6942.exe'.
 
 clone_depth: 1
 
