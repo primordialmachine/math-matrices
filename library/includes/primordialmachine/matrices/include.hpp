@@ -40,6 +40,6 @@
 #include "primordialmachine/matrices/matrix_default_implementation.hpp"
 #include "primordialmachine/matrices/not_equal_to_functor_matrix_matrix.hpp"
 #include "primordialmachine/matrices/trace_functor_matrix.hpp"
-#include "primordialmachine/matrices/transpose_functor.hpp"
+#include "primordialmachine/matrices/transpose_functor_matrix.hpp"
 #include "primordialmachine/matrices/unary_minus_functor_matrix.hpp"
 #include "primordialmachine/matrices/unary_plus_functor_matrix.hpp"

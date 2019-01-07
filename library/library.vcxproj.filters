@@ -74,6 +74,9 @@
     <ClInclude Include="includes\primordialmachine\matrices\trace_functor_matrix.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\transpose_functor_matrix.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
     <ClInclude Include="includes\primordialmachine\matrices\integer_sequence.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
