@@ -71,6 +71,12 @@
     <ClInclude Include="includes\primordialmachine\matrices\inverse_functor.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\trace_functor_matrix.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\integer_sequence.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\primordialmachine\matrices\include.cpp">

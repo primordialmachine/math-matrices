@@ -57,8 +57,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="sources\index_sequence.cpp" />
     <ClCompile Include="sources\matrices_arithmetic_functors_test.cpp" />
     <ClCompile Include="sources\matrices_relational_functors_test.cpp" />
+    <ClCompile Include="sources\trace_functor.cpp" />
   </ItemGroup>
   <ItemDefinitionGroup />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

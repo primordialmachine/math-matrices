@@ -23,24 +23,15 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-#pragma once
+#include "primordialmachine/matrices/include.hpp"
+#include "gtest/gtest.h"
 
-namespace primordialmachine {
+using matrix_traits = primordialmachine::matrix_traits<float, 2, 2>;
+using matrix_type = primordialmachine::matrix<matrix_traits>;
 
-template<typename ELEMENT_TYPE,
-         size_t NUMBER_OF_COLUMNS,
-         size_t NUMBER_OF_ROWS>
-struct matrix_traits
+TEST(matrices_tests, trace_functor_test)
 {
-  static constexpr size_t number_of_rows = NUMBER_OF_ROWS;
-  static constexpr size_t number_of_columns = NUMBER_OF_COLUMNS;
-  static constexpr size_t number_of_elements =
-    NUMBER_OF_ROWS * NUMBER_OF_COLUMNS;
-  using element_type = ELEMENT_TYPE;
-  static constexpr bool is_square = number_of_rows == number_of_columns;
-};
-
-template<typename TRAITS, typename ENABLED = void>
-struct matrix;
-
-} // namespace primordialmachine
+  using namespace primordialmachine;
+  ASSERT_FLOAT_EQ(0.f, (trace(matrix_type(0.f, 0.f, 0.f, 0.f))));
+  ASSERT_FLOAT_EQ(0.f, (trace(matrix_type(+1.f, -1.f, +1.f, -1.f))));
+}
