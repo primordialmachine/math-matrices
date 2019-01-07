@@ -25,21 +25,39 @@
 
 #pragma once
 
-#include "primordialmachine/matrices/adjugate_functor.hpp"
-#include "primordialmachine/matrices/determinant_functor.hpp"
-#include "primordialmachine/matrices/binary_minus_functor_matrix_matrix.hpp"
-#include "primordialmachine/matrices/binary_plus_functor_matrix_matrix.hpp"
-#include "primordialmachine/matrices/binary_slash_functor_matrix_matrix.hpp"
-#include "primordialmachine/matrices/binary_slash_functor_matrix_scalar.hpp"
-#include "primordialmachine/matrices/binary_star_functor_matrix_matrix.hpp"
-#include "primordialmachine/matrices/binary_star_functor_matrix_scalar.hpp"
-#include "primordialmachine/matrices/equal_to_functor_matrix_matrix.hpp"
-#include "primordialmachine/matrices/identity_functor_matrix.hpp"
-#include "primordialmachine/matrices/integer_sequence.hpp"
-#include "primordialmachine/matrices/inverse_functor.hpp"
+#include "primordialmachine/matrices/identity_functor.hpp"
 #include "primordialmachine/matrices/matrix_default_implementation.hpp"
-#include "primordialmachine/matrices/not_equal_to_functor_matrix_matrix.hpp"
-#include "primordialmachine/matrices/trace_functor_matrix.hpp"
-#include "primordialmachine/matrices/transpose_functor.hpp"
-#include "primordialmachine/matrices/unary_minus_functor_matrix.hpp"
-#include "primordialmachine/matrices/unary_plus_functor_matrix.hpp"
+
+namespace primordialmachine {
+
+template<typename A>
+struct identity_functor<matrix<A>, std::enable_if_t<A::is_square>>
+{
+  using result_type = matrix<A>;
+  auto operator()() const
+  {
+    using indices = std::make_index_sequence<A::number_of_elements>;
+    return impl(indices{});
+  }
+  template<typename T>
+  constexpr const T& value(size_t i) const
+  {
+    static const auto ZERO = zero<T>();
+    static const auto ONE = one<T>();
+    auto x = i % A::number_of_columns;
+    auto y = i / A::number_of_columns;
+    if (x == y) {
+      return ONE;
+    } else {
+      return ZERO;
+    }
+  }
+
+  template<size_t... Is>
+  auto impl(std::index_sequence<Is...>) const
+  {
+    return result_type{value<typename A::element_type>(Is) ...};
+  }
+}; // struct trace_functor
+
+} // namespace primordialmachine
