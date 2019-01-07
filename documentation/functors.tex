@@ -1,0 +1,81 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Primordial Machine's Matrices Library
+% Copyright (C) 2017-2019 Michael Heilmann
+%
+% This software is provided 'as-is', without any express or implied warranty.
+% In no event will the authors be held liable for any damages arising from the
+% use of this software.
+%
+% Permission is granted to anyone to use this software for any purpose,
+% including commercial applications, and to alter it and redistribute it
+% freely, subject to the following restrictions:
+%
+% 1. The origin of this software must not be misrepresented;
+%    you must not claim that you wrote the original software.
+%    If you use this software in a product, an acknowledgment
+%    in the product documentation would be appreciated but is not required.
+%
+% 2. Altered source versions must be plainly marked as such,
+%    and must not be misrepresented as being the original software.
+%
+% 3. This notice may not be removed or altered from any source distribution.
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\textit{concept Functor}}
+A functor is a struct type providing a constant  \texttt{operator()}.
+That operator shall be qualified as \texttt{noexcept}     if possible
+and shall be qualified as \texttt{constexpr} if possible.  The return
+type of \texttt{operator()} shall be of type \texttt{result}    (or a
+cv-qualified variant of that).\newline\noindent{}The functor    shall
+provide the member type definition \texttt{result\_type} denoting the
+type \texttt{result}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\textit{concept BinaryFunctor}}
+A \textit{BinaryFunctor} is a \textit{Functor}.
+Its \texttt{operator()} has two parameters \texttt{left\_operand} of type
+\texttt{left\_operand\_type} (or a cv-qualified variant of that)      and 
+\texttt{right\_operand} of type \texttt{right\_operand\_type} (or       a
+cv-qualified variant of that).\newline
+
+\noindent{}The functor shall provide the member type              definitions
+\texttt{left\_operand\_type}  denoting the type \texttt{left\_operand}    and
+\texttt{right\_operand\_type} denoting the type      \texttt{right\_operand}.
+\newline
+
+\section{\textit{concept BinaryFunctorBase}}
+A  \textit{BinaryFunctorBase} is a template struct type of   name \textit{name}
+with three template parameters \texttt{LEFT\_OPERAND}, \texttt{RIGHT\_OPERAND},
+and \texttt{ENABLED}. The default value of \texttt{ENALBED} is   \texttt{void}.
+Specializations of this template may use \texttt{ENABLED} to    perform SFINAE.
+A possible implementation is
+\texttt{\newline
+\noindent{}template\textlangle typename LEFT\_OPERAND, typename RIGHT\_OPERAND,
+typename ENABLED = void\textrangle\newline\noindent{}struct \textit{name};    }
+\newline
+
+\noindent{}Its partial specializations are \textit{BinaryFunctors}.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\textit{concept UnaryFunctor}}
+An \textit{UnaryFunctor} is \textit{Functor}.
+Its \texttt{operator()} has one parameter \texttt{operand}  of type
+\texttt{operand\_type} (or a cv-qualified variant of that).\newline
+
+\noindent{}The functor shall provide the member type definition
+\texttt{operand\_type} denoting the type      \texttt{operand}.
+
+\section{\textit{concept UnaryFunctorBase}}
+An \textit{UnaryFunctorBase} is a template struct type of     name \textit{name}
+with two  template parameters \texttt{OPERAND} and \texttt{ENABLED}. The default
+value of \texttt{ENALBED} is \texttt{void}. Specializations of this template may
+use \texttt{ENABLED} to perform SFINAE.
+A possible implementation is
+\texttt{\newline
+\noindent{}template\textlangle typename OPERAND,
+typename ENABLED = void\textrangle\newline\noindent{}struct \textit{name};    }
+\newline
+
+\noindent{}Its partial specializations are \textit{UnaryFunctors}.

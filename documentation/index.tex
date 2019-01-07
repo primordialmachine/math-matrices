@@ -27,7 +27,6 @@
 
 \input{common}
 
-
 \SetOrganization{Primordial Machine's}
 \SetLibraryName{Matrices Library}
 
@@ -39,15 +38,27 @@
 \SetLibraryStaticLibrariesDirectoryPath{primordialmachine/matrices/\newline\$(PlatformTarget.toLower())/\$(Configuration.toLower())/libraries}
 \SetLibraryStaticLibraryFileName{matrices.lib}
 
-
 \SetLibraryVersion{v1.0}
 \SetLibraryRepository{https://github.com/primordialmachine/matrices}
 \SetAuthor{Michael Heilmann}
 \SetEmail{michaelheilmann@primordialmachine.com}
 
+\SetDocumentType{User Manual}
+
 \begin{document}
+
+\frontmatter
+
+\begin{titlepage}
 \maketitle
+\end{titlepage}
+
 \tableofcontents
+\addtocontents{toc}{\protect\thispagestyle{empty}}
+\pagenumbering{gobble}
+
+\mainmatter
+
 \chapter{Synopsis}
 C++ 17 library providing floating point vectors over $n$ dimensions.
 The library is made available publicly on
@@ -70,6 +81,7 @@ The library officially only supports Visual Studio 2017 and Windows 10.
 The namespace this library is adding its declarations/definitions to.
 The added namespace elements are documented below.
 
+\input{functors}
 \input{binary_functor}
 
 \section{\texttt{struct matrix\_traits}}
@@ -87,7 +99,98 @@ struct matrix;
 \section{Members}
 
 \section{Non members}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{operator+ (binary, matrix matrix)}
+Compute the sum of two matrices.
+\begin{verbatim}
+template<typename A, typename B>
+typename binary_plus_functor<matrix<A>, matrix<B>>::result_type
+operator+(const matrix<A>& a, const matrix<B>& b)
+{ return binary_plus_functor<matrix<A>, matrix<B>>()(a, b); }
+\end{verbatim}
+This library provides a specializations for \texttt{matrix\textlangle A\textrangle}
+and \texttt{matrix\textlangle B\textrangle} where
+\begin{enumerate}
+	\item \texttt{A::number\_of\_rows} is equal to \texttt{B::number\_of\_rows},
+    \item \texttt{B::number\_of\_columns} is equal to \texttt{B::number\_of\_columns}, and
+	\item \texttt{A::element\_type} and \texttt{B::element\_type} are floating point types.
+\end{enumerate}
+
+\subsubsection{operator+ (unary, matrix)}
+Compute the affirmation of a matrix.
+\begin{verbatim}
+template<typename A>
+typename unary_plus_functor<matrix<A>>::result_type
+operator+(const matrix<A>& a)
+{ return unary_plus_functor<matrix<A>>()(a); }
+\end{verbatim}
+This library provides a specializations for \texttt{matrix\textlangle A
+\textrangle} where  \texttt{A::element\_type} is a floating point type.
+
+\subsubsection{operator+= (matrix matrix)}
+Compute the sum of two matrices, assign the result to the first operand.
+\begin{verbatim}
+template<typename A, typename B>
+auto
+operator-=(matrix<A>& a, const matrix<B>& b)
+{
+   a = a + b;
+   return a;
+}
+\end{verbatim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{operator- (binary, matrix matrix)}
+Compute the difference of two matrices.
+\begin{verbatim}
+template<typename A, typename B>
+typename binary_minus_functor<matrix<A>, matrix<B>>::result_type
+operator-(const matrix<A>& a, const matrix<B>& b)
+{ return binary_minus_functor<vector<A>, vector<B>>()(a, b); }
+\end{verbatim}
+This library provides a specializations for \texttt{matrix\textlangle A\textrangle}
+and \texttt{vector\textlangle B\textrangle} where
+\begin{enumerate}
+	\item \texttt{A::number\_of\_rows} is equal to \texttt{B::number\_of\_rows},
+	\item \texttt{A::number\_of\_columns} is equal to \texttt{B::number\_of\_columns}, and
+	\item \texttt{A::element\_type} and \texttt{B::element\_type} are floating point types.
+\end{enumerate}
+
+\subsubsection{operator- (unary, matrix)}
+Compute the negation of a matrix.
+\begin{verbatim}
+template<typename A>
+typename unary_minus_functor<matrix<A>>::result_type
+operator-(const matrix<A>& a)
+{ return unary_minus_functor<matrix<A>>()(a); }
+\end{verbatim}
+This library provides a specializations for \texttt{matrix\textlangle A
+\textrangle} where  \texttt{A::element\_type} is a floating point type.
+
+\subsubsection{operator-= (matrix matrix)}
+Compute the difference of two matrices, assign the result to the left operand.
+\begin{verbatim}
+template<typename A, typename B>
+auto&
+operator-=(matrix<A>& a, const matrix<B>& b)
+{
+   a = a - b;
+   return a;
+}
+\end{verbatim}
+
 \subsection{\texttt{struct transpose\_functor}}
+An \textit{UnaryFunctorBase} computing the transpose of a matrix.
+A possible implementation is given by
+\begin{verbatim}
+template<typename OPERAND, typename ENABLED = void>
+struct transpose_functor;
+\end{verbatim}
+
+\noindent{}This library provides \textit{UnaryFunctor} specializations of this \textit{UnaryFunctorBase}
+where \texttt{OPERAND} is specializations of \texttt{matrix}. The result type       \texttt{
+result\_type} is \texttt{matrix\textlangle matrix\_traits\textlangle OPERAND\_TRAITS::element\_type,\newline
+OPERAND\_TRAITS::number\_of\_rows,OPERAND\_TRAITS::number\_of\_columns\textrangle\textrangle}.
+
 \subsection{\texttt{struct trace\_functor}}
 
 \end{document}
