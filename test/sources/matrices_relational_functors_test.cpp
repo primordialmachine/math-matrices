@@ -26,16 +26,29 @@
 #include "primordialmachine/matrices/include.hpp"
 #include "gtest/gtest.h"
 
-using matrix_traits = primordialmachine::matrix_traits<float, 2, 2>;
-using matrix_type = primordialmachine::matrix<matrix_traits>;
+using matrix_traits_type = primordialmachine::matrix_traits<float, 2, 2>;
+using matrix_type = primordialmachine::matrix<matrix_traits_type>;
 
-TEST(matrices_tests, equal_to_matrix_test)
+TEST(matrices_tests, symmetric_equal_to_matrix_test)
 {
   using namespace primordialmachine;
+  using matrix_traits_type = matrix_traits<float, 2, 2>;
+  using matrix_type = matrix<matrix_traits_type>;
   ASSERT_TRUE(matrix_type(4.f, 4.f, 4.f, 4.f) ==
               matrix_type(4.f, 4.f, 4.f, 4.f));
   ASSERT_FALSE(matrix_type(4.f, 4.f, 4.f, 4.f) ==
                matrix_type(2.f, 2.f, 2.f, 2.f));
+}
+
+TEST(matrices_tests, asymmetric_equal_to_matrix_test)
+{
+  using namespace primordialmachine;
+  using matrix_traits_type = matrix_traits<float, 2, 3>;
+  using matrix_type = matrix<matrix_traits_type>;
+  ASSERT_TRUE(matrix_type(4.f, 4.f, 4.f, 4.f, 4.f, 4.f) ==
+              matrix_type(4.f, 4.f, 4.f, 4.f, 4.f, 4.f));
+  ASSERT_FALSE(matrix_type(4.f, 4.f, 4.f, 4.f, 4.f, 4.f) ==
+               matrix_type(2.f, 2.f, 2.f, 2.f, 2.f, 2.f));
 }
 
 TEST(matrices_tests, not_equal_to_matrix_test)
