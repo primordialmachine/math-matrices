@@ -39,7 +39,6 @@ struct equal_to_functor<matrix<TRAITS>, matrix<TRAITS>, void>
   bool operator()(const left_operand_type& a, const right_operand_type& b) const
   {
     return impl(a, b, std::make_index_sequence<TRAITS::number_of_elements>());
-    return true;
   }
 
   template<std::size_t... N>
