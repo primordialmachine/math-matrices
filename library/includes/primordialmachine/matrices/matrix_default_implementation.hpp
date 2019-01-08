@@ -89,8 +89,8 @@ struct matrix<TRAITS, STRUCT_CONDITION()>
 private:
   union
   {
-    typename TRAITS::element_type m_elements_2d[TRAITS::number_of_columns]
-                                               [TRAITS::number_of_rows];
+    typename TRAITS::element_type m_elements_2d[TRAITS::number_of_rows]
+                                               [TRAITS::number_of_columns];
     typename TRAITS::element_type m_elements_1d[TRAITS::number_of_elements];
   };
 };
