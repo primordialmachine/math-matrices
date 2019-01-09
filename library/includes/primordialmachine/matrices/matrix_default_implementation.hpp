@@ -60,8 +60,15 @@ namespace primordialmachine {
                    CONSTRUCTOR_CONDITION_2()>
 
 template<typename TRAITS>
+struct is_matrix<matrix<TRAITS>>
+{
+  static constexpr bool value = true;
+};
+
+template<typename TRAITS>
 struct matrix<TRAITS, STRUCT_CONDITION()>
 {
+  using traits_type = TRAITS;
   using element_type = typename TRAITS::element_type; /*TODO: Remove this.*/
   static constexpr size_t number_of_rows =
     TRAITS::number_of_rows; /*TODO: Remove this.*/

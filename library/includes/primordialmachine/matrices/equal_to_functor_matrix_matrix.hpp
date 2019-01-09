@@ -30,15 +30,17 @@
 
 namespace primordialmachine {
 
-template<typename TRAITS>
-struct equal_to_functor<matrix<TRAITS>, matrix<TRAITS>, void>
+// M a matrix type
+template<typename M>
+struct equal_to_functor<M, M, std::enable_if_t<is_matrix<M>::value>>
 {
-  using left_operand_type = matrix<TRAITS>;
-  using right_operand_type = matrix<TRAITS>;
+  using left_operand_type = M;
+  using right_operand_type = M;
   using result_type = bool;
   bool operator()(const left_operand_type& a, const right_operand_type& b) const
   {
-    return impl(a, b, std::make_index_sequence<TRAITS::number_of_elements>());
+    return impl(
+      a, b, std::make_index_sequence<M::traits_type::number_of_elements>());
   }
 
   template<std::size_t... N>
@@ -46,17 +48,10 @@ struct equal_to_functor<matrix<TRAITS>, matrix<TRAITS>, void>
                       const right_operand_type& b,
                       std::index_sequence<N...>) const
   {
-    auto op = equal_to_functor<typename TRAITS::element_type,
-                               typename TRAITS::element_type>();
+    auto op = equal_to_functor<typename M::traits_type::element_type,
+                               typename M::traits_type::element_type>();
     return ((op(a(N), b(N))) && ...);
   }
 };
-
-template<typename TRAITS>
-auto
-operator==(matrix<TRAITS> const& u, matrix<TRAITS> const& v)
-{
-  return equal_to_functor<matrix<TRAITS>, matrix<TRAITS>>()(u, v);
-}
 
 } // namespace primordialmachine

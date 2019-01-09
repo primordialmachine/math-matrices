@@ -30,27 +30,43 @@
 
 namespace primordialmachine {
 
-// number of columns of first matrix must be equal to number of rows of second matrix.
-// the result has the number of rows of the first matrix and the number of columns of the second matrix.
-template<typename LEFT_OPERAND_TRAITS, typename RIGHT_OPERAND_TRAITS>
-struct binary_star_functor<matrix<LEFT_OPERAND_TRAITS>, matrix<RIGHT_OPERAND_TRAITS>,
-                           std::enable_if_t<std::is_same_v<typename LEFT_OPERAND_TRAITS::element_type,
-                                                           typename RIGHT_OPERAND_TRAITS::element_type>
-                                           && LEFT_OPERAND_TRAITS::number_of_columns == RIGHT_OPERAND_TRAITS::number_of_rows>>
+// number of columns of first matrix must be equal to number of rows of second
+// matrix. the result has the number of rows of the first matrix and the number
+// of columns of the second matrix.
+template<typename A, typename B>
+struct binary_star_functor<
+  A,
+  B,
+  std::enable_if_t<is_matrix<A>::value &&
+                   is_matrix<B>::value &&
+                   std::is_same_v<typename A::traits_type::element_type,
+                                  typename B::traits_type::element_type> &&
+                   A::traits_type::number_of_columns ==
+                   B::traits_type::number_of_rows>>
 {
-  using result_element_type = typename LEFT_OPERAND_TRAITS::element_type;
-  using left_operand_type = matrix<LEFT_OPERAND_TRAITS>;
-  using right_operand_type = matrix<RIGHT_OPERAND_TRAITS>;
+  using result_element_type = typename A::traits_type::element_type;
+  using left_operand_type = A;
+  using right_operand_type = B;
   using result_traits = matrix_traits<result_element_type,
-                                      right_operand_type::number_of_columns,
-                                      left_operand_type::number_of_rows>;
+                                      A::traits_type::number_of_columns,
+                                      B::traits_type::number_of_rows>;
   using result_type = matrix<result_traits>;
-  auto operator()(const left_operand_type& left_operand, const right_operand_type& right_operand) const
+  auto operator()(const left_operand_type& left_operand,
+                  const right_operand_type& right_operand) const
   {
     result_type temporary;
-    for (size_t i = 0; i < LEFT_OPERAND_TRAITS::number_of_rows; i++) { // i-th row of left operand.
-      for (size_t j = 0; j < RIGHT_OPERAND_TRAITS::number_of_columns; j++) { // j-th column of right operand
-        for (size_t k = 0; k < LEFT_OPERAND_TRAITS::number_of_columns/*or RIGHT_OPERAND_TRAITS::number_of_rows*/; k++) { // k-th column of first operand, k-th row of second operand
+    for (size_t i = 0; i < left_operand_type::traits_type::number_of_rows;
+         i++) { // i-th row of left operand.
+      for (size_t j = 0; j < right_operand_type::traits_type::number_of_columns;
+           j++) { // j-th column of right operand
+        for (
+          size_t k = 0;
+          k <
+          left_operand_type::traits_type::
+            number_of_columns /*or
+                                 right_operand_type::traits_type::number_of_rows*/
+          ;
+          k++) { // k-th column of first operand, k-th row of second operand
           temporary(i, j) += left_operand(i, k) * right_operand(k, j);
         }
       }
@@ -58,12 +74,6 @@ struct binary_star_functor<matrix<LEFT_OPERAND_TRAITS>, matrix<RIGHT_OPERAND_TRA
     return temporary;
   }
 };
-
-template<typename TRAITS>
-auto operator*(matrix<TRAITS> const& u, matrix<TRAITS> const& v)
-{
-  return binary_star_functor<matrix<TRAITS>, matrix<TRAITS>>()(u, v);
-}
 
 template<typename TRAITS>
 auto& /*TODO: Does this return a reference? Is this the best method?*/

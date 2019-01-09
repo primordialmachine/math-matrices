@@ -30,20 +30,13 @@
 
 namespace primordialmachine {
 
-template<typename TRAITS>
-struct binary_plus_functor<matrix<TRAITS>, matrix<TRAITS>, void>
+template<typename M>
+struct binary_plus_functor<M, M, std::enable_if_t<is_matrix<M>::value>>
   : public elementwise_binary_matrix_functor<
-      TRAITS,
-      binary_plus_functor<typename TRAITS::element_type,
-                          typename TRAITS::element_type>>
+      typename M::traits_type,
+      binary_plus_functor<typename M::traits_type::element_type,
+                          typename M::traits_type::element_type>>
 {};
-
-template<typename TRAITS>
-auto
-operator+(matrix<TRAITS> const& u, matrix<TRAITS> const& v)
-{
-  return binary_plus_functor<matrix<TRAITS>, matrix<TRAITS>>()(u, v);
-}
 
 template<typename TRAITS>
 auto& /*TODO: Does this suffice to ensure the reference is returned?*/

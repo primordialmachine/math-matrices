@@ -30,18 +30,11 @@
 
 namespace primordialmachine {
 
-template<typename TRAITS>
-struct unary_minus_functor<matrix<TRAITS>, void>
+template<typename M>
+struct unary_minus_functor<M, std::enable_if_t<is_matrix<M>::value>>
   : public elementwise_unary_matrix_functor<
-      TRAITS,
-      unary_minus_functor<typename TRAITS::element_type>>
+      typename M::traits_type,
+      unary_minus_functor<typename M::traits_type::element_type>>
 {};
-
-template<typename TRAITS>
-auto
-operator-(matrix<TRAITS> const& v)
-{
-  return unary_minus_functor<matrix<TRAITS>>()(v);
-}
 
 } // namespace primordialmachine

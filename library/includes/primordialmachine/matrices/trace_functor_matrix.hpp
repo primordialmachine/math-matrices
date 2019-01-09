@@ -6,24 +6,23 @@
 
 namespace primordialmachine {
 
-template<typename A>
-struct trace_functor<matrix<A>, std::enable_if_t<A::is_square>>
+template<typename T>
+struct trace_functor<T, std::enable_if_t<is_matrix<T>::value && T::traits_type::is_square>>
 {
-  using result_type = typename A::element_type;
-  using operand_type = matrix<A>;
+  using result_type = typename T::traits_type::element_type;
+  using operand_type = T;
   auto operator()(const operand_type& a) const
   {
     struct predicate
     {
       constexpr bool operator()(size_t i) const
       {
-        auto x = i % A::number_of_columns;
-        auto y = i / A::number_of_columns;
-        return x == y;
+        auto t = to_index_2(index_1{i}, T::traits_type::number_of_columns);
+        return t.i() == t.j();
       }
     };
     using indices = decltype(filter_seq::apply(
-      std::make_index_sequence<A::number_of_elements>{}, predicate{}));
+      std::make_index_sequence<T::traits_type::number_of_elements>{}, predicate{}));
     return impl(a, indices{});
   }
   

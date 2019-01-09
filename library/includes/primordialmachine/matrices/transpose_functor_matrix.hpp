@@ -5,29 +5,19 @@
 
 namespace primordialmachine {
 
-template<typename A>
-struct transpose_functor<matrix<A>, void>
+template<typename T>
+struct transpose_functor<T, std::enable_if_t<is_matrix<T>::value>>
 {
-  using operand_type = matrix<A>;
-  using B = matrix_traits<typename A::element_type,
-                          A::number_of_rows,
-                          A::number_of_columns>;
+  using operand_type = T;
+  using B = matrix_traits<typename T::traits_type::element_type,
+                          T::traits_type::number_of_rows,
+                          T::traits_type::number_of_columns>;
   using result_type = matrix<B>;
   result_type operator()(const operand_type& operand) const
   {
     result_type result;
-    apply(result, operand, std::make_index_sequence<A::number_of_elements>{});
+    apply(result, operand, std::make_index_sequence<T::traits_type::number_of_elements>{});
     return result;
-  }
-
-  static constexpr size_t row(size_t index, size_t stride) noexcept
-  {
-    return index / stride;
-  }
-
-  static constexpr size_t column(size_t index, size_t stride) noexcept
-  {
-    return index % stride;
   }
 
   template<size_t... Is>
@@ -36,14 +26,12 @@ struct transpose_functor<matrix<A>, void>
              std::index_sequence<Is...>) const
   {
     int dummy[] = { (
-      apply<row(Is, A::number_of_columns), column(Is, A::number_of_columns)>(
-        result, operand))... };
+      apply(result, operand, to_index_2({Is}, T::traits_type::number_of_columns)))... };
   }
-
-  template<size_t ROW, size_t COLUMN>
-  constexpr int apply(result_type& result, const operand_type& operand) const
+  
+  constexpr int apply(result_type& result, const operand_type& operand, const index_2& i) const
   {
-    result(COLUMN, ROW) = operand(ROW, COLUMN);
+    result(i.j(), i.i()) = operand(i.i(), i.j());
     return 0;
   }
 

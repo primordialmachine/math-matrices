@@ -30,20 +30,14 @@
 
 namespace primordialmachine {
 
-template<typename TRAITS>
-struct binary_slash_functor<matrix<TRAITS>, matrix<TRAITS>, void>
+// M a matrix type
+template<typename M>
+struct binary_slash_functor<M, M, std::enable_if_t<is_matrix<M>::value>>
   : public elementwise_binary_matrix_functor<
-      TRAITS,
-      binary_slash_functor<typename TRAITS::element_type,
-                           typename TRAITS::element_type>>
+      typename M::traits_type,
+      binary_slash_functor<typename M::traits_type::element_type,
+                           typename M::traits_type::element_type>>
 {};
-
-template<typename TRAITS>
-auto
-operator/(matrix<TRAITS> const& u, matrix<TRAITS> const& v)
-{
-  return binary_slash_functor<matrix<TRAITS>, matrix<TRAITS>>()(u, v);
-}
 
 template<typename TRAITS>
 auto& /*TODO: Does this suffice to ensure the reference is returned?*/

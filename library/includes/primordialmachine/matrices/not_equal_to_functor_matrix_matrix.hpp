@@ -30,16 +30,17 @@
 
 namespace primordialmachine {
 
-template<typename TRAITS>
-struct not_equal_to_functor<matrix<TRAITS>, matrix<TRAITS>, void>
+template<typename T>
+struct not_equal_to_functor<T, T, std::enable_if_t<is_matrix<T>::value>>
 {
-  using left_operand_type = matrix<TRAITS>;
-  using right_operand_type = matrix<TRAITS>;
+  using left_operand_type = T;
+  using right_operand_type = T;
   using result_type = bool;
   result_type operator()(const left_operand_type& a,
                          const right_operand_type& b) const
   {
-    return impl(a, b, std::make_index_sequence<TRAITS::number_of_elements>());
+    return impl(
+      a, b, std::make_index_sequence<T::traits_type::number_of_elements>());
     return true;
   }
 
@@ -48,17 +49,10 @@ struct not_equal_to_functor<matrix<TRAITS>, matrix<TRAITS>, void>
                       const right_operand_type& b,
                       std::index_sequence<N...>) const
   {
-    auto op = not_equal_to_functor<typename TRAITS::element_type,
-                                   typename TRAITS::element_type>();
+    auto op = not_equal_to_functor<typename T::traits_type::element_type,
+                                   typename T::traits_type::element_type>();
     return ((op(a(N), b(N))) || ...);
   }
 };
-
-template<typename TRAITS>
-auto
-operator!=(matrix<TRAITS> const& u, matrix<TRAITS> const& v)
-{
-  return not_equal_to_functor<matrix<TRAITS>, matrix<TRAITS>>()(u, v);
-}
 
 } // namespace primordialmachine
