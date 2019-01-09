@@ -33,6 +33,26 @@ template<typename LEFT_OPERAND, typename RIGHT_OPERAND, typename ENABLED = void>
 struct not_equal_to_functor;
 
 template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
+auto
+not_equal_to(const LEFT_OPERAND& left_operand,
+             const RIGHT_OPERAND& right_operand)
+  -> decltype(
+    not_equal_to_functor<LEFT_OPERAND, RIGHT_OPERAND>()(left_operand,
+                                                        right_operand))
+{
+  return not_equal_to_functor<LEFT_OPERAND, RIGHT_OPERAND>()(left_operand,
+                                                             right_operand);
+}
+
+template<typename A, typename B>
+auto
+operator!=(const A& a, const B& b) -> decltype(not_equal_to(a, b))
+{
+  return not_equal_to(a, b);
+}
+
+// Default implementation for floating point types.
+template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
 struct not_equal_to_functor<
   LEFT_OPERAND,
   RIGHT_OPERAND,

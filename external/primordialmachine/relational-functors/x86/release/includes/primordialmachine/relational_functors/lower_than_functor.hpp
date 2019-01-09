@@ -33,6 +33,24 @@ template<typename LEFT_OPERAND, typename RIGHT_OPERAND, typename ENABLED = void>
 struct lower_than_functor;
 
 template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
+auto
+lower_than(const LEFT_OPERAND& left_operand, const RIGHT_OPERAND& right_operand)
+  -> decltype(lower_than_functor<LEFT_OPERAND, RIGHT_OPERAND>()(left_operand,
+                                                                right_operand))
+{
+  return lower_than_functor<LEFT_OPERAND, RIGHT_OPERAND>()(left_operand,
+                                                           right_operand);
+}
+
+template<typename A, typename B>
+auto
+operator<(const A& a, const B& b) -> decltype(lower_than(a,b))
+{
+  return lower_than(a, b);
+}
+
+// Default implementation for floating point types.
+template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
 struct lower_than_functor<
   LEFT_OPERAND,
   RIGHT_OPERAND,

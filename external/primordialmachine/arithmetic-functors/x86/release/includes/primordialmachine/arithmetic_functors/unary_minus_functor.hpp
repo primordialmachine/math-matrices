@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Primordial Machine's Arithmetic Functors Library
-// Copyright (C) 2017-2018 Michael Heilmann
+// Copyright (C) 2017-2019 Michael Heilmann
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the
@@ -32,13 +32,32 @@ namespace primordialmachine {
 template<typename OPERAND, typename ENABLED = void>
 struct unary_minus_functor;
 
+template<typename OPERAND>
+auto
+unary_minus(const OPERAND& operand)
+  -> decltype(unary_minus_functor<OPERAND>()(operand))
+{
+  return unary_minus_functor<OPERAND>()(operand);
+}
+
+template<typename OPERAND>
+auto
+operator-(const OPERAND& operand) -> decltype(unary_minus(operand))
+{
+  return unary_minus(operand);
+}
+
 // Default implementation for floating point types.
 template<typename OPERAND>
 struct unary_minus_functor<OPERAND,
                            std::enable_if_t<std::is_floating_point_v<OPERAND>>>
 {
   using operand_type = OPERAND;
-  auto operator()(operand_type x) const noexcept(noexcept(-x)) { return -x; }
+  using result_type = OPERAND;
+  result_type operator()(operand_type x) const noexcept(noexcept(-x))
+  {
+    return -x;
+  }
 }; // struct unary_minus_functor
 
 } // namespace primordialmachine

@@ -33,6 +33,26 @@ template<typename LEFT_OPERAND, typename RIGHT_OPERAND, typename ENABLED = void>
 struct greater_than_or_equal_to_functor;
 
 template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
+auto
+greater_than_or_equal_to(const LEFT_OPERAND& left_operand,
+                         const RIGHT_OPERAND& right_operand)
+  -> decltype(greater_than_or_equal_to_functor<LEFT_OPERAND, RIGHT_OPERAND>()(
+    left_operand,
+    right_operand))
+{
+  return greater_than_or_equal_to_functor<LEFT_OPERAND, RIGHT_OPERAND>()(
+    left_operand, right_operand);
+}
+
+template<typename A, typename B>
+auto
+operator>=(const A& a, const B& b) -> decltype(greater_than_or_equal_to(a,  b))
+{
+  return greater_than_or_equal_to(a, b);
+}
+
+// Default implementation for floating point types.
+template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
 struct greater_than_or_equal_to_functor<
   LEFT_OPERAND,
   RIGHT_OPERAND,

@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Primordial Machine's Arithmetic Functors Library
-// Copyright (C) 2017-2018 Michael Heilmann
+// Copyright (C) 2017-2019 Michael Heilmann
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the
@@ -33,6 +33,26 @@ template<typename LEFT_OPERAND, typename RIGHT_OPERAND, typename ENABLED = void>
 struct binary_slash_functor;
 
 template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
+auto
+binary_slash(const LEFT_OPERAND& left_operand,
+             const RIGHT_OPERAND& right_operand)
+  -> decltype(
+    binary_slash_functor<LEFT_OPERAND, RIGHT_OPERAND>()(left_operand,
+                                                        right_operand))
+{
+  return binary_slash_functor<LEFT_OPERAND, RIGHT_OPERAND>()(left_operand,
+                                                             right_operand);
+}
+
+template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
+auto
+operator/(const LEFT_OPERAND& left_operand, const RIGHT_OPERAND& right_operand)
+  -> decltype(binary_slash(left_operand, right_operand))
+{
+  return binary_slash(left_operand, right_operand);
+}
+
+template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
 struct binary_slash_functor<
   LEFT_OPERAND,
   RIGHT_OPERAND,
@@ -41,7 +61,8 @@ struct binary_slash_functor<
 {
   using left_operand_type = LEFT_OPERAND;
   using right_operand_type = RIGHT_OPERAND;
-  auto operator()(left_operand_type x, right_operand_type y) const
+  using result_type = std::common_type_t<left_operand_type, right_operand_type>;
+  result_type operator()(left_operand_type x, right_operand_type y) const
     noexcept(noexcept(x / y))
   {
     return x / y;

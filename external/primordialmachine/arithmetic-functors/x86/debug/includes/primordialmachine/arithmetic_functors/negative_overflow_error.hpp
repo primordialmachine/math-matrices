@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Primordial Machine's Arithmetic Functors Library
-// Copyright (C) 2017-2018 Michael Heilmann
+// Copyright (C) 2017-2019 Michael Heilmann
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the
@@ -38,6 +38,7 @@ public:
   using parent_type = error;
   using position_type = error_position;
   negative_overflow_error(position_type position);
+
 protected:
   negative_overflow_error* clone_implementation() const override;
   void raise_implementation() const override;
