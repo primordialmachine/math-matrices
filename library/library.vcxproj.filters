@@ -1,23 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Quelldateien">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Headerdateien">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="package.props" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="includes\primordialmachine\matrices\include.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\matrix.hpp">
+    <ClInclude Include="includes\primordialmachine\matrices\adjugate_functor.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="includes\primordialmachine\matrices\binary_minus_functor_matrix_matrix.hpp">
@@ -26,63 +10,76 @@
     <ClInclude Include="includes\primordialmachine\matrices\binary_plus_functor_matrix_matrix.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\binary_slash_functor_matrix_matrix.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\binary_slash_functor_matrix_scalar.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\binary_star_functor_matrix_matrix.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\binary_star_functor_matrix_scalar.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\determinant_functor.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\equal_to_functor_matrix_matrix.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\identity_functor.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\identity_functor_matrix.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\include.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\inverse_functor.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\matrix.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\matrix_default_implementation.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\not_equal_to_functor_matrix_matrix.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\trace_functor.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\trace_functor_matrix.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\transpose_functor.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="includes\primordialmachine\matrices\transpose_functor_matrix.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
     <ClInclude Include="includes\primordialmachine\matrices\unary_minus_functor_matrix.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="includes\primordialmachine\matrices\unary_plus_functor_matrix.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\binary_slash_functor_matrix_scalar.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\binary_star_functor_matrix_scalar.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\binary_star_functor_matrix_matrix.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\binary_slash_functor_matrix_matrix.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\equal_to_functor_matrix_matrix.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\not_equal_to_functor_matrix_matrix.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\matrix_default_implementation.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\trace_functor.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\transpose_functor.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\adjugate_functor.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\identity_functor.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\determinant_functor.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\inverse_functor.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\trace_functor_matrix.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\transpose_functor_matrix.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\integer_sequence.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
-    <ClInclude Include="includes\primordialmachine\matrices\identity_functor_matrix.hpp">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="package.props" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Headerdateien">
+      <UniqueIdentifier>{aaabd926-acc0-4343-b3e3-95731ddadd07}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Quelldateien">
+      <UniqueIdentifier>{014eb2a3-684f-4fcc-88ee-4a5addd7d94d}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\primordialmachine\matrices\include.cpp">

@@ -36,29 +36,28 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <OutDir>$(SolutionDir)products\$(ProjectName)\$(PlatformTarget.toLower())\$(Configuration.toLower())\</OutDir>
     <IntDir>$(SolutionDir)intermediates\$(ProjectName)\$(PlatformTarget.toLower())\$(Configuration.toLower())\</IntDir>
-    <TargetName>matrices-test</TargetName>
+    <TargetName>math-matrices-test</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)products\$(ProjectName)\$(PlatformTarget.toLower())\$(Configuration.toLower())\</OutDir>
     <IntDir>$(SolutionDir)intermediates\$(ProjectName)\$(PlatformTarget.toLower())\$(Configuration.toLower())\</IntDir>
-    <TargetName>matrices-test</TargetName>
+    <TargetName>math-matrices-test</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)products\$(ProjectName)\$(PlatformTarget.toLower())\$(Configuration.toLower())\</OutDir>
     <IntDir>$(SolutionDir)intermediates\$(ProjectName)\$(PlatformTarget.toLower())\$(Configuration.toLower())\</IntDir>
-    <TargetName>matrices-test</TargetName>
+    <TargetName>math-matrices-test</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)products\$(ProjectName)\$(PlatformTarget.toLower())\$(Configuration.toLower())\</OutDir>
     <IntDir>$(SolutionDir)intermediates\$(ProjectName)\$(PlatformTarget.toLower())\$(Configuration.toLower())\</IntDir>
-    <TargetName>matrices-test</TargetName>
+    <TargetName>math-matrices-test</TargetName>
   </PropertyGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="sources\identity_functor.cpp" />
-    <ClCompile Include="sources\index_sequence.cpp" />
     <ClCompile Include="sources\matrices_arithmetic_functors_test.cpp" />
     <ClCompile Include="sources\matrices_relational_functors_test.cpp" />
     <ClCompile Include="sources\trace_functor.cpp" />
@@ -79,7 +78,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)packages\primordialmachine\matrices\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\arithmetic-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\relational-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\one-zero-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\errors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(ProjectDir)includes;$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)packages\primordialmachine\matrices\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\arithmetic-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\relational-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\one-zero-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\errors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\math-indices\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\math-scalars\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(ProjectDir)includes;$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -97,7 +96,7 @@
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
-      <AdditionalIncludeDirectories>$(SolutionDir)packages\primordialmachine\matrices\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\arithmetic-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\relational-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\one-zero-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\errors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(ProjectDir)includes;$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)packages\primordialmachine\matrices\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\arithmetic-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\relational-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\one-zero-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\errors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\math-indices\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\math-scalars\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(ProjectDir)includes;$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -113,7 +112,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)packages\primordialmachine\matrices\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\arithmetic-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\relational-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\one-zero-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\errors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(ProjectDir)includes;$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)packages\primordialmachine\matrices\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\arithmetic-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\relational-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\one-zero-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\errors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\math-indices\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\math-scalars\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(ProjectDir)includes;$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
@@ -131,7 +130,7 @@
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <AdditionalIncludeDirectories>$(SolutionDir)packages\primordialmachine\matrices\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\arithmetic-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\relational-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\one-zero-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\errors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(ProjectDir)includes;$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)packages\primordialmachine\matrices\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\arithmetic-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\relational-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\one-zero-functors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\errors\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\math-indices\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(SolutionDir)external\primordialmachine\math-scalars\$(PlatformTarget.toLower())\$(Configuration.toLower())\includes;$(ProjectDir)includes;$(MSBuildThisFileDirectory)include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>

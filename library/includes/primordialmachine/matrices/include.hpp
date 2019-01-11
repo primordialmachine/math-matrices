@@ -35,7 +35,6 @@
 #include "primordialmachine/matrices/binary_star_functor_matrix_scalar.hpp"
 #include "primordialmachine/matrices/equal_to_functor_matrix_matrix.hpp"
 #include "primordialmachine/matrices/identity_functor_matrix.hpp"
-#include "primordialmachine/matrices/integer_sequence.hpp"
 #include "primordialmachine/matrices/inverse_functor.hpp"
 #include "primordialmachine/matrices/matrix_default_implementation.hpp"
 #include "primordialmachine/matrices/not_equal_to_functor_matrix_matrix.hpp"

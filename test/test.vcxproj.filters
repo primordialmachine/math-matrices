@@ -16,9 +16,6 @@
     <ClCompile Include="sources\matrices_relational_functors_test.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="sources\index_sequence.cpp">
-      <Filter>Quelldateien</Filter>
-    </ClCompile>
     <ClCompile Include="sources\trace_functor.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "primordialmachine/matrices/integer_sequence.hpp"
 #include "primordialmachine/matrices/matrix_default_implementation.hpp"
 #include "primordialmachine/matrices/trace_functor.hpp"
 
@@ -21,7 +20,7 @@ struct trace_functor<T, std::enable_if_t<is_matrix<T>::value && T::traits_type::
         return t.i() == t.j();
       }
     };
-    using indices = decltype(filter_seq::apply(
+    using indices = decltype(filter_seq()(
       std::make_index_sequence<T::traits_type::number_of_elements>{}, predicate{}));
     return impl(a, indices{});
   }

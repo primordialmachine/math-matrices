@@ -26,6 +26,7 @@
 #pragma once
 
 #include "primordialmachine/arithmetic_functors/include.hpp"
+#include "primordialmachine/math/scalars/include.hpp"
 #include "primordialmachine/matrices/matrix.hpp"
 #include "primordialmachine/one_zero_functors/include.hpp"
 #include <type_traits>
@@ -35,10 +36,9 @@ namespace primordialmachine {
 // SFINAE for the struct type.
 #pragma push_macro("STRUCT_CONDITION")
 #define STRUCT_CONDITION()                                                     \
-  std::enable_if_t<                                                            \
-    (std::is_floating_point_v<typename TRAITS::element_type>)&&(               \
-      TRAITS::number_of_columns > 1) &&                                        \
-    (TRAITS::number_of_rows > 1)>
+  std::enable_if_t<(std::is_scalar<typename TRAITS::element_type>::value) &&   \
+                   (TRAITS::number_of_columns >= 1) &&                         \
+                   (TRAITS::number_of_rows >= 1)>
 
 // SFINAE for the constructor.
 #pragma push_macro("CONSTRUCTOR_CONDITION_1")
