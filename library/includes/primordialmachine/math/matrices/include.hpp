@@ -39,7 +39,7 @@
 #include "primordialmachine/math/matrices/determinant_functor_matrix.hpp"
 #include "primordialmachine/math/matrices/equal_to_functor_matrix_matrix.hpp"
 #include "primordialmachine/math/matrices/identity_functor_matrix.hpp"
-#include "primordialmachine/math/matrices/inverse_functor.hpp"
+#include "primordialmachine/math/matrices/inverse_functor_matrix.hpp"
 #include "primordialmachine/math/matrices/matrix_default_implementation_0.hpp"
 #include "primordialmachine/math/matrices/matrix_default_implementation_n.hpp"
 #include "primordialmachine/math/matrices/minor_functor_matrix.hpp"

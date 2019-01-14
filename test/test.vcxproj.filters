@@ -43,5 +43,8 @@
     <ClCompile Include="sources\matrices_relational_n_test.cpp">
       <Filter>Quelldateien</Filter>
     </ClCompile>
+    <ClCompile Include="sources\inverse_test.cpp">
+      <Filter>Quelldateien</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

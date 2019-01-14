@@ -100,6 +100,9 @@
     <ClInclude Include="includes\primordialmachine\math\matrices\adjugate_functor_matrix.hpp">
       <Filter>Headerdateien</Filter>
     </ClInclude>
+    <ClInclude Include="includes\primordialmachine\math\matrices\inverse_functor_matrix.hpp">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="package.props" />

@@ -62,6 +62,7 @@
     <ClCompile Include="sources\delete_row_test.cpp" />
     <ClCompile Include="sources\determinant_test.cpp" />
     <ClCompile Include="sources\identity_test.cpp" />
+    <ClCompile Include="sources\inverse_test.cpp" />
     <ClCompile Include="sources\matrices_arithmetic_0_test.cpp" />
     <ClCompile Include="sources\matrices_arithmetic_n_test.cpp" />
     <ClCompile Include="sources\matrices_relational_0_test.cpp" />
