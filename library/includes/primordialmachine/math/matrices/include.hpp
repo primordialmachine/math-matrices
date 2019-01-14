@@ -25,13 +25,15 @@
 
 #pragma once
 
-#include "primordialmachine/math/matrices/adjugate_functor.hpp"
+#include "primordialmachine/math/matrices/adjugate_functor_matrix.hpp"
 #include "primordialmachine/math/matrices/binary_minus_functor_matrix_matrix.hpp"
 #include "primordialmachine/math/matrices/binary_plus_functor_matrix_matrix.hpp"
 #include "primordialmachine/math/matrices/binary_slash_functor_matrix_matrix.hpp"
 #include "primordialmachine/math/matrices/binary_slash_functor_matrix_scalar.hpp"
 #include "primordialmachine/math/matrices/binary_star_functor_matrix_matrix.hpp"
 #include "primordialmachine/math/matrices/binary_star_functor_matrix_scalar.hpp"
+#include "primordialmachine/math/matrices/cofactor_functor_matrix.hpp"
+#include "primordialmachine/math/matrices/cofactor_matrix_functor_matrix.hpp"
 #include "primordialmachine/math/matrices/delete_column_view.hpp"
 #include "primordialmachine/math/matrices/delete_row_view.hpp"
 #include "primordialmachine/math/matrices/determinant_functor_matrix.hpp"
@@ -40,6 +42,7 @@
 #include "primordialmachine/math/matrices/inverse_functor.hpp"
 #include "primordialmachine/math/matrices/matrix_default_implementation_0.hpp"
 #include "primordialmachine/math/matrices/matrix_default_implementation_n.hpp"
+#include "primordialmachine/math/matrices/minor_functor_matrix.hpp"
 #include "primordialmachine/math/matrices/not_equal_to_functor_matrix_matrix.hpp"
 #include "primordialmachine/math/matrices/trace_functor_matrix.hpp"
 #include "primordialmachine/math/matrices/transpose_functor_matrix.hpp"

@@ -25,6 +25,7 @@
 
 #pragma once
 
+#include "primordialmachine/math/matrices/cofactor_functor.hpp"
 #include "primordialmachine/math/matrices/determinant_functor.hpp"
 #include "primordialmachine/math/matrices/matrix_default_implementation_0.hpp"
 #include "primordialmachine/math/matrices/matrix_default_implementation_n.hpp"
@@ -86,7 +87,8 @@ struct determinant_functor<
   auto operator()(const operand_type& a) const
   {
     // For each element of the rop row.
-    return impl0(a, std::make_index_sequence<M::traits_type::number_of_columns>{});
+    return impl0(a,
+                 std::make_index_sequence<M::traits_type::number_of_columns>{});
   }
 
   template<size_t... COLUMNS>
@@ -99,11 +101,7 @@ struct determinant_functor<
   template<size_t COLUMN>
   static auto impl1(const operand_type& a)
   {
-    using S = typename M::traits_type::element_type;
-    auto sgn = (COLUMN % 2 != 0) ? -one<S>() : +one<S>();
-    using R = const_delete_row_view<M, 0>;
-    using C = const_delete_column_view<R, COLUMN>;
-    return sgn * a(0,COLUMN) * determinant(C(R(a)));
+    return a(0, COLUMN) * cofactor<M, 0, COLUMN>(a);
   }
 
 }; // struct determinant_functor

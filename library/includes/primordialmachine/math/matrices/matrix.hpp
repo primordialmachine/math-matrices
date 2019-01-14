@@ -29,6 +29,21 @@
 
 namespace primordialmachine {
 
+/* TODO: Move into matrix.hpp. */
+template<typename M>
+using make_column_indices =
+  std::make_index_sequence<M::traits_type::number_of_columns>;
+
+/*TODO: Move into matrix.hpp.*/
+template<typename M>
+using make_row_indices =
+  std::make_index_sequence<M::traits_type::number_of_rows>;
+
+/*TODO: Move into matrix.hpp.*/
+template<typename M>
+using make_element_indices =
+  std::make_index_sequence<M::traits_type::number_of_elements>;
+
 constexpr index_1
 to_index_1(index_1 source, size_t stride)
 {
