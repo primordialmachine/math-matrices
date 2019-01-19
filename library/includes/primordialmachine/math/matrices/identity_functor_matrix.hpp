@@ -31,13 +31,13 @@
 
 namespace primordialmachine {
 
-template<typename A>
-struct identity_functor<matrix<A>, std::enable_if_t<A::is_square>>
+template<typename M>
+struct identity_functor<M, enable_if_t<is_matrix_v<M> && is_square_v<M>>>
 {
-  using result_type = matrix<A>;
+  using result_type = M;
   auto operator()() const
   {
-    using indices = std::make_index_sequence<A::number_of_elements>;
+    using indices = make_index_sequence<number_of_elements_v<M>>;
     return impl(indices{});
   }
   template<typename T>
@@ -45,8 +45,8 @@ struct identity_functor<matrix<A>, std::enable_if_t<A::is_square>>
   {
     static const auto ZERO = zero<T>();
     static const auto ONE = one<T>();
-    auto x = i % A::number_of_columns;
-    auto y = i / A::number_of_columns;
+    auto x = i % number_of_columns_v<M>;
+    auto y = i / number_of_columns_v<M>;
     if (x == y) {
       return ONE;
     } else {
@@ -55,10 +55,10 @@ struct identity_functor<matrix<A>, std::enable_if_t<A::is_square>>
   }
 
   template<size_t... Is>
-  auto impl(std::index_sequence<Is...>) const
+  auto impl(index_sequence<Is...>) const
   {
-    return result_type{value<typename A::element_type>(Is) ...};
+    return result_type{ value<element_type_t<M>>(Is)... };
   }
-}; // struct trace_functor
+}; // struct identity_functor
 
 } // namespace primordialmachine

@@ -36,12 +36,12 @@ namespace primordialmachine {
 template<typename M>
 struct inverse_functor<
   M,
-  std::enable_if_t<is_matrix<M>::value && M::traits_type::is_square &&
-                   (M::traits_type::number_of_rows > 0) &&
-                   (M::traits_type::number_of_columns > 0)>>
+  enable_if_t<is_matrix_v<M> && is_square_v<M> &&
+              (number_of_rows_v<M> > 0) &&
+              (number_of_columns_v<M> > 0)>>
 {
-  using scalar_type = typename M::traits_type::element_type;
-  using result_type = typename M;
+  using scalar_type = element_type_t<M>;
+  using result_type = M;
   using operand_type = M;
   auto operator()(const operand_type& m) const
   {

@@ -27,4 +27,3 @@
 
 #include "primordialmachine/math/indices/index_1.hpp"
 #include "primordialmachine/math/indices/index_2.hpp"
-#include "primordialmachine/math/indices/integer_sequence.hpp"

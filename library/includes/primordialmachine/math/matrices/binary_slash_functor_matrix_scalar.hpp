@@ -38,20 +38,19 @@ template<typename M, typename S>
 struct binary_slash_functor<
   M,
   S,
-  std::enable_if_t<is_matrix<M>::value && M::traits_type::is_degenerate &&
-                   is_scalar<S>::value>>
+  enable_if_t<is_matrix_v<M> && is_degenerate_v<M> && is_scalar_v<S>>>
 {
   using left_operand_type = M;
-  using right_operand_type = M;
-  using result_type = matrix<
-    matrix_traits<std::common_type_t<typename M::traits_type::element_type, S>,
-                  M::traits_type::number_of_columns,
-                  M::traits_type::number_of_rows>>;
-  auto operator()(const M& left_operand, const S& right_operand) const
+  using right_operand_type = S;
+  using result_type = matrix<matrix_traits<common_type_t<element_type_t<M>, S>,
+                                           number_of_columns_v<M>,
+                                           number_of_rows_v<M>>>;
+  auto operator()(const left_operand_type& left_operand,
+                  const right_operand_type& right_operand) const
   {
     return result_type();
   }
-};
+}; // struct binary_slash_functor
 
 // non-degenerated case
 // M a matrix type
@@ -60,31 +59,56 @@ template<typename M, typename S>
 struct binary_slash_functor<
   M,
   S,
-  std::enable_if_t<is_matrix<M>::value && M::traits_type::is_non_degenerate &&
-                   is_scalar<S>::value>>
+  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M> && is_scalar_v<S>>>
 {
-  using functor = elementwise_binary_functor<
-    M,
-    scalar_generator_functor<S>,
-    M,
-    M::traits_type::number_of_elements,
-    binary_slash_functor<typename M::traits_type::element_type, S>,
-    void>;
+  using functor =
+    elementwise_binary_functor<M,
+                               scalar_generator_functor<S>,
+                               M,
+                               number_of_elements_v<M>,
+                               binary_slash_functor<element_type_t<M>, S>,
+                               void>;
   using left_operand_type = M;
-  using right_operand_type = M;
+  using right_operand_type = S;
   using result_type = typename functor::result_type;
-  auto operator()(const M& left_operand, const S& right_operand) const
+  auto operator()(const left_operand_type& left_operand,
+                  const right_operand_type& right_operand) const
   {
     return functor()(left_operand, scalar_generator_functor<S>(right_operand));
   }
-};
+}; // struct binary_slash_functor
 
-template<typename TRAITS, typename SCALAR>
-auto& /*TODO: Does this suffice to ensure the reference is returned?*/
-operator/=(matrix<TRAITS>& u, SCALAR s)
+template<typename M, typename S>
+struct slash_assignment_functor<
+  M,
+  S,
+  enable_if_t<is_matrix_v<M> && is_degenerate_v<M> && is_scalar_v<S>>>
 {
-  u = u / s;
-  return u;
-}
+  using left_operand_type = M;
+  using right_operand_type = S;
+  using result_type = M;
+  result_type& operator()(left_operand_type& left_operand,
+                          const right_operand_type& right_operand) const
+  {
+    return left_operand;
+  }
+}; // struct slash_assignment_functor
+
+template<typename M, typename S>
+struct slash_assignment_functor<
+  M,
+  S,
+  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M> && is_scalar_v<S>>>
+{
+  using left_operand_type = M;
+  using right_operand_type = S;
+  using result_type = M;
+  result_type& operator()(left_operand_type& left_operand,
+                          const right_operand_type& right_operand) const
+  {
+    left_operand = left_operand / right_operand;
+    return left_operand;
+  }
+}; // struct slash_assignment_functor
 
 } // namespace primordialmachine

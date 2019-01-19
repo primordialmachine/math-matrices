@@ -25,24 +25,11 @@
 
 #pragma once
 
+#include "primordialmachine/functors/include.hpp"
 #include "primordialmachine/math/indices/include.hpp"
+#include "primordialmachine/math/non_scalars/include.hpp"
 
 namespace primordialmachine {
-
-/* TODO: Move into matrix.hpp. */
-template<typename M>
-using make_column_indices =
-  std::make_index_sequence<M::traits_type::number_of_columns>;
-
-/*TODO: Move into matrix.hpp.*/
-template<typename M>
-using make_row_indices =
-  std::make_index_sequence<M::traits_type::number_of_rows>;
-
-/*TODO: Move into matrix.hpp.*/
-template<typename M>
-using make_element_indices =
-  std::make_index_sequence<M::traits_type::number_of_elements>;
 
 constexpr index_1
 to_index_1(index_1 source, size_t stride)
@@ -92,6 +79,88 @@ struct is_matrix
 {
   static constexpr bool value = false;
 };
+
+template<typename TYPE>
+inline constexpr bool is_matrix_v = is_matrix<TYPE, void>::value;
+
+/*===============================================================================================*/
+
+template<typename TYPE, typename ENABLED = void>
+struct is_square;
+
+template<typename TYPE>
+struct is_square<TYPE, enable_if_t<is_matrix_v<TYPE>>>
+{
+  static constexpr bool value = TYPE::traits_type::is_square;
+};
+
+template<typename TYPE>
+constexpr bool is_square_v = is_square<TYPE, void>::value;
+
+/*===============================================================================================*/
+
+template<typename T>
+struct is_non_scalar<T, enable_if_t<is_matrix_v<T>>>
+{
+  static constexpr bool value = true;
+};
+
+template<typename T>
+struct is_non_degenerate<T, enable_if_t<is_matrix<T>::value>>
+{
+  static constexpr bool value = T::traits_type::is_non_degenerate;
+}; // struct is_non_degenerate
+
+template<typename T>
+struct is_degenerate<T, enable_if_t<is_matrix<T>::value>>
+{
+  static constexpr bool value = T::traits_type::is_degenerate;
+}; // struct is_degenerate
+
+template<typename T>
+struct number_of_elements<T, enable_if_t<is_matrix_v<T>>>
+{
+  static constexpr size_t value = T::traits_type::number_of_elements;
+}; // struct number_of_elements
+
+template<typename TYPE>
+struct element_type<TYPE, enable_if_t<is_matrix_v<TYPE>>>
+{
+  using type = typename TYPE::traits_type::element_type;
+}; // struct element_type
+
+/*===============================================================================================*/
+
+template<typename T, typename = enable_if_t<is_matrix_v<T>>>
+constexpr size_t
+number_of_rows() noexcept
+{
+  return T::traits_type::number_of_rows;
+}
+template<typename T, typename = enable_if_t<is_matrix_v<T>>>
+constexpr size_t number_of_rows_v = number_of_rows<T>();
+
+template<typename T, typename = enable_if_t<is_matrix_v<T>>>
+constexpr size_t
+number_of_columns() noexcept
+{
+  return T::traits_type::number_of_columns;
+}
+template<typename T, typename = enable_if_t<is_matrix_v<T>>>
+constexpr size_t number_of_columns_v = number_of_columns<T>();
+
+/*===============================================================================================*/
+
+template<typename M>
+using make_column_indices = make_index_sequence<number_of_columns_v<M>>;
+
+template<typename M>
+using make_row_indices = make_index_sequence<number_of_rows_v<M>>;
+
+template<typename M>
+using make_element_indices = make_index_sequence<number_of_elements_v<M>>;
+
+/*===============================================================================================*/
 
 template<typename TRAITS, typename ENABLED = void>
 struct matrix;

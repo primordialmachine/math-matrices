@@ -50,7 +50,7 @@ operator-(const OPERAND& operand) -> decltype(unary_minus(operand))
 // Default implementation for floating point types.
 template<typename OPERAND>
 struct unary_minus_functor<OPERAND,
-                           std::enable_if_t<std::is_floating_point_v<OPERAND>>>
+                           enable_if_t<is_floating_point_v<OPERAND>>>
 {
   using operand_type = OPERAND;
   using result_type = OPERAND;

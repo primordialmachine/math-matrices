@@ -39,26 +39,24 @@ template<typename A, typename B>
 struct binary_star_functor<
   A,
   B,
-  std::enable_if_t<
-    is_matrix<A>::value && is_matrix<B>::value &&
-    A::traits_type::is_degenerate && B::traits_type::is_degenerate &&
-    std::is_same_v<typename A::traits_type::element_type,
-                   typename B::traits_type::element_type> &&
-    A::traits_type::number_of_columns == B::traits_type::number_of_rows>>
+  enable_if_t<is_matrix_v<A> && is_matrix_v<B> && is_degenerate_v<A> &&
+              is_degenerate_v<B> &&
+              is_same_v<element_type_t<A>, element_type_t<B>> &&
+              number_of_columns_v<A> == number_of_rows_v<B>>>
 {
-  using result_element_type = typename A::traits_type::element_type;
+  using result_element_type = element_type_t<A>;
   using left_operand_type = A;
   using right_operand_type = B;
   using result_traits = matrix_traits<result_element_type,
-                                      A::traits_type::number_of_columns,
-                                      B::traits_type::number_of_rows>;
+                                      number_of_columns_v<A>,
+                                      number_of_rows_v<B>>;
   using result_type = matrix<result_traits>;
-  auto operator()(const left_operand_type& left_operand,
-                  const right_operand_type& right_operand) const
+  result_type operator()(const left_operand_type& left_operand,
+                         const right_operand_type& right_operand) const
   {
     return result_type();
   }
-};
+}; // struct binary_star_functor
 
 // non-degenerated case
 // number of columns of first matrix must be equal to number of rows of second
@@ -68,52 +66,70 @@ template<typename A, typename B>
 struct binary_star_functor<
   A,
   B,
-  std::enable_if_t<is_matrix<A>::value &&
-                   is_matrix<B>::value &&
-                   A::traits_type::is_non_degenerate &&
-                   B::traits_type::is_non_degenerate &&
-                   std::is_same_v<typename A::traits_type::element_type,
-                                  typename B::traits_type::element_type> &&
-                   A::traits_type::number_of_columns ==
-                   B::traits_type::number_of_rows>>
+  enable_if_t<is_matrix_v<A> && is_matrix_v<B> && is_non_degenerate_v<A> &&
+              is_non_degenerate_v<B> &&
+              is_same_v<element_type_t<A>, element_type_t<B>> &&
+              number_of_columns_v<A> == number_of_rows_v<B>>>
 {
-  using result_element_type = typename A::traits_type::element_type;
+  using result_element_type = element_type_t<A>;
   using left_operand_type = A;
   using right_operand_type = B;
   using result_traits = matrix_traits<result_element_type,
-                                      A::traits_type::number_of_columns,
-                                      B::traits_type::number_of_rows>;
+                                      number_of_columns_v<A>,
+                                      number_of_rows_v<B>>;
   using result_type = matrix<result_traits>;
   auto operator()(const left_operand_type& left_operand,
                   const right_operand_type& right_operand) const
   {
     result_type temporary;
-    for (size_t i = 0; i < left_operand_type::traits_type::number_of_rows;
+    for (size_t i = 0; i < number_of_rows_v<left_operand_type>;
          i++) { // i-th row of left operand.
-      for (size_t j = 0; j < right_operand_type::traits_type::number_of_columns;
+      for (size_t j = 0; j < number_of_columns_v<right_operand_type>;
            j++) { // j-th column of right operand
-        for (
-          size_t k = 0;
-          k <
-          left_operand_type::traits_type::
-            number_of_columns /*or
-                                 right_operand_type::traits_type::number_of_rows*/
-          ;
-          k++) { // k-th column of first operand, k-th row of second operand
+        for (size_t k = 0;
+             k < number_of_columns_v<left_operand_type> /*or
+                                        number_of_rows_v<right_operand_type>*/
+             ;
+             k++) { // k-th column of first operand, k-th row of second operand
           temporary(i, j) += left_operand(i, k) * right_operand(k, j);
         }
       }
     }
     return temporary;
   }
-};
+}; // struct binary_star_functor
 
-template<typename TRAITS>
-auto& /*TODO: Does this return a reference? Is this the best method?*/
-operator*=(matrix<TRAITS>& u, const matrix<TRAITS>& v)
+template<typename M>
+struct star_assignment_functor<
+  M,
+  M,
+  enable_if_t<is_matrix_v<M> && is_degenerate_v<M>>>
 {
-  u = u * v;
-  return u;
-}
+  using left_operand_type = M;
+  using right_operand_type = M;
+  using result_type = M;
+  result_type& operator()(left_operand_type& left_operand,
+                          const right_operand_type& right_operand) const
+  {
+    return left_operand;
+  }
+}; // struct star_assignment_functor
+
+template<typename M>
+struct star_assignment_functor<
+  M,
+  M,
+  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M> && is_square_v<M>>>
+{
+  using left_operand_type = M;
+  using right_operand_type = M;
+  using result_type = M;
+  result_type& operator()(left_operand_type& left_operand,
+                          const right_operand_type& right_operand) const
+  {
+    left_operand = left_operand * right_operand;
+    return left_operand;
+  }
+}; // struct star_assignment_functor
 
 } // namespace primordialmachine

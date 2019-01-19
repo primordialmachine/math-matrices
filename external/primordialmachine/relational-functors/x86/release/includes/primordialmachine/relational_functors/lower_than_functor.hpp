@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include <type_traits>
+#include "primordialmachine/functors/include.hpp"
 
 namespace primordialmachine {
 
@@ -44,18 +44,17 @@ lower_than(const LEFT_OPERAND& left_operand, const RIGHT_OPERAND& right_operand)
 
 template<typename A, typename B>
 auto
-operator<(const A& a, const B& b) -> decltype(lower_than(a,b))
+operator<(const A& a, const B& b) -> decltype(lower_than(a, b))
 {
   return lower_than(a, b);
 }
 
 // Default implementation for floating point types.
 template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
-struct lower_than_functor<
-  LEFT_OPERAND,
-  RIGHT_OPERAND,
-  std::enable_if_t<std::is_floating_point_v<LEFT_OPERAND> &&
-                   std::is_floating_point_v<RIGHT_OPERAND>>>
+struct lower_than_functor<LEFT_OPERAND,
+                          RIGHT_OPERAND,
+                          enable_if_t<is_floating_point_v<LEFT_OPERAND> &&
+                                      is_floating_point_v<RIGHT_OPERAND>>>
 {
   using left_operand_type = LEFT_OPERAND;
   using right_operand_type = RIGHT_OPERAND;

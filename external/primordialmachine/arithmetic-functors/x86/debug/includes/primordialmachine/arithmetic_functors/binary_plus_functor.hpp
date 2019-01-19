@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include <type_traits>
+#include "primordialmachine/functors/include.hpp"
 
 namespace primordialmachine {
 
@@ -56,12 +56,12 @@ template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
 struct binary_plus_functor<
   LEFT_OPERAND,
   RIGHT_OPERAND,
-  std::enable_if_t<std::is_floating_point_v<LEFT_OPERAND> &&
-                   std::is_floating_point_v<RIGHT_OPERAND>>>
+  enable_if_t<is_floating_point_v<LEFT_OPERAND> &&
+              is_floating_point_v<RIGHT_OPERAND>>>
 {
   using left_operand_type = LEFT_OPERAND;
   using right_operand_type = RIGHT_OPERAND;
-  using result_type = std::common_type_t<left_operand_type, right_operand_type>;
+  using result_type = common_type_t<left_operand_type, right_operand_type>;
   result_type operator()(left_operand_type x, right_operand_type y) const
     noexcept(noexcept(x + y))
   {

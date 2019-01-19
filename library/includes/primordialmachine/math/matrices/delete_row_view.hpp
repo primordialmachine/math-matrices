@@ -33,9 +33,9 @@ namespace primordialmachine {
 template<typename SOURCE, size_t ROW>
 struct const_delete_row_view
 {
-  using traits_type = matrix_traits<typename SOURCE::traits_type::element_type,
-                                    SOURCE::traits_type::number_of_columns,
-                                    SOURCE::traits_type::number_of_rows - 1>;
+  using traits_type = matrix_traits<element_type_t<SOURCE>,
+                                    number_of_columns<SOURCE>(),
+                                    number_of_rows<SOURCE>() - 1>;
 
   const SOURCE& m_source;
 
@@ -87,8 +87,8 @@ private:
 
 }; // struct delete_row_view
 
-template<typename SOURCE, size_t COLUMN>
-struct is_matrix<const_delete_row_view<SOURCE, COLUMN>, void>
+template<typename SOURCE, size_t ROW>
+struct is_matrix<const_delete_row_view<SOURCE, ROW>, void>
 {
   static constexpr bool value = true;
 }; // struct is_matrix
@@ -97,9 +97,9 @@ struct is_matrix<const_delete_row_view<SOURCE, COLUMN>, void>
 template<typename SOURCE, size_t ROW>
 struct delete_row_view
 {
-  using traits_type = matrix_traits<typename SOURCE::traits_type::element_type,
-                                    SOURCE::traits_type::number_of_columns,
-                                    SOURCE::traits_type::number_of_rows - 1>;
+  using traits_type = matrix_traits<element_type_t<SOURCE>,
+                                    number_of_columns_v<SOURCE>,
+                                    number_of_rows_v<SOURCE> - 1>;
 
   SOURCE& m_source;
 
@@ -151,8 +151,8 @@ private:
 
 }; // struct delete_row_view
 
-template<typename SOURCE, size_t COLUMN>
-struct is_matrix<delete_row_view<SOURCE, COLUMN>, void>
+template<typename SOURCE, size_t ROW>
+struct is_matrix<delete_row_view<SOURCE, ROW>, void>
 {
   static constexpr bool value = true;
 }; // struct is_matrix

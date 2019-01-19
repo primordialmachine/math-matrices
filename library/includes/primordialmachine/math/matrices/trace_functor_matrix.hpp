@@ -34,9 +34,9 @@ namespace primordialmachine {
 template<typename T>
 struct trace_functor<
   T,
-  std::enable_if_t<is_matrix<T>::value && T::traits_type::is_non_degenerate && T::traits_type::is_square>>
+  enable_if_t<is_matrix_v<T> && is_non_degenerate_v<T> && is_square_v<T>>>
 {
-  using result_type = typename T::traits_type::element_type;
+  using result_type = element_type_t<T>;
   using operand_type = T;
   auto operator()(const operand_type& a) const
   {
@@ -44,18 +44,17 @@ struct trace_functor<
     {
       constexpr bool operator()(size_t i) const
       {
-        auto t = to_index_2(index_1{ i }, T::traits_type::number_of_columns);
+        auto t = to_index_2(index_1{ i }, number_of_columns_v<T>);
         return t.i() == t.j();
       }
     };
-    using indices = decltype(filter_seq()(
-      std::make_index_sequence<T::traits_type::number_of_elements>{},
-      predicate{}));
+    using indices = decltype(
+      filter_seq(make_index_sequence<number_of_elements_v<T>>{}, predicate{}));
     return impl(a, indices{});
   }
 
   template<size_t... Is>
-  auto impl(const operand_type& a, std::index_sequence<Is...>) const
+  auto impl(const operand_type& a, index_sequence<Is...>) const
   {
     return (a(Is) + ...);
   }

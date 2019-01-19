@@ -32,10 +32,10 @@
 namespace primordialmachine {
 
 template<typename M>
-struct unary_plus_functor<M, std::enable_if_t<is_matrix<M>::value>>
+struct unary_plus_functor<M, enable_if_t<is_matrix_v<M>>>
   : public elementwise_unary_matrix_functor<
-      typename M::traits_type,
-      unary_plus_functor<typename M::traits_type::element_type>>
+      M,
+      unary_plus_functor<element_type_t<M>>>
 {};
 
 } // namespace primordialmachine

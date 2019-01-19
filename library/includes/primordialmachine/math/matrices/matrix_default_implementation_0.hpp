@@ -35,9 +35,9 @@ namespace primordialmachine {
 
 // SFINAE for the struct type.
 #pragma push_macro("STRUCT_CONDITION")
-#define STRUCT_CONDITION()                                                     \
-  std::enable_if_t<(                                                           \
-    is_scalar<typename TRAITS::element_type>::value &&                         \
+#define STRUCT_CONDITION()                                                \
+  enable_if_t<(                                                           \
+    is_scalar_v<typename TRAITS::element_type> &&                         \
     (TRAITS::number_of_columns == 0 || TRAITS::number_of_rows == 0))>
 
 template<typename TRAITS>

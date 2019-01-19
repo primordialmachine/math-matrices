@@ -36,8 +36,7 @@ namespace primordialmachine {
 template<typename M>
 struct cofactor_matrix_functor<
   M,
-  std::enable_if_t<is_matrix<M>::value && M::traits_type::is_non_degenerate &&
-                   M::traits_type::is_square>>
+  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M> && is_square_v<M>>>
 {
   using result_type = M;
   using operand_type = M;
@@ -48,7 +47,7 @@ struct cofactor_matrix_functor<
   }
 
   template<size_t... Is>
-  static auto impl0(const operand_type& m, std::index_sequence<Is...>)
+  static auto impl0(const operand_type& m, index_sequence<Is...>)
   {
     return result_type{ (impl1<Is>(m))... };
   }
@@ -56,8 +55,7 @@ struct cofactor_matrix_functor<
   template<size_t I>
   constexpr static auto impl1(const operand_type& m)
   {
-    constexpr auto t =
-      to_index_2(index_1{ I }, M::traits_type::number_of_columns);
+    constexpr auto t = to_index_2(index_1{ I }, number_of_columns_v<M>);
     return cofactor<M, t.i(), t.j()>(m);
   }
 

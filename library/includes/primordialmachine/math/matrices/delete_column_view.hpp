@@ -32,9 +32,9 @@ namespace primordialmachine {
 template<typename SOURCE, size_t COLUMN>
 struct const_delete_column_view
 {
-  using traits_type = matrix_traits<typename SOURCE::traits_type::element_type,
-                                    SOURCE::traits_type::number_of_columns - 1,
-                                    SOURCE::traits_type::number_of_rows>;
+  using traits_type = matrix_traits<element_type_t<SOURCE>,
+                                    number_of_columns<SOURCE>() - 1,
+                                    number_of_rows<SOURCE>()>;
   const SOURCE& m_source;
 
   auto operator()(size_t i, size_t j) const
@@ -90,15 +90,14 @@ struct is_matrix<const_delete_column_view<SOURCE, COLUMN>, void>
   static constexpr bool value = true;
 }; // struct is_matrix
 
-
 // SOURCE a matrix or matrix view type
 // COLUMN the column index
 template<typename SOURCE, size_t COLUMN>
 struct delete_column_view
 {
-  using traits_type = matrix_traits<typename SOURCE::traits_type::element_type,
-                                    SOURCE::traits_type::number_of_columns - 1,
-                                    SOURCE::traits_type::number_of_rows>;
+  using traits_type = matrix_traits<element_type_t<SOURCE>,
+                                    number_of_columns_v<SOURCE> - 1,
+                                    number_of_rows_v<SOURCE>>;
   SOURCE& m_source;
 
   auto operator()(size_t i, size_t j) const

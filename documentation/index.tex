@@ -84,23 +84,42 @@ The added namespace elements are documented below.
 \input{functors}
 \input{binary_functor}
 
-\section{\texttt{struct matrix\_traits}}
+\section{\texttt{matrix\_traits} (struct)}
 \begin{verbatim}
 template<typename ELEMENT_TYPE, size_t NUMBER_OF_COLUMNS, size_t NUMBER_OF_ROWS>
 struct matrix_traits;
 \end{verbatim}
 
-\section{\texttt{struct matrix}}
+\section{\texttt{is\_matrix} (struct)}
+\texttt{
+template \textlangle class TYPE, typename ENABLED = void\textrangle\newline
+struct is\_matrix {\newline
+  static bool const value = false;\newline
+};}
+
+\noindent{}This template defines a compile-time boolean constant \texttt{value}
+which can be used to determine whether a type \texttt{TYPE} is a valid vector type.
+This library provides specialization for its \texttt{matrix} template specializations.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{\texttt{matrix} (struct)}
 \begin{verbatim}
 template<typename TRAITS, typename ENABLED = void>
 struct matrix;
 \end{verbatim}
+\noindent{}This library provides specializations where \texttt{TRAITS} is a \texttt{matrix\_traits}
+specialization with the following properties:
+\begin{enumerate}
+	\item \texttt{ELEMENT\_TYPE} is a type \texttt{TYPE} for which \texttt{is\_scalar\textlangle TYPE \textrangle::value} is \texttt{true}.
+	\item \texttt{NUMBER\_OF\_ROWS} and \texttt{NUMBER\_OF\_COLUMNS} each are of any number between 0 and
+	\texttt{std::numeric\_limits\textlangle size\_t\textrangle\::max()}.
+\end{enumerate}
 
 \section{Members}
 
 \section{Non members}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{operator+ (binary, matrix matrix)}
+\subsubsection{\texttt{operator+} (binary, matrix matrix)}
 Compute the sum of two matrices.
 \begin{verbatim}
 template<typename A, typename B>
@@ -116,7 +135,7 @@ and \texttt{matrix\textlangle B\textrangle} where
 	\item \texttt{A::element\_type} and \texttt{B::element\_type} are floating point types.
 \end{enumerate}
 
-\subsubsection{operator+ (unary, matrix)}
+\subsubsection{\texttt{operator+} (unary, matrix)}
 Compute the affirmation of a matrix.
 \begin{verbatim}
 template<typename A>
@@ -127,7 +146,7 @@ operator+(const matrix<A>& a)
 This library provides a specializations for \texttt{matrix\textlangle A
 \textrangle} where  \texttt{A::element\_type} is a floating point type.
 
-\subsubsection{operator+= (matrix matrix)}
+\subsubsection{\texttt{operator+=} (compound binary, matrix matrix)}
 Compute the sum of two matrices, assign the result to the first operand.
 \begin{verbatim}
 template<typename A, typename B>
@@ -139,7 +158,7 @@ operator-=(matrix<A>& a, const matrix<B>& b)
 }
 \end{verbatim}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{operator- (binary, matrix matrix)}
+\subsubsection{\texttt{operator-} (binary, matrix matrix)}
 Compute the difference of two matrices.
 \begin{verbatim}
 template<typename A, typename B>
@@ -155,7 +174,7 @@ and \texttt{vector\textlangle B\textrangle} where
 	\item \texttt{A::element\_type} and \texttt{B::element\_type} are floating point types.
 \end{enumerate}
 
-\subsubsection{operator- (unary, matrix)}
+\subsubsection{\texttt{operator-} (unary, matrix)}
 Compute the negation of a matrix.
 \begin{verbatim}
 template<typename A>
@@ -166,7 +185,7 @@ operator-(const matrix<A>& a)
 This library provides a specializations for \texttt{matrix\textlangle A
 \textrangle} where  \texttt{A::element\_type} is a floating point type.
 
-\subsubsection{operator-= (matrix matrix)}
+\subsubsection{\texttt{operator-=} (compound binary, matrix matrix)}
 Compute the difference of two matrices, assign the result to the left operand.
 \begin{verbatim}
 template<typename A, typename B>
@@ -178,7 +197,31 @@ operator-=(matrix<A>& a, const matrix<B>& b)
 }
 \end{verbatim}
 
-\subsection{\texttt{struct transpose\_functor}}
+\subsection{\texttt{inverse\_functor} (struct)}
+An \textit{UnaryFunctorBase} computing the inverse of a matrix.
+A possible implementation is given by
+\begin{verbatim}
+template<typename OPERAND, typename ENABLED = void>
+struct transpose_functor;
+\end{verbatim}
+
+\noindent{}\noindent{}This library provides \textit{UnaryFunctor} specializations of this \textit{UnaryFunctorBase}
+where \texttt{OPERAND} is a type which fulfils the \textit{NonDegenerateMatrix} and \textit{SquareMatrix} concepts.
+\newline
+
+\noindent{}The result type \texttt{result\_type} is \texttt{matrix\textlangle OPERAND::traits\_type\textrangle}.
+
+\subsubsection{\texttt{inverse} (function)}
+This library provides a function to invoke the \texttt{inverse\_functor}.
+A possible implementation is given by\newline
+\texttt{
+template\textlangle typename OPERAND\textrangle\newline
+auto inverse(const OPERAND\& operand)\newline
+-> decltype(inverse\_functor\textlangle OPERAND\textrangle()(operand))\newline
+\{ return inverse\_functor\textlangle OPERAND\textrangle()(operand); \}
+}
+
+\subsection{\texttt{transpose\_functor} (struct)}
 An \textit{UnaryFunctorBase} computing the transpose of a matrix.
 A possible implementation is given by
 \begin{verbatim}
@@ -186,11 +229,50 @@ template<typename OPERAND, typename ENABLED = void>
 struct transpose_functor;
 \end{verbatim}
 
-\noindent{}This library provides \textit{UnaryFunctor} specializations of this \textit{UnaryFunctorBase}
-where \texttt{OPERAND} is specializations of \texttt{matrix}. The result type       \texttt{
-result\_type} is \texttt{matrix\textlangle matrix\_traits\textlangle OPERAND\_TRAITS::element\_type,\newline
-OPERAND\_TRAITS::number\_of\_rows,OPERAND\_TRAITS::number\_of\_columns\textrangle\textrangle}.
+\noindent{}This library provides \textit{UnaryFunctor} specializations of this
+\textit{UnaryFunctorBase} where \texttt{OPERAND} is a type which fulfils   the
+\textit{Matrix} concept.\newline
 
-\subsection{\texttt{struct trace\_functor}}
+\noindent{}The result type \texttt{result\_type} is\newline
+\texttt{matrix\textlangle   OPERAND::traits\_type::element\_type,\newline
+\hphantom{matrix\textlangle}OPERAND::traits\_type::number\_of\_columns,\newline
+\hphantom{matrix\textlangle}OPERAND::traits\_type::number\_of\_rows\textrangle}\newline
+
+\noindent{}Note that the number of rows and columns of the result type are swapped.
+
+\subsubsection{\texttt{transpose} (function)}
+This library provides a function to invoke the \texttt{transpose\_functor}.
+A possible implementation is given by\newline
+\texttt{
+template\textlangle typename OPERAND\textrangle\newline
+auto transpose(const OPERAND\& operand)\newline
+-> decltype(transpose\_functor\textlangle OPERAND\textrangle()(operand))\newline
+\{ return transpose\_functor\textlangle OPERAND\textrangle()(operand); \}
+}
+
+\subsection{\texttt{trace\_functor} (struct)}
+An \textit{UnaryFunctorBase} compute the trace of a matrix.
+A possible implementation is given by
+\begin{verbatim}
+template<typename OPERAND, typename ENABLED = void>
+struct trace_functor;
+\end{verbatim}
+
+\noindent{}This library provides \textit{UnaryFunctor} specializations of this
+\textit{UnaryFunctorBase} where \texttt{OPERAND} is a type which fulfils   the
+\textit{NonDegenerateMatrix} concept.\newline
+
+\noindent{}The result type \texttt{result\_type} is \texttt{OPERAND\_TRAITS::element\_type}.
+
+\subsubsection{\texttt{trace} (function)}
+This library provides a function to invoke the \texttt{trace\_functor}.
+A possible implementation is given by\newline
+\texttt{
+template\textlangle typename OPERAND\textrangle\newline
+auto trace(const OPERAND\& operand)\newline
+-> decltype(trace\_functor\textlangle OPERAND\textrangle()(operand))\newline
+\{ return trace\_functor\textlangle OPERAND\textrangle()(operand); \}
+}
+
 
 \end{document}

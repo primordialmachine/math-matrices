@@ -37,26 +37,24 @@ template<typename A, typename B>
 struct binary_slash_functor<
   A,
   B,
-  std::enable_if_t<
-    is_matrix<A>::value && is_matrix<B>::value &&
-    A::traits_type::is_degenerate && B::traits_type::is_degenerate &&
-    std::is_same_v<typename A::traits_type::element_type,
-                   typename B::traits_type::element_type> &&
-    A::traits_type::number_of_columns == B::traits_type::number_of_rows>>
+  enable_if_t<is_matrix_v<A> && is_matrix_v<B> && is_degenerate_v<A> &&
+              is_degenerate_v<B> &&
+              is_same_v<element_type_t<A>, element_type_t<B>> &&
+              number_of_columns_v<A> == number_of_rows_v<B>>>
 {
-  using result_element_type = typename A::traits_type::element_type;
+  using result_element_type = element_type_t<A>;
   using left_operand_type = A;
   using right_operand_type = B;
   using result_traits = matrix_traits<result_element_type,
-                                      A::traits_type::number_of_columns,
-                                      B::traits_type::number_of_rows>;
+                                      number_of_columns_v<A>,
+                                      number_of_rows_v<B>>;
   using result_type = matrix<result_traits>;
-  auto operator()(const left_operand_type& left_operand,
-                  const right_operand_type& right_operand) const
+  result_type operator()(const left_operand_type& left_operand,
+                         const right_operand_type& right_operand) const
   {
     return result_type();
   }
-};
+}; // struct binary_slash_functor
 
 // non-degenerate case
 // M a matrix type
@@ -64,19 +62,48 @@ template<typename M>
 struct binary_slash_functor<
   M,
   M,
-  std::enable_if_t<is_matrix<M>::value && M::traits_type::is_non_degenerate>>
+  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M>>>
   : public elementwise_binary_matrix_functor<
-      typename M::traits_type,
-      binary_slash_functor<typename M::traits_type::element_type,
-                           typename M::traits_type::element_type>>
-{};
+      M,
+      binary_slash_functor<element_type_t<M>, element_type_t<M>>>
+{}; // struct binary_slash_functor
 
-template<typename TRAITS>
-auto& /*TODO: Does this suffice to ensure the reference is returned?*/
-operator/=(matrix<TRAITS>& u, matrix<TRAITS>& v)
+// degenerate case
+// M a matrix type
+template<typename M>
+struct slash_assignment_functor<
+  M,
+  M,
+  enable_if_t<is_matrix_v<M> && is_degenerate_v<M>>>
 {
-  u = u / v;
-  return u;
-}
+  using left_operand_type = M;
+  using right_operand_type = M;
+  using result_type = M;
+  result_type& operator()(left_operand_type& left_operand,
+                          const right_operand_type& right_operand) const
+  {
+    left_operand = left_operand / right_operand;
+    return left_operand;
+  }
+}; // struct slash_assignment_functor
+
+// non-degenerate case
+// M a matrix type
+template<typename M>
+struct slash_assignment_functor<
+  M,
+  M,
+  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M>>>
+{
+  using left_operand_type = M;
+  using right_operand_type = M;
+  using result_type = M;
+  result_type& operator()(left_operand_type& left_operand,
+                          const right_operand_type& right_operand) const
+  {
+    left_operand = left_operand / right_operand;
+    return left_operand;
+  }
+}; // struct slash_assignment_functor
 
 } // namespace primordialmachine

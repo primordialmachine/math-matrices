@@ -26,58 +26,6 @@
 #include "primordialmachine/math/matrices/include.hpp"
 #include "gtest/gtest.h"
 
-TEST(matrices_tests, matrix_0_default_constructor_test)
-{
-  using namespace primordialmachine;
-  using matrix_traits = matrix_traits<float, 0, 0>;
-  using matrix_type = matrix<matrix_traits>;
-  matrix_type();
-}
-
-TEST(matrices_tests, binary_plus_matrix_0_matrix_0)
-{
-  using namespace primordialmachine;
-  using matrix_traits = matrix_traits<float, 0, 0>;
-  using matrix_type = matrix<matrix_traits>;
-  auto result =
-    matrix_type() ==
-    matrix_type() + matrix_type();
-  ASSERT_TRUE(result);
-}
-
-TEST(matrices_tests, plus_assignment_matrix_0_matrix_0_test)
-{
-  using namespace primordialmachine;
-  using matrix_traits = matrix_traits<float, 0, 0>;
-  using matrix_type = matrix<matrix_traits>;
-  auto lhs = matrix_type();
-  lhs += matrix_type();
-  auto result = matrix_type() == lhs;
-  ASSERT_TRUE(result);
-}
-
-TEST(matrices_tests, binary_minus_matrix_0_matrix_0_test)
-{
-  using namespace primordialmachine;
-  using matrix_traits = matrix_traits<float, 0, 0>;
-  using matrix_type = matrix<matrix_traits>;
-  auto result =
-    matrix_type() ==
-    matrix_type() - matrix_type();
-  ASSERT_TRUE(result);
-}
-
-TEST(matrices_tests, minus_assignment_matrix_0_matrix_0_test)
-{
-  using namespace primordialmachine;
-  using matrix_traits = matrix_traits<float, 0, 0>;
-  using matrix_type = matrix<matrix_traits>;
-  auto lhs = matrix_type();
-  lhs -= matrix_type();
-  auto result = matrix_type() == lhs;
-  ASSERT_TRUE(result);
-}
-
 TEST(matrices_tests, binary_star_matrix_0_matrix_0_test)
 {
   using namespace primordialmachine;

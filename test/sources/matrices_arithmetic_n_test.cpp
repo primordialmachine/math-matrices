@@ -26,64 +26,12 @@
 #include "primordialmachine/math/matrices/include.hpp"
 #include "gtest/gtest.h"
 
-TEST(matrices_tests, matrix_n_default_constructor_test)
-{
-  using namespace primordialmachine;
-  using matrix_traits = matrix_traits<float, 2, 2>;
-  using matrix_type = matrix<matrix_traits>;
-  matrix_type();
-}
-
 TEST(matrices_tests, matrix_n_constructor_test)
 {
   using namespace primordialmachine;
   using matrix_traits = matrix_traits<float, 2, 2>;
   using matrix_type = matrix<matrix_traits>;
   matrix_type(0.f, 1.f, 2.f, 3.f);
-}
-
-TEST(matrices_tests, binary_plus_matrix_n_matrix_n)
-{
-  using namespace primordialmachine;
-  using matrix_traits = matrix_traits<float, 2, 2>;
-  using matrix_type = matrix<matrix_traits>;
-  auto result =
-    matrix_type(6.f, 6.f, 6.f, 6.f) ==
-    matrix_type(4.f, 4.f, 4.f, 4.f) + matrix_type(2.f, 2.f, 2.f, 2.f);
-  ASSERT_TRUE(result);
-}
-
-TEST(matrices_tests, plus_assignment_matrix_n_matrix_n_test)
-{
-  using namespace primordialmachine;
-  using matrix_traits = matrix_traits<float, 2, 2>;
-  using matrix_type = matrix<matrix_traits>;
-  auto lhs = matrix_type(4.f, 4.f, 4.f, 4.f);
-  lhs += matrix_type(2.f, 2.f, 2.f, 2.f);
-  auto result = matrix_type(6.f, 6.f, 6.f, 6.f) == lhs;
-  ASSERT_TRUE(result);
-}
-
-TEST(matrices_tests, binary_minus_matrix_n_matrix_n_test)
-{
-  using namespace primordialmachine;
-  using matrix_traits = matrix_traits<float, 2, 2>;
-  using matrix_type = matrix<matrix_traits>;
-  auto result =
-    matrix_type(2.f, 2.f, 2.f, 2.f) ==
-    matrix_type(4.f, 4.f, 4.f, 4.f) - matrix_type(2.f, 2.f, 2.f, 2.f);
-  ASSERT_TRUE(result);
-}
-
-TEST(matrices_tests, minus_assignment_matrix_n_matrix_n_test)
-{
-  using namespace primordialmachine;
-  using matrix_traits = matrix_traits<float, 2, 2>;
-  using matrix_type = matrix<matrix_traits>;
-  auto lhs = matrix_type(4.f, 4.f, 4.f, 4.f);
-  lhs -= matrix_type(2.f, 2.f, 2.f, 2.f);
-  auto result = matrix_type(2.f, 2.f, 2.f, 2.f) == lhs;
-  ASSERT_TRUE(result);
 }
 
 TEST(matrices_tests, binary_star_matrix_n_matrix_n_test)

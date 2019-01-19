@@ -32,10 +32,9 @@
 namespace primordialmachine {
 
 template<typename T>
-struct not_equal_to_functor<
-  T,
-  T,
-  std::enable_if_t<is_matrix<T>::value && T::traits_type::is_degenerate>>
+struct not_equal_to_functor<T,
+                            T,
+                            enable_if_t<is_matrix_v<T> && is_degenerate_v<T>>>
 {
   using left_operand_type = T;
   using right_operand_type = T;
@@ -51,7 +50,7 @@ template<typename T>
 struct not_equal_to_functor<
   T,
   T,
-  std::enable_if_t<is_matrix<T>::value && T::traits_type::is_non_degenerate>>
+  enable_if_t<is_matrix_v<T> && is_non_degenerate_v<T>>>
 {
   using left_operand_type = T;
   using right_operand_type = T;
@@ -59,18 +58,16 @@ struct not_equal_to_functor<
   result_type operator()(const left_operand_type& a,
                          const right_operand_type& b) const
   {
-    return impl(
-      a, b, std::make_index_sequence<T::traits_type::number_of_elements>());
+    return impl(a, b, make_index_sequence<number_of_elements_v<T>>());
     return true;
   }
 
-  template<std::size_t... N>
+  template<size_t... N>
   constexpr bool impl(const left_operand_type& a,
                       const right_operand_type& b,
-                      std::index_sequence<N...>) const
+                      index_sequence<N...>) const
   {
-    auto op = not_equal_to_functor<typename T::traits_type::element_type,
-                                   typename T::traits_type::element_type>();
+    auto op = not_equal_to_functor<element_type_t<T>, element_type_t<T>>();
     return ((op(a(N), b(N))) || ...);
   }
 };

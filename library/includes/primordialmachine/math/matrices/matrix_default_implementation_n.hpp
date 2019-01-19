@@ -36,9 +36,8 @@ namespace primordialmachine {
 // SFINAE for the struct type.
 #pragma push_macro("STRUCT_CONDITION")
 #define STRUCT_CONDITION()                                                     \
-  std::enable_if_t<(is_scalar<typename TRAITS::element_type>::value &&         \
-                    TRAITS::number_of_columns >= 1 &&                          \
-                    TRAITS::number_of_rows >= 1)>
+  enable_if_t<(is_scalar_v<typename TRAITS::element_type> &&                   \
+               TRAITS::number_of_columns >= 1 && TRAITS::number_of_rows >= 1)>
 
 // SFINAE for the constructor.
 #pragma push_macro("CONSTRUCTOR_CONDITION_1")
@@ -56,8 +55,8 @@ namespace primordialmachine {
 
 #pragma push_macro("CONSTRUCTOR_CONDITION")
 #define CONSTRUCTOR_CONDITION()                                                \
-  std::enable_if_t<CONSTRUCTOR_CONDITION_1(TRAITS::number_of_elements) &&      \
-                   CONSTRUCTOR_CONDITION_2()>
+  enable_if_t<CONSTRUCTOR_CONDITION_1(TRAITS::number_of_elements) &&           \
+              CONSTRUCTOR_CONDITION_2()>
 
 template<typename TRAITS>
 struct is_matrix<matrix<TRAITS>, STRUCT_CONDITION()>
@@ -177,21 +176,21 @@ TYPE::data()
 #undef STRUCT_CONDITION
 #pragma pop_macro("STRUCT_CONDITION")
 
-template<typename TRAITS, typename OPERATOR>
+template<typename M, typename OPERATOR>
 using elementwise_unary_matrix_functor =
-  elementwise_unary_functor<matrix<TRAITS>,
-                            matrix<TRAITS>,
-                            TRAITS::number_of_elements,
+  elementwise_unary_functor<M,
+                            M,
+                            number_of_elements_v<M>,
                             OPERATOR,
-                            void>;
+                            enable_if_t<is_matrix_v<M>>>;
 
-template<typename TRAITS, typename OPERATOR>
+template<typename M, typename OPERATOR>
 using elementwise_binary_matrix_functor =
-  elementwise_binary_functor<matrix<TRAITS>,
-                             matrix<TRAITS>,
-                             matrix<TRAITS>,
-                             TRAITS::number_of_elements,
+  elementwise_binary_functor<M,
+                             M,
+                             M,
+                             number_of_elements_v<M>,
                              OPERATOR,
-                             void>;
+                             enable_if_t<is_matrix_v<M>>>;
 
 } // namespace primordialmachine

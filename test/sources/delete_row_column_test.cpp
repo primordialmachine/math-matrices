@@ -46,10 +46,11 @@ TEST(matrices_tests, delete_column_row_test)
   // clang-format on
   using A = delete_column_view<matrix_type, 1>;
   using B = delete_row_view<A, 1>;
-  auto t = B(A(a));
-  STATIC_ASSERT(B::traits_type::number_of_rows == 2);
-  STATIC_ASSERT(B::traits_type::number_of_columns == 2);
-  STATIC_ASSERT(is_matrix<B>::value);
+  auto x = A(a);
+  auto t = B(x);
+  STATIC_ASSERT(number_of_rows_v<B> == 2);
+  STATIC_ASSERT(number_of_columns_v<B> == 2);
+  STATIC_ASSERT(is_matrix_v<B>);
   ASSERT_TRUE(t(0, 0) == 1.f);
   ASSERT_TRUE(t(0, 1) == 3.f);
   ASSERT_TRUE(t(1, 0) == 7.f);
@@ -65,10 +66,11 @@ TEST(matrices_tests, delete_row_column_test)
   // clang-format on
   using A = delete_row_view<matrix_type, 1>;
   using B = delete_column_view<A, 1>;
-  auto t = B(A(a));
-  STATIC_ASSERT(B::traits_type::number_of_rows == 2);
-  STATIC_ASSERT(B::traits_type::number_of_columns == 2);
-  STATIC_ASSERT(is_matrix<B>::value);
+  auto x = A(a);
+  auto t = B(x);
+  STATIC_ASSERT(number_of_rows_v<B> == 2);
+  STATIC_ASSERT(number_of_columns_v<B> == 2);
+  STATIC_ASSERT(is_matrix_v<B>);
   ASSERT_TRUE(t(0, 0) == 1.f);
   ASSERT_TRUE(t(0, 1) == 3.f);
   ASSERT_TRUE(t(1, 0) == 7.f);

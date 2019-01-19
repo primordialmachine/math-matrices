@@ -32,7 +32,8 @@ struct cofactor_functor;
 
 template<typename OPERAND, size_t ROW, size_t COLUMN>
 auto
-cofactor(const OPERAND& o) -> decltype(cofactor_functor<OPERAND, ROW, COLUMN>()(o))
+cofactor(const OPERAND& o)
+  -> decltype(cofactor_functor<OPERAND, ROW, COLUMN>()(o))
 {
   return cofactor_functor<OPERAND, ROW, COLUMN>()(o);
 }

@@ -38,16 +38,15 @@ struct cofactor_functor<
   M,
   ROW,
   COLUMN,
-  std::enable_if_t<is_matrix<M>::value && M::traits_type::is_non_degenerate &&
-                   M::traits_type::is_square &&
-                   (ROW < M::traits_type::number_of_rows) &&
-                   (COLUMN < M::traits_type::number_of_columns)>>
+  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M> &&
+              is_square_v<M> && (ROW < number_of_rows_v<M>) &&
+              (COLUMN < number_of_columns_v<M>)>>
 {
-  using result_type = typename M::traits_type::element_type;
+  using result_type = element_type_t<M>;
   using operand_type = M;
   auto operator()(const operand_type& m) const
   {
-    using S = typename M::traits_type::element_type;
+    using S = element_type_t<M>;
     auto sign = ((ROW + COLUMN) % 2 != 0) ? -one<S>() : +one<S>();
     return sign * minor<M, ROW, COLUMN>(m);
   }

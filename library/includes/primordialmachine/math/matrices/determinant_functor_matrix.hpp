@@ -36,11 +36,10 @@ namespace primordialmachine {
 template<typename M>
 struct determinant_functor<
   M,
-  std::enable_if_t<is_matrix<M>::value && M::traits_type::is_square &&
-                   M::traits_type::number_of_rows == 0 &&
-                   M::traits_type::number_of_columns == 0>>
+  enable_if_t<is_matrix_v<M> && is_square_v<M> && number_of_rows_v<M> == 0 &&
+              number_of_columns_v<M> == 0>>
 {
-  using result_type = typename M::traits_type::element_type;
+  using result_type = element_type_t<M>;
   using operand_type = M;
   auto operator()(const operand_type& a) const { return one<result_type>(); }
 }; // struct determinant_functor
@@ -49,11 +48,10 @@ struct determinant_functor<
 template<typename M>
 struct determinant_functor<
   M,
-  std::enable_if_t<is_matrix<M>::value && M::traits_type::is_square &&
-                   M::traits_type::number_of_rows == 1 &&
-                   M::traits_type::number_of_columns == 1>>
+  enable_if_t<is_matrix_v<M> && is_square_v<M> && number_of_rows_v<M> == 1 &&
+              number_of_columns_v<M> == 1>>
 {
-  using result_type = typename M::traits_type::element_type;
+  using result_type = element_type_t<M>;
   using operand_type = M;
   auto operator()(const operand_type& a) const { return a(0, 0); }
 }; // struct determinant_functor
@@ -62,9 +60,8 @@ struct determinant_functor<
 template<typename M>
 struct determinant_functor<
   M,
-  std::enable_if_t<is_matrix<M>::value && M::traits_type::is_square &&
-                   M::traits_type::number_of_rows == 2 &&
-                   M::traits_type::number_of_columns == 2>>
+  enable_if_t<is_matrix_v<M> && is_square_v<M> && number_of_rows_v<M> == 2 &&
+              number_of_columns_v<M> == 2>>
 {
   using result_type = typename M::traits_type::element_type;
   using operand_type = M;
@@ -78,22 +75,19 @@ struct determinant_functor<
 template<typename M>
 struct determinant_functor<
   M,
-  std::enable_if_t<is_matrix<M>::value && M::traits_type::is_square &&
-                   (M::traits_type::number_of_rows > 2) &&
-                   (M::traits_type::number_of_columns > 2)>>
+  enable_if_t<is_matrix_v<M> && is_square_v<M> && (number_of_rows_v<M>> 2) &&
+              (number_of_columns_v<M>> 2)>>
 {
-  using result_type = typename M::traits_type::element_type;
+  using result_type = element_type_t<M>;
   using operand_type = M;
   auto operator()(const operand_type& a) const
   {
     // For each element of the rop row.
-    return impl0(a,
-                 std::make_index_sequence<M::traits_type::number_of_columns>{});
+    return impl0(a, make_index_sequence<number_of_columns_v<M>>{});
   }
 
   template<size_t... COLUMNS>
-  static auto impl0(const operand_type& a,
-                    std::index_sequence<COLUMNS...> columns)
+  static auto impl0(const operand_type& a, index_sequence<COLUMNS...> columns)
   {
     return (... + (impl1<COLUMNS>(a)));
   }

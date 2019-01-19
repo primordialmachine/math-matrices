@@ -32,10 +32,9 @@
 namespace primordialmachine {
 
 template<typename M>
-struct binary_plus_functor<
-  M,
-  M,
-  std::enable_if_t<is_matrix<M>::value && M::traits_type::is_degenerate>>
+struct binary_plus_functor<M,
+                           M,
+                           enable_if_t<is_matrix_v<M> && is_degenerate_v<M>>>
 {
   using left_operand_type = M;
   using right_operand_type = M;
@@ -47,24 +46,47 @@ struct binary_plus_functor<
   }
 }; // struct binary_plus_functor
 
-
 template<typename M>
 struct binary_plus_functor<
   M,
   M,
-  std::enable_if_t<is_matrix<M>::value && M::traits_type::is_non_degenerate>>
+  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M>>>
   : public elementwise_binary_matrix_functor<
-      typename M::traits_type,
-      binary_plus_functor<typename M::traits_type::element_type,
-                          typename M::traits_type::element_type>>
-{};
+      M,
+      binary_plus_functor<element_type_t<M>, element_type_t<M>>>
+{}; // struct binary_plus_functor
 
-template<typename TRAITS>
-auto& /*TODO: Does this suffice to ensure the reference is returned?*/
-operator+=(matrix<TRAITS>& u, const matrix<TRAITS>& v)
+template<typename M>
+struct plus_assignment_functor<
+  M,
+  M,
+  enable_if_t<is_matrix_v<M> && is_degenerate_v<M>>>
 {
-  u = u + v;
-  return u;
-}
+  using left_operand_type = M;
+  using right_operand_type = M;
+  using result_type = M;
+  result_type& operator()(left_operand_type& left_operand,
+                          const right_operand_type& right_operand) const
+  {
+    return left_operand;
+  }
+}; // struct plus_assignment_functor
+
+template<typename M>
+struct plus_assignment_functor<
+  M,
+  M,
+  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M>>>
+{
+  using left_operand_type = M;
+  using right_operand_type = M;
+  using result_type = M;
+  result_type& operator()(left_operand_type& left_operand,
+                          const right_operand_type& right_operand) const
+  {
+    left_operand = left_operand + right_operand;
+    return left_operand;
+  }
+}; // struct plus_assignment_functor
 
 } // namespace primordialmachine

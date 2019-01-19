@@ -25,30 +25,28 @@
 
 #pragma once
 
+#include "primordialmachine/functors/include.hpp"
+
 namespace primordialmachine {
 
-template<typename TYPE>
+template<typename TYPE, typename ENABLED = void>
 struct is_scalar
 {
   static constexpr bool value = false;
-};
+}; // struct is_scalar
 
-template<>
-struct is_scalar<float>
+template<typename TYPE>
+inline constexpr bool is_scalar_v = is_scalar<TYPE>::value;
+
+} // namespace primordialmachine
+
+namespace primordialmachine {
+
+// Specialization for floating point types.
+template<typename T>
+struct is_scalar<T, enable_if_t<is_floating_point_v<T>>>
 {
   static constexpr bool value = true;
-};
-
-template<>
-struct is_scalar<double>
-{
-  static constexpr bool value = true;
-};
-
-template<>
-struct is_scalar<long double>
-{
-  static constexpr bool value = true;
-};
+}; // struct is_scalar
 
 } // namespace primordialmachine
