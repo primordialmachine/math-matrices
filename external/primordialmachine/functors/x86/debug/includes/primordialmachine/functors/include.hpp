@@ -30,3 +30,5 @@
 #include "primordialmachine/functors/enable_if.hpp"
 #include "primordialmachine/functors/is_floating_point.hpp"
 #include "primordialmachine/functors/integer_sequence.hpp"
+#include "primordialmachine/functors/arity.hpp"
+#include "primordialmachine/functors/result_type.hpp"

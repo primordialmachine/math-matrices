@@ -42,9 +42,7 @@ struct transpose_functor<T, enable_if_t<is_matrix_v<T>>>
   result_type operator()(const operand_type& operand) const
   {
     result_type result;
-    apply(result,
-          operand,
-          make_index_sequence<number_of_elements_v<T>>{});
+    apply(result, operand, make_index_sequence<number_of_elements_v<T>>{});
     return result;
   }
 
@@ -54,9 +52,7 @@ struct transpose_functor<T, enable_if_t<is_matrix_v<T>>>
              index_sequence<Is...>) const
   {
     int dummy[] = { (
-      apply(result,
-            operand,
-            to_index_2({ Is }, T::traits_type::number_of_columns)))... };
+      apply(result, operand, to_index_2({ Is }, number_of_columns_v<T>)))... };
   }
 
   constexpr int apply(result_type& result,

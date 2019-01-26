@@ -51,22 +51,23 @@ operator<=(const A& a, const B& b) -> decltype(lower_than_or_equal_to(a, b))
   return lower_than_or_equal_to(a, b);
 }
 
-// Default implementation for floating point types.
-template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
-struct lower_than_or_equal_to_functor<
-  LEFT_OPERAND,
-  RIGHT_OPERAND,
-  enable_if_t<is_floating_point_v<LEFT_OPERAND> &&
-              is_floating_point_v<RIGHT_OPERAND>>>
+template<typename T, typename ENABLED = void>
+struct has_lower_than_or_equal_to_functor
 {
-  using left_operand_type = LEFT_OPERAND;
-  using right_operand_type = RIGHT_OPERAND;
-  using result_type = bool;
-  auto operator()(LEFT_OPERAND x, RIGHT_OPERAND y) const
-    noexcept(noexcept(x <= y))
-  {
-    return x <= y;
-  }
-}; // struct lower_than_or_equal_to_functor
+  static constexpr bool value = false;
+}; // struct has_lower_than_or_equal_to_functor
+
+template<typename A, typename B>
+constexpr bool has_lower_than_or_equal_to_functor_v =
+  has_lower_than_or_equal_to_functor<
+    lower_than_or_equal_to_functor<A, B>>::value;
+
+template<typename A, typename B>
+struct has_lower_than_or_equal_to_functor<
+  lower_than_or_equal_to_functor<A, B>,
+  decltype(typeid(lower_than_or_equal_to_functor<A, B>), void())>
+{
+  static constexpr bool value = true;
+}; // struct has_lower_than_or_equal_to_functor
 
 } // namespace primordialmachine

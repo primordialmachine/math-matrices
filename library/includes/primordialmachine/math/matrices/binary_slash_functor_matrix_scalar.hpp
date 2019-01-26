@@ -70,7 +70,7 @@ struct binary_slash_functor<
                                void>;
   using left_operand_type = M;
   using right_operand_type = S;
-  using result_type = typename functor::result_type;
+  using result_type = result_type_t<functor>;
   auto operator()(const left_operand_type& left_operand,
                   const right_operand_type& right_operand) const
   {

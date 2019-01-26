@@ -25,4 +25,6 @@
 
 #pragma once
 
+#include "primordialmachine/math/scalars/floating_point/arithmetic_functors/include.hpp"
+#include "primordialmachine/math/scalars/floating_point/relational_functors/include.hpp"
 #include "primordialmachine/math/scalars/is_scalar.hpp"

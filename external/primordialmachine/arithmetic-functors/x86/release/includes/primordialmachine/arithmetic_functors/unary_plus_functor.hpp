@@ -47,17 +47,21 @@ operator+(const OPERAND& operand) -> decltype(unary_plus(operand))
   return unary_plus(operand);
 }
 
-// Default implementation for floating point types.
-template<typename OPERAND>
-struct unary_plus_functor<OPERAND,
-                          enable_if_t<is_floating_point_v<OPERAND>>>
+template<typename T, typename ENABLED = void>
+struct has_unary_plus_functor
 {
-  using operand_type = OPERAND;
-  using result_type = OPERAND;
-  result_type operator()(operand_type x) const noexcept(noexcept(+x))
-  {
-    return +x;
-  }
-}; // struct unary_plus_functor
+  static constexpr bool value = false;
+}; // struct has_unary_plus_functor
+
+template<typename A>
+constexpr bool has_unary_plus_functor_v =
+  has_unary_plus_functor<unary_plus_functor<A>>::value;
+
+template<typename A>
+struct has_unary_plus_functor<unary_plus_functor<A>,
+                              decltype(typeid(unary_plus_functor<A>), void())>
+{
+  static constexpr bool value = true;
+}; // struct has_unary_plus_functor
 
 } // namespace primordialmachine

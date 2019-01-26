@@ -51,22 +51,22 @@ auto operator*(const LEFT_OPERAND& left_operand,
   return binary_star(left_operand, right_operand);
 }
 
-// Default implementation for floating point types.
-template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
-struct binary_star_functor<
-  LEFT_OPERAND,
-  RIGHT_OPERAND,
-  enable_if_t<is_floating_point_v<LEFT_OPERAND> &&
-              is_floating_point_v<RIGHT_OPERAND>>>
+template<typename T, typename ENABLED = void>
+struct has_binary_star_functor
 {
-  using left_operand_type = LEFT_OPERAND;
-  using right_operand_type = RIGHT_OPERAND;
-  using result_type = common_type_t<left_operand_type, right_operand_type>;
-  result_type operator()(left_operand_type x, right_operand_type y) const
-    noexcept(noexcept(x* y))
-  {
-    return x * y;
-  }
-}; // struct binary_star_functor
+  static constexpr bool value = false;
+}; // struct has_binary_star_functor
+
+template<typename A, typename B>
+constexpr bool has_binary_star_functor_v =
+  has_binary_star_functor<binary_star_functor<A, B>>::value;
+
+template<typename A, typename B>
+struct has_binary_star_functor<binary_star_functor<A, B>,
+                               decltype(typeid(binary_star_functor<A, B>),
+                                        void())>
+{
+  static constexpr bool value = true;
+}; // struct has_binary_star_functor
 
 } // namespace primordialmachine

@@ -52,20 +52,22 @@ operator/(const LEFT_OPERAND& left_operand, const RIGHT_OPERAND& right_operand)
   return binary_slash(left_operand, right_operand);
 }
 
-template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
-struct binary_slash_functor<LEFT_OPERAND,
-                            RIGHT_OPERAND,
-                            enable_if_t<is_floating_point_v<LEFT_OPERAND> &&
-                                        is_floating_point_v<RIGHT_OPERAND>>>
+template<typename T, typename ENABLED = void>
+struct has_binary_slash_functor
 {
-  using left_operand_type = LEFT_OPERAND;
-  using right_operand_type = RIGHT_OPERAND;
-  using result_type = common_type_t<left_operand_type, right_operand_type>;
-  result_type operator()(left_operand_type x, right_operand_type y) const
-    noexcept(noexcept(x / y))
-  {
-    return x / y;
-  }
-}; // struct binary_slash_functor
+  static constexpr bool value = false;
+}; // struct has_binary_slash_functor
+
+template<typename A, typename B>
+constexpr bool has_binary_slash_functor_v =
+  has_binary_slash_functor<binary_slash_functor<A, B>>::value;
+
+template<typename A, typename B>
+struct has_binary_slash_functor<binary_slash_functor<A, B>,
+                                decltype(typeid(binary_slash_functor<A, B>),
+                                         void())>
+{
+  static constexpr bool value = true;
+}; // struct has_binary_slash_functor
 
 } // namespace primordialmachine

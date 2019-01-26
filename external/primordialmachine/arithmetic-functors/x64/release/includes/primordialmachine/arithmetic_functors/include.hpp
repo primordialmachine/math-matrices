@@ -38,6 +38,7 @@
 #include "primordialmachine/arithmetic_functors/positive_overflow_error.hpp"
 #include "primordialmachine/arithmetic_functors/scalar_generator_functor.hpp"
 #include "primordialmachine/arithmetic_functors/slash_assignment_functor.hpp"
+#include "primordialmachine/arithmetic_functors/square_root_functor.hpp"
 #include "primordialmachine/arithmetic_functors/star_assignment_functor.hpp"
 #include "primordialmachine/arithmetic_functors/unary_minus_functor.hpp"
 #include "primordialmachine/arithmetic_functors/unary_plus_functor.hpp"

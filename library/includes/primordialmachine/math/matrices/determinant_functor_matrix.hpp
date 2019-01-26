@@ -63,7 +63,7 @@ struct determinant_functor<
   enable_if_t<is_matrix_v<M> && is_square_v<M> && number_of_rows_v<M> == 2 &&
               number_of_columns_v<M> == 2>>
 {
-  using result_type = typename M::traits_type::element_type;
+  using result_type = element_type_t<M>;
   using operand_type = M;
   auto operator()(const operand_type& a) const
   {

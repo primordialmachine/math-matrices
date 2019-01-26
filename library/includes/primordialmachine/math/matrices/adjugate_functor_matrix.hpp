@@ -41,8 +41,8 @@ struct adjugate_functor<
 {
   using cofactor_matrix_functor_type = cofactor_matrix_functor<M>;
   using transpose_functor_type =
-    transpose_functor<typename cofactor_matrix_functor_type::result_type>;
-  using result_type = typename transpose_functor_type::result_type;
+    transpose_functor<result_type_t<cofactor_matrix_functor_type>>;
+  using result_type = result_type_t<transpose_functor_type>;
   using operand_type = M;
   auto operator()(const operand_type& m) const
   {

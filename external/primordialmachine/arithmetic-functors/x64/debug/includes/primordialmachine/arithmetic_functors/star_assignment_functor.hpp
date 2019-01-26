@@ -51,25 +51,22 @@ operator*=(LEFT_OPERAND& left_operand, const RIGHT_OPERAND& right_operand)
   return star_assignment(left_operand, right_operand);
 }
 
-// Default implementation for floating point types.
-template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
-struct star_assignment_functor<
-  LEFT_OPERAND,
-  RIGHT_OPERAND,
-  enable_if_t<is_floating_point_v<LEFT_OPERAND> &&
-              is_floating_point_v<RIGHT_OPERAND> &&
-              is_same_v<LEFT_OPERAND, RIGHT_OPERAND>>>
+template<typename T, typename ENABLED = void>
+struct has_star_assignment_functor
 {
-  using left_operand_type = LEFT_OPERAND;
-  using right_operand_type = RIGHT_OPERAND;
-  using result_type = LEFT_OPERAND;
-  result_type& operator()(left_operand_type& left_operand,
-                          const right_operand_type& right_operand) const
-    noexcept(noexcept(left_operand = left_operand * right_operand))
-  {
-    left_operand = left_operand * right_operand;
-    return left_operand;
-  }
-}; // struct star_assignment_functor
+  static constexpr bool value = false;
+}; // struct has_star_assignment_functor
+
+template<typename A, typename B>
+constexpr bool has_star_assignment_functor_v =
+  has_star_assignment_functor<star_assignment_functor<A, B>>::value;
+
+template<typename A, typename B>
+struct has_star_assignment_functor<
+  star_assignment_functor<A, B>,
+  decltype(typeid(star_assignment_functor<A, B>), void())>
+{
+  static constexpr bool value = true;
+}; // struct has_star_assignment_functor
 
 } // namespace primordialmachine

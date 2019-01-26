@@ -51,22 +51,22 @@ operator>(const A& a, const B& b) -> decltype(greater_than(a, b))
   return greater_than(a, b);
 }
 
-// Default implementation for floating point types.
-template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
-struct greater_than_functor<
-  LEFT_OPERAND,
-  RIGHT_OPERAND,
-  enable_if_t<is_floating_point_v<LEFT_OPERAND> &&
-              is_floating_point_v<RIGHT_OPERAND>>>
+template<typename T, typename ENABLED = void>
+struct has_greater_than_functor
 {
-  using left_operand_type = LEFT_OPERAND;
-  using right_operand_type = RIGHT_OPERAND;
-  using result_type = bool;
-  auto operator()(LEFT_OPERAND x, RIGHT_OPERAND y) const
-    noexcept(noexcept(x > y))
-  {
-    return x > y;
-  }
-}; // struct greater_than_functor
+  static constexpr bool value = false;
+}; // struct has_greater_than_functor
+
+template<typename A, typename B>
+constexpr bool has_greater_than_functor_v =
+  has_greater_than_functor<greater_than_functor<A, B>>::value;
+
+template<typename A, typename B>
+struct has_greater_than_functor<greater_than_functor<A, B>,
+                                decltype(typeid(greater_than_functor<A, B>),
+                                         void())>
+{
+  static constexpr bool value = true;
+}; // struct has_greater_than_functor
 
 } // namespace primordialmachine
