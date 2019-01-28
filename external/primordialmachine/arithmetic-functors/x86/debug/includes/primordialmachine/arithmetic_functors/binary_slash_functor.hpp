@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Primordial Machine's Arithmetic Functors Library
-// Copyright (C) 2017-2019 Michael Heilmann
+// Copyright (c) 2017-2019 Michael Heilmann
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the
@@ -29,34 +29,29 @@
 
 namespace primordialmachine {
 
-template<typename LEFT_OPERAND, typename RIGHT_OPERAND, typename ENABLED = void>
+template<typename A, typename B, typename ENABLED = void>
 struct binary_slash_functor;
 
-template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
+template<typename A, typename B>
 auto
-binary_slash(const LEFT_OPERAND& left_operand,
-             const RIGHT_OPERAND& right_operand)
-  -> decltype(
-    binary_slash_functor<LEFT_OPERAND, RIGHT_OPERAND>()(left_operand,
-                                                        right_operand))
+binary_slash(const A& a,
+             const B& b) noexcept(noexcept(binary_slash_functor<A, B>()(a, b)))
+  -> decltype(binary_slash_functor<A, B>()(a, b))
 {
-  return binary_slash_functor<LEFT_OPERAND, RIGHT_OPERAND>()(left_operand,
-                                                             right_operand);
+  return binary_slash_functor<A, B>()(a, b);
 }
 
-template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
+template<typename A, typename B>
 auto
-operator/(const LEFT_OPERAND& left_operand, const RIGHT_OPERAND& right_operand)
-  -> decltype(binary_slash(left_operand, right_operand))
+operator/(const A& a, const B& b) noexcept(noexcept(binary_slash(a, b)))
+  -> decltype(binary_slash(a, b))
 {
-  return binary_slash(left_operand, right_operand);
+  return binary_slash(a, b);
 }
 
 template<typename T, typename ENABLED = void>
-struct has_binary_slash_functor
-{
-  static constexpr bool value = false;
-}; // struct has_binary_slash_functor
+struct has_binary_slash_functor : public false_type
+{}; // struct has_binary_slash_functor
 
 template<typename A, typename B>
 constexpr bool has_binary_slash_functor_v =
@@ -65,9 +60,7 @@ constexpr bool has_binary_slash_functor_v =
 template<typename A, typename B>
 struct has_binary_slash_functor<binary_slash_functor<A, B>,
                                 decltype(typeid(binary_slash_functor<A, B>),
-                                         void())>
-{
-  static constexpr bool value = true;
-}; // struct has_binary_slash_functor
+                                         void())> : public true_type
+{}; // struct has_binary_slash_functor
 
 } // namespace primordialmachine

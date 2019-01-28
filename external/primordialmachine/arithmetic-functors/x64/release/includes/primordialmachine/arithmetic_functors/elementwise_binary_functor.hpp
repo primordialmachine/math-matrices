@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Primordial Machine's Arithmetic Functors Library
-// Copyright (C) 2017-2019 Michael Heilmann
+// Copyright (c) 2017-2019 Michael Heilmann
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the
@@ -25,7 +25,7 @@
 
 #pragma once
 
-#include <type_traits>
+#include "primordialmachine/functors/include.hpp"
 
 namespace primordialmachine {
 
@@ -49,16 +49,15 @@ struct elementwise_binary_functor
     left_operand_type const& left_operand,
     right_operand_type const& right_operand) const
   {
-    return impl(left_operand,
-                right_operand,
-                std::make_index_sequence<NUMBER_OF_ELEMENTS>());
+    return impl(
+      left_operand, right_operand, make_index_sequence<NUMBER_OF_ELEMENTS>());
   }
 
 private:
   template<size_t... Is>
   auto impl(const left_operand_type& left_operand,
             const right_operand_type& right_operand,
-            std::index_sequence<Is...>) const
+            index_sequence<Is...>) const
   {
     static const auto op = OPERATOR();
     return result_type{ op(left_operand(Is), right_operand(Is))... };

@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Primordial Machine's Arithmetic Functors Library
-// Copyright (C) 2017-2019 Michael Heilmann
+// Copyright (c) 2017-2019 Michael Heilmann
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the
@@ -29,22 +29,20 @@
 
 namespace primordialmachine {
 
-template<typename OPERAND, typename ENABLED = void>
+template<typename A, typename ENABLED = void>
 struct square_root_functor;
 
-template<typename OPERAND>
+template<typename A>
 auto
-square_root(const OPERAND& operand)
-  -> decltype(square_root_functor<OPERAND>()(operand))
+square_root(const A& a) noexcept(noexcept(square_root_functor<A>()(a)))
+  -> decltype(square_root_functor<A>()(a))
 {
-  return square_root_functor<OPERAND>()(operand);
+  return square_root_functor<A>()(a);
 }
 
 template<typename T, typename ENABLED = void>
-struct has_square_root_functor
-{
-  static constexpr bool value = false;
-}; // struct has_square_root_functor
+struct has_square_root_functor : public false_type
+{}; // struct has_square_root_functor
 
 template<typename A>
 constexpr bool has_square_root_functor_v =
@@ -53,8 +51,7 @@ constexpr bool has_square_root_functor_v =
 template<typename A>
 struct has_square_root_functor<square_root_functor<A>,
                                decltype(typeid(square_root_functor<A>), void())>
-{
-  static constexpr bool value = true;
-}; // struct has_square_root_functor
+  : public true_type
+{}; // struct has_square_root_functor
 
 } // namespace primordialmachine

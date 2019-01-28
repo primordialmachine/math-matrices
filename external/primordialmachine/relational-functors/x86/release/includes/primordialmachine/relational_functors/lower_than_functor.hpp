@@ -29,43 +29,38 @@
 
 namespace primordialmachine {
 
-template<typename LEFT_OPERAND, typename RIGHT_OPERAND, typename ENABLED = void>
+template<typename A, typename B, typename ENABLED = void>
 struct lower_than_functor;
 
-template<typename LEFT_OPERAND, typename RIGHT_OPERAND>
+template<typename A, typename B>
 auto
-lower_than(const LEFT_OPERAND& left_operand, const RIGHT_OPERAND& right_operand)
-  -> decltype(lower_than_functor<LEFT_OPERAND, RIGHT_OPERAND>()(left_operand,
-                                                                right_operand))
+lower_than(const A& a,
+           const B& b) noexcept(noexcept(lower_than_functor<A, B>()(a, b)))
+  -> decltype(lower_than_functor<A, B>()(a, b))
 {
-  return lower_than_functor<LEFT_OPERAND, RIGHT_OPERAND>()(left_operand,
-                                                           right_operand);
+  return lower_than_functor<A, B>()(a, b);
 }
 
 template<typename A, typename B>
 auto
-operator<(const A& a, const B& b) -> decltype(lower_than(a, b))
+operator<(const A& a, const B& b) noexcept(noexcept(lower_than(a, b)))
+  -> decltype(lower_than(a, b))
 {
   return lower_than(a, b);
 }
 
 template<typename T, typename ENABLED = void>
-struct has_lower_than_functor
-{
-  static constexpr bool value = false;
-}; // struct has_lower_than_functor
+struct has_lower_than_functor : public false_type
+{}; // struct has_lower_than_functor
 
 template<typename A, typename B>
 constexpr bool has_lower_than_functor_v =
-  has_lower_than_functor<
-    lower_than_functor<A, B>>::value;
+  has_lower_than_functor<lower_than_functor<A, B>>::value;
 
 template<typename A, typename B>
-struct has_lower_than_functor<
-  lower_than_functor<A, B>,
-  decltype(typeid(lower_than_functor<A, B>), void())>
-{
-  static constexpr bool value = true;
-}; // struct has_lower_than_functor
+struct has_lower_than_functor<lower_than_functor<A, B>,
+                              decltype(typeid(lower_than_functor<A, B>),
+                                       void())> : public true_type
+{}; // struct has_lower_than_functor
 
 } // namespace primordialmachine

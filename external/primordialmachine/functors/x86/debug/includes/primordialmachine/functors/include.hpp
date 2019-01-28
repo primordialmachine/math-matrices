@@ -25,10 +25,11 @@
 
 #pragma once
 
-#include "primordialmachine/functors/is_same.hpp"
+#include "primordialmachine/functors/arity.hpp"
 #include "primordialmachine/functors/common_type.hpp"
 #include "primordialmachine/functors/enable_if.hpp"
-#include "primordialmachine/functors/is_floating_point.hpp"
 #include "primordialmachine/functors/integer_sequence.hpp"
-#include "primordialmachine/functors/arity.hpp"
+#include "primordialmachine/functors/integral_constant.hpp"
+#include "primordialmachine/functors/is_floating_point.hpp"
+#include "primordialmachine/functors/is_same.hpp"
 #include "primordialmachine/functors/result_type.hpp"

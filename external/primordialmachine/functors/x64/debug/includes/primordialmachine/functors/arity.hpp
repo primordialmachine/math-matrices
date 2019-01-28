@@ -25,16 +25,19 @@
 
 #pragma once
 
+#include "primordialmachine/functors/integral_constant.hpp"
+#include "primordialmachine/functors/enable_if.hpp"
+
 namespace primordialmachine {
 
 // Primary template handles types that have no nested ::arity member.
 template<class, class = std::void_t<>>
-struct has_arity : std::false_type
+struct has_arity : public false_type
 {};
 
 // Specialization recognizes types that do have a nested ::arity member.
 template<class T>
-struct has_arity<T, std::void_t<decltype(T::arity)>> : std::true_type
+struct has_arity<T, std::void_t<decltype(T::arity)>> : public std::true_type
 {};
 
 template<class T>
@@ -51,7 +54,7 @@ template<class T>
 struct arity<T, enable_if_t<has_arity_v<T>>>
 {
   static constexpr bool value = T::arity;
-  
+
 }; // struct result_type
 
 template<class T>

@@ -1,7 +1,7 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Primordial Machine's Arithmetic Functors Library
-// Copyright (C) 2017-2019 Michael Heilmann
+// Copyright (c) 2017-2019 Michael Heilmann
 //
 // This software is provided 'as-is', without any express or implied warranty.
 // In no event will the authors be held liable for any damages arising from the
@@ -29,29 +29,28 @@
 
 namespace primordialmachine {
 
-template<typename OPERAND, typename ENABLED = void>
+template<typename A, typename ENABLED = void>
 struct unary_minus_functor;
 
-template<typename OPERAND>
+template<typename A>
 auto
-unary_minus(const OPERAND& operand)
-  -> decltype(unary_minus_functor<OPERAND>()(operand))
+unary_minus(const A& a) noexcept(noexcept(unary_minus_functor<A>()(a)))
+  -> decltype(unary_minus_functor<A>()(a))
 {
-  return unary_minus_functor<OPERAND>()(operand);
+  return unary_minus_functor<A>()(a);
 }
 
-template<typename OPERAND>
+template<typename A>
 auto
-operator-(const OPERAND& operand) -> decltype(unary_minus(operand))
+operator-(const A& a) noexcept(noexcept(unary_minus(a)))
+  -> decltype(unary_minus(a))
 {
-  return unary_minus(operand);
+  return unary_minus(a);
 }
 
 template<typename A, typename ENABLED = void>
-struct has_unary_minus_functor
-{
-  static constexpr bool value = false;
-}; // struct has_unary_minus_functor
+struct has_unary_minus_functor : public false_type
+{}; // struct has_unary_minus_functor
 
 template<typename A>
 constexpr bool has_unary_minus_functor_v =
@@ -60,8 +59,7 @@ constexpr bool has_unary_minus_functor_v =
 template<typename A>
 struct has_unary_minus_functor<unary_minus_functor<A>,
                                decltype(typeid(unary_minus_functor<A>), void())>
-{
-  static constexpr bool value = true;
-}; // struct has_unary_minus_functor
+  : public true_type
+{}; // struct has_unary_minus_functor
 
 } // namespace primordialmachine
