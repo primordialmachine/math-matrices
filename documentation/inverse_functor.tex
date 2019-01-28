@@ -1,0 +1,22 @@
+\subsection{\texttt{inverse\_functor} (\textit{FunctorBase})}
+A \textit{FunctorBase} with a single template parameter \texttt{M} followed by the \texttt{ENABLED} template parameter.
+Specializations of this \textit{FunctorBase} compute inverses of matrices.
+A possible implementation is given by
+\begin{verbatim}
+template<typename A, typename ENABLED = void>
+struct transpose_functor;
+\end{verbatim}
+
+\subsubsection{\texttt{inverse} (function)}
+This library provides a function to invoke the \texttt{inverse\_functor}.
+A possible implementation is given by\newline
+\texttt{template\textlangle typename A\textrangle\newline
+auto\newline
+inverse(const A\& a)\newline
+noexcept(noexcept(inverse\_functor\textlangle A \textrangle))\newline
+-> decltype(inverse\_functor\textlangle A\textrangle()(operand))\newline
+\{ return inverse\_functor\textlangle A\textrangle()(a); \}}
+
+\subsection{\texttt{inverse\_functor} (\textit{Functor})}
+This library provides \textit{Functor} specializations of the \texttt{inverse\_functor} \textit{FunctorBase}
+where \texttt{A} is a non degenerate square matrix type and the result type is \texttt{A}.

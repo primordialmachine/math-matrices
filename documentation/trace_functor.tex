@@ -1,0 +1,23 @@
+\subsection{\texttt{trace\_functor} (\textit{FunctorBase})}
+An \textit{FunctorBase} with a single template parameter \texttt{A} followed by the \texttt{ENALBED} parameter.
+Specializations of this \textit{FunctorBase} compute traces of matrices.
+A possible implementation is given by
+\begin{verbatim}
+template<typename A, typename ENABLED = void>
+struct trace_functor;
+\end{verbatim}
+
+\subsubsection{\texttt{trace} (function)}
+This library provides a function to invoke the \texttt{trace\_functor}.
+A possible implementation is given by\newline
+\texttt{template\textlangle typename A\textrangle\newline
+auto\newline
+trace(const A\& a)\newline
+noexcept(noexcept(trace\_functor\textlangle A\textrangle()(a)))
+-> decltype(trace\_functor\textlangle A\textrangle()(a))\newline
+\{ return trace\_functor\textlangle A\textrangle()(a); \}}
+
+\subsection{\texttt{trace\_functor} (\textit{Functor})}
+This library provides \textit{Functor} specializations of the \texttt{trace\_functor} \textit{FunctorBase}
+where \texttt{A} is a non degenerate matrix type and the result type is \texttt{element\_type\_v\textlangle
+A\textrangle}.

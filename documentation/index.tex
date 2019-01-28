@@ -1,7 +1,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 % Primordial Machine's Math Matrices Library
-% Copyright (C) 2017-2019 Michael Heilmann
+% Copyright (c) 2017-2019 Michael Heilmann
 %
 % This software is provided 'as-is', without any express or implied warranty.
 % In no event will the authors be held liable for any damages arising from the
@@ -60,7 +60,7 @@
 \mainmatter
 
 \chapter{Synopsis}
-C++ 17 library providing floating point vectors over $n$ dimensions.
+C++ 17 library providing $n \times m$ floating point matrices. 
 The library is made available publicly on
 \href{\GetLibraryRepository}{Github}
 under the
@@ -80,9 +80,6 @@ The library officially only supports Visual Studio 2017 and Windows 10.
 \section{\texttt{namespace primordialmachine}}
 The namespace this library is adding its declarations/definitions to.
 The added namespace elements are documented below.
-
-\input{functors}
-\input{binary_functor}
 
 \section{\texttt{matrix\_traits} (struct)}
 \begin{verbatim}
@@ -115,164 +112,107 @@ specialization with the following properties:
 	\texttt{std::numeric\_limits\textlangle size\_t\textrangle\::max()}.
 \end{enumerate}
 
-\section{Members}
+\subsection{Members}
 
-\section{Non members}
+\subsection{Arithmetic Functors Support}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{\texttt{operator+} (binary, matrix matrix)}
-Compute the sum of two matrices.
-\begin{verbatim}
-template<typename A, typename B>
-typename binary_plus_functor<matrix<A>, matrix<B>>::result_type
-operator+(const matrix<A>& a, const matrix<B>& b)
-{ return binary_plus_functor<matrix<A>, matrix<B>>()(a, b); }
-\end{verbatim}
-This library provides a specializations for \texttt{matrix\textlangle A\textrangle}
-and \texttt{matrix\textlangle B\textrangle} where
-\begin{enumerate}
-	\item \texttt{A::number\_of\_rows} is equal to \texttt{B::number\_of\_rows},
-    \item \texttt{B::number\_of\_columns} is equal to \texttt{B::number\_of\_columns}, and
-	\item \texttt{A::element\_type} and \texttt{B::element\_type} are floating point types.
-\end{enumerate}
+This library provides specializations of
+\texttt{binary\_plus\_functor}
+(see \cite{arithmeticfunctors}) to compute the
+sum
+of two matrices. Both type arguments must be the same matrix type \texttt{M}, the result type is \texttt{M}.
 
 \subsubsection{\texttt{operator+} (unary, matrix)}
-Compute the affirmation of a matrix.
-\begin{verbatim}
-template<typename A>
-typename unary_plus_functor<matrix<A>>::result_type
-operator+(const matrix<A>& a)
-{ return unary_plus_functor<matrix<A>>()(a); }
-\end{verbatim}
-This library provides a specializations for \texttt{matrix\textlangle A
-\textrangle} where  \texttt{A::element\_type} is a floating point type.
+This library provides specializations of
+\texttt{unary\_plus\_functor}
+(see \cite{arithmeticfunctors}) to compute
+the affirmation
+of a matrix.
+The type argument must be a matrix type \texttt{M}, the result type is \texttt{M}.
 
 \subsubsection{\texttt{operator+=} (compound binary, matrix matrix)}
-Compute the sum of two matrices, assign the result to the first operand.
-\begin{verbatim}
-template<typename A, typename B>
-auto
-operator-=(matrix<A>& a, const matrix<B>& b)
-{
-   a = a + b;
-   return a;
-}
-\end{verbatim}
+This library provides specializations of
+\texttt{plus\_assignment\_functor}
+(see \cite{arithmeticfunctors}) to compute
+the sum of to matrices and assign the result to the first matrix.
+The type arguments must both the same matrix type \texttt{M}, the result type is \texttt{M}.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{\texttt{operator-} (binary, matrix matrix)}
-Compute the difference of two matrices.
-\begin{verbatim}
-template<typename A, typename B>
-typename binary_minus_functor<matrix<A>, matrix<B>>::result_type
-operator-(const matrix<A>& a, const matrix<B>& b)
-{ return binary_minus_functor<vector<A>, vector<B>>()(a, b); }
-\end{verbatim}
-This library provides a specializations for \texttt{matrix\textlangle A\textrangle}
-and \texttt{vector\textlangle B\textrangle} where
-\begin{enumerate}
-	\item \texttt{A::number\_of\_rows} is equal to \texttt{B::number\_of\_rows},
-	\item \texttt{A::number\_of\_columns} is equal to \texttt{B::number\_of\_columns}, and
-	\item \texttt{A::element\_type} and \texttt{B::element\_type} are floating point types.
-\end{enumerate}
+This library provides specializations of
+\texttt{binary\_minus\_functor}
+(see \cite{arithmeticfunctors}) to compute the
+difference
+of two matrices. Both type arguments must be the same matrix type \texttt{M}, the result type is \texttt{M}.
 
 \subsubsection{\texttt{operator-} (unary, matrix)}
-Compute the negation of a matrix.
-\begin{verbatim}
-template<typename A>
-typename unary_minus_functor<matrix<A>>::result_type
-operator-(const matrix<A>& a)
-{ return unary_minus_functor<matrix<A>>()(a); }
-\end{verbatim}
-This library provides a specializations for \texttt{matrix\textlangle A
-\textrangle} where  \texttt{A::element\_type} is a floating point type.
+This library provides specializations of
+\texttt{unary\_minus\_functor}
+(see \cite{arithmeticfunctors}) to compute
+the negation
+of a matrix.
+The type argument must be a matrix type \texttt{M}, the result type is \texttt{M}.
 
 \subsubsection{\texttt{operator-=} (compound binary, matrix matrix)}
-Compute the difference of two matrices, assign the result to the left operand.
-\begin{verbatim}
-template<typename A, typename B>
-auto&
-operator-=(matrix<A>& a, const matrix<B>& b)
-{
-   a = a - b;
-   return a;
-}
-\end{verbatim}
+This library provides specializations of
+\texttt{minus\_assignment\_functor}
+(see \cite{arithmeticfunctors}) to compute
+the difference of to matrices and assign the result to the first matrix.
+The type arguments must both the same matrix type \texttt{M}, the result type is \texttt{M}.
 
-\subsection{\texttt{inverse\_functor} (struct)}
-An \textit{UnaryFunctorBase} computing the inverse of a matrix.
-A possible implementation is given by
-\begin{verbatim}
-template<typename OPERAND, typename ENABLED = void>
-struct transpose_functor;
-\end{verbatim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{\texttt{operator*} (binary, matrix scalar)}
+This library provides specializations of
+\texttt{binary\_star\_functor}
+(see \cite{arithmeticfunctors} to compute the
+product of a matrix and a scalar.
+The first type argument is a matrix type \texttt{M}, the second type parameter is a scalar type \texttt{S} (see \cite{mathscalars}
+such that \texttt{is\_same\_v\textlangle element\_type\_v\textlangle M\textrangle, S\textrangle} holds.
+The result type is \texttt{M}.
 
-\noindent{}\noindent{}This library provides \textit{UnaryFunctor} specializations of this \textit{UnaryFunctorBase}
-where \texttt{OPERAND} is a type which fulfils the \textit{NonDegenerateMatrix} and \textit{SquareMatrix} concepts.
-\newline
+\subsubsection{\texttt{operator*} (binary, scalar matrix)}
+This library provides specializations of
+\texttt{binary\_star\_functor}
+(see \cite{arithmeticfunctors} to compute the
+product of a scalar and a matrix.
+The first type parameter is a scalar type \texttt{S} (see \cite{mathscalars}), the second type argument is a matrix type \texttt{M}.
+such that \texttt{is\_same\_v\textlangle element\_type\_v\textlangle M\textrangle, S\textrangle} holds.
+The result type is \texttt{M}.
 
-\noindent{}The result type \texttt{result\_type} is \texttt{matrix\textlangle OPERAND::traits\_type\textrangle}.
+\subsubsection{\texttt{operator/} (binary, matrix scalar)}
+This library provides specializations of
+\texttt{binary\_star\_functor}
+(see \cite{arithmeticfunctors} to compute the
+product of a matrix and a scalar.
+The first type argument is a matrix type \texttt{M}, the second type parameter is a scalar type \texttt{S} (see \cite{mathscalars}
+such that \texttt{is\_same\_v\textlangle element\_type\_v\textlangle M\textrangle, S\textrangle} holds.
+The result type is \texttt{M}.
 
-\subsubsection{\texttt{inverse} (function)}
-This library provides a function to invoke the \texttt{inverse\_functor}.
-A possible implementation is given by\newline
-\texttt{
-template\textlangle typename OPERAND\textrangle\newline
-auto inverse(const OPERAND\& operand)\newline
--> decltype(inverse\_functor\textlangle OPERAND\textrangle()(operand))\newline
-\{ return inverse\_functor\textlangle OPERAND\textrangle()(operand); \}
-}
+\subsubsection{\texttt{operator*} (binary, matrix matrix)}
+This library provides specializations of
+\texttt{binary\_star\_functor}
+(see \cite{arithmeticfunctors}) to compute the
+product
+of two matrices. The first type argument is a matrix type \texttt{A} and the second type argument is a matrix type \texttt{B}
+such that
+\begin{enumerate}
+	\item \texttt{number\_of\_columns\_v\textlangle A \textrangle} equals \texttt{number\_of\_rows\_v\textlangle B\textrangle}.
+	\item \texttt{is\_same\_v\textlangle element\_type\_v\textlangle A, B\textrangle\textrangle}
+\end{enumerate}
+The result type is a matrix type \texttt{C} such that
+\begin{enumerate}
+	\item \texttt{number\_of\_rows\_v\textlangle C\textrangle := number\_of\_rows\_v\textlangle A\textrangle}
+	\item \texttt{number\_of\_columns\_v\textlangle C\textrangle := number\_of\_columns\_v\textlangle B\textrangle}
+	\item \texttt{element\_type\_v\textlangle C\textrangle := element\_type\_v\textlangle A\textrangle}
+\end{enumerate}
 
-\subsection{\texttt{transpose\_functor} (struct)}
-An \textit{UnaryFunctorBase} computing the transpose of a matrix.
-A possible implementation is given by
-\begin{verbatim}
-template<typename OPERAND, typename ENABLED = void>
-struct transpose_functor;
-\end{verbatim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\input{inverse_functor}
+\input{transpose_functor}
+\input{trace_functor}
 
-\noindent{}This library provides \textit{UnaryFunctor} specializations of this
-\textit{UnaryFunctorBase} where \texttt{OPERAND} is a type which fulfils   the
-\textit{Matrix} concept.\newline
-
-\noindent{}The result type \texttt{result\_type} is\newline
-\texttt{matrix\textlangle   OPERAND::traits\_type::element\_type,\newline
-\hphantom{matrix\textlangle}OPERAND::traits\_type::number\_of\_columns,\newline
-\hphantom{matrix\textlangle}OPERAND::traits\_type::number\_of\_rows\textrangle}\newline
-
-\noindent{}Note that the number of rows and columns of the result type are swapped.
-
-\subsubsection{\texttt{transpose} (function)}
-This library provides a function to invoke the \texttt{transpose\_functor}.
-A possible implementation is given by\newline
-\texttt{
-template\textlangle typename OPERAND\textrangle\newline
-auto transpose(const OPERAND\& operand)\newline
--> decltype(transpose\_functor\textlangle OPERAND\textrangle()(operand))\newline
-\{ return transpose\_functor\textlangle OPERAND\textrangle()(operand); \}
-}
-
-\subsection{\texttt{trace\_functor} (struct)}
-An \textit{UnaryFunctorBase} compute the trace of a matrix.
-A possible implementation is given by
-\begin{verbatim}
-template<typename OPERAND, typename ENABLED = void>
-struct trace_functor;
-\end{verbatim}
-
-\noindent{}This library provides \textit{UnaryFunctor} specializations of this
-\textit{UnaryFunctorBase} where \texttt{OPERAND} is a type which fulfils   the
-\textit{NonDegenerateMatrix} concept.\newline
-
-\noindent{}The result type \texttt{result\_type} is \texttt{OPERAND\_TRAITS::element\_type}.
-
-\subsubsection{\texttt{trace} (function)}
-This library provides a function to invoke the \texttt{trace\_functor}.
-A possible implementation is given by\newline
-\texttt{
-template\textlangle typename OPERAND\textrangle\newline
-auto trace(const OPERAND\& operand)\newline
--> decltype(trace\_functor\textlangle OPERAND\textrangle()(operand))\newline
-\{ return trace\_functor\textlangle OPERAND\textrangle()(operand); \}
-}
-
+\input{bibliography}
 
 \end{document}

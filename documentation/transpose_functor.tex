@@ -1,0 +1,28 @@
+\subsection{\texttt{transpose\_functor} (\textit{FunctorBase})}
+A \textit{FunctorBase} with a single parameter \texttt{A} followed by the \texttt{ENABLED} template parameter.
+Specializations of this \textit{FunctorBase} compute transposes of matrices.
+A possible implementation is given by
+\begin{verbatim}
+template<typename A, typename ENABLED = void>
+struct transpose_functor;
+\end{verbatim}
+
+\subsubsection{\texttt{transpose} (function)}
+This library provides a function to invoke the \texttt{transpose\_functor}.
+A possible implementation is given by\newline
+\texttt{template\textlangle typename A\textrangle\newline
+auto\newline
+transpose(const A\& a)\newline
+noexcept(noexcept(transpose\_functor\textlangle A\textrangle()(a)))\newline
+-> decltype(transpose\_functor\textlangle A\textrangle()(a))\newline
+\{ return transpose\_functor\textlangle A\textrangle()(a); \}}
+
+\subsection{\texttt{transpose\_functor} (\textit{Functor})}
+This library provides \textit{Functor} specializations of the \texttt{transpose\_functor} \textit{FunctorBase}
+where \texttt{A} is matrix type and the result type is \texttt{B} such that
+\begin{enumerate}
+	\item \texttt{element\_type\_v\textlangle B\textrangle = element\_type\_v\textlangle A\textrangle}
+	\item \texttt{number\_of\_rows\_v\textlangle B \textrangle = number\_of\_columns\_v\textlangle A\textrangle}
+	\item \texttt{number\_of\_columns\_v\textlangle B \textrangle = number\_of\_rows\_v\textlangle A\textrangle}
+\end{enumerate}
+\noindent{}Note that the number of rows and columns of the result type are swapped.
