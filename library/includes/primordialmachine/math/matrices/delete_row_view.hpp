@@ -88,10 +88,8 @@ private:
 }; // struct delete_row_view
 
 template<typename SOURCE, size_t ROW>
-struct is_matrix<const_delete_row_view<SOURCE, ROW>, void>
-{
-  static constexpr bool value = true;
-}; // struct is_matrix
+struct is_matrix<const_delete_row_view<SOURCE, ROW>, void> : public true_type
+{}; // struct is_matrix
 
 /*SOURCE must be a matrix or a matrix view.*/
 template<typename SOURCE, size_t ROW>
@@ -152,9 +150,7 @@ private:
 }; // struct delete_row_view
 
 template<typename SOURCE, size_t ROW>
-struct is_matrix<delete_row_view<SOURCE, ROW>, void>
-{
-  static constexpr bool value = true;
-}; // struct is_matrix
+struct is_matrix<delete_row_view<SOURCE, ROW>, void> : public true_type
+{}; // struct is_matrix
 
 } // namespace primordialmachine

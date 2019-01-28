@@ -85,10 +85,8 @@ private:
 }; // struct const_delete_column_view
 
 template<typename SOURCE, size_t COLUMN>
-struct is_matrix<const_delete_column_view<SOURCE, COLUMN>, void>
-{
-  static constexpr bool value = true;
-}; // struct is_matrix
+struct is_matrix<const_delete_column_view<SOURCE, COLUMN>, void> : public true_type
+{}; // struct is_matrix
 
 // SOURCE a matrix or matrix view type
 // COLUMN the column index

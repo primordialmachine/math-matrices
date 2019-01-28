@@ -75,10 +75,8 @@ struct matrix_traits
 }; // struct matrix_traits
 
 template<typename TYPE, typename ENABLED = void>
-struct is_matrix
-{
-  static constexpr bool value = false;
-};
+struct is_matrix : public false_type
+{};
 
 template<typename TYPE>
 inline constexpr bool is_matrix_v = is_matrix<TYPE, void>::value;
@@ -100,10 +98,8 @@ constexpr bool is_square_v = is_square<TYPE, void>::value;
 /*===============================================================================================*/
 
 template<typename T>
-struct is_non_scalar<T, enable_if_t<is_matrix_v<T>>>
-{
-  static constexpr bool value = true;
-};
+struct is_non_scalar<T, enable_if_t<is_matrix_v<T>>> : public true_type
+{}; // struct is_non_scalar
 
 template<typename T>
 struct is_non_degenerate<T, enable_if_t<is_matrix<T>::value>>

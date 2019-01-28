@@ -41,10 +41,8 @@ namespace primordialmachine {
     (TRAITS::number_of_columns == 0 || TRAITS::number_of_rows == 0))>
 
 template<typename TRAITS>
-struct is_matrix<matrix<TRAITS>, STRUCT_CONDITION()>
-{
-  static constexpr bool value = true;
-};
+struct is_matrix<matrix<TRAITS>, STRUCT_CONDITION()> : public true_type
+{}; // struct is_matrix
 
 template<typename TRAITS>
 struct matrix<TRAITS, STRUCT_CONDITION()>
