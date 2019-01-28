@@ -47,9 +47,12 @@ struct binary_star_functor<
   using result_element_type = element_type_t<A>;
   using left_operand_type = A;
   using right_operand_type = B;
+  // "Die Zeilenzahl (row count) der Ergebnismatrix entspricht derjenigen der
+  // ersten Matrix," "ihre Spaltenzahl (column count) derjenigen der zweiten
+  // Matrix".
   using result_traits = matrix_traits<result_element_type,
-                                      number_of_columns_v<A>,
-                                      number_of_rows_v<B>>;
+                                      number_of_columns_v<B>,
+                                      number_of_rows_v<A>>;
   using result_type = matrix<result_traits>;
   result_type operator()(const left_operand_type& left_operand,
                          const right_operand_type& right_operand) const
@@ -74,9 +77,12 @@ struct binary_star_functor<
   using result_element_type = element_type_t<A>;
   using left_operand_type = A;
   using right_operand_type = B;
+  // "Die Zeilenzahl (row count) der Ergebnismatrix entspricht derjenigen der
+  // ersten Matrix," "ihre Spaltenzahl (column count) derjenigen der zweiten
+  // Matrix".
   using result_traits = matrix_traits<result_element_type,
-                                      number_of_columns_v<A>,
-                                      number_of_rows_v<B>>;
+                                      number_of_columns_v<B>,
+                                      number_of_rows_v<A>>;
   using result_type = matrix<result_traits>;
   auto operator()(const left_operand_type& left_operand,
                   const right_operand_type& right_operand) const
