@@ -81,22 +81,8 @@ The library officially only supports Visual Studio 2017 and Windows 10.
 The namespace this library is adding its declarations/definitions to.
 The added namespace elements are documented below.
 
-\section{\texttt{matrix\_traits} (struct)}
-\begin{verbatim}
-template<typename ELEMENT_TYPE, size_t NUMBER_OF_COLUMNS, size_t NUMBER_OF_ROWS>
-struct matrix_traits;
-\end{verbatim}
-
-\section{\texttt{is\_matrix} (struct)}
-\texttt{
-template \textlangle class TYPE, typename ENABLED = void\textrangle\newline
-struct is\_matrix {\newline
-  static bool const value = false;\newline
-};}
-
-\noindent{}This template defines a compile-time boolean constant \texttt{value}
-which can be used to determine whether a type \texttt{TYPE} is a valid vector type.
-This library provides specialization for its \texttt{matrix} template specializations.
+\input{isa}
+\Isa{matrix}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{\texttt{matrix} (struct)}
