@@ -26,8 +26,7 @@
 #pragma once
 
 #include "primordialmachine/math/matrices/identity_functor.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_0.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_n.hpp"
+#include "primordialmachine/math/matrices/matrix.hpp"
 
 namespace primordialmachine {
 
@@ -37,8 +36,7 @@ struct identity_functor<M, enable_if_t<is_matrix_v<M> && is_square_v<M>>>
   using result_type = M;
   auto operator()() const
   {
-    using indices = make_index_sequence<number_of_elements_v<M>>;
-    return impl(indices{});
+    return impl(make_element_indices<M>{});
   }
   template<typename T>
   constexpr const T& value(size_t i) const

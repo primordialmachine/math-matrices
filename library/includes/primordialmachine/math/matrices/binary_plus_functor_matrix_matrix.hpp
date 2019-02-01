@@ -26,67 +26,23 @@
 #pragma once
 
 #include "primordialmachine/arithmetic_functors/include.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_0.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_n.hpp"
+#include "primordialmachine/math/matrices/matrix.hpp"
+#include "primordialmachine/math/non_scalars/include.hpp"
 
 namespace primordialmachine {
 
+// Case of a + b where a and b are of type M.
+// M is a matrix type.
 template<typename M>
-struct binary_plus_functor<M,
-                           M,
-                           enable_if_t<is_matrix_v<M> && is_degenerate_v<M>>>
-{
-  using left_operand_type = M;
-  using right_operand_type = M;
-  using result_type = M;
-  result_type operator()(const left_operand_type& left_operand,
-                         const right_operand_type& right_operand) const
-  {
-    return result_type();
-  }
-}; // struct binary_plus_functor
-
-template<typename M>
-struct binary_plus_functor<
-  M,
-  M,
-  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M>>>
-  : public elementwise_binary_matrix_functor<
-      M,
-      binary_plus_functor<element_type_t<M>, element_type_t<M>>>
+struct binary_plus_functor<M, M, enable_if_t<is_matrix_v<M>>>
+  : public default_elementwise_binary_plus_functor<M, M>
 {}; // struct binary_plus_functor
 
+// Case of a += b where a and b are of type M.
+// M is a matrix type.
 template<typename M>
-struct plus_assignment_functor<
-  M,
-  M,
-  enable_if_t<is_matrix_v<M> && is_degenerate_v<M>>>
-{
-  using left_operand_type = M;
-  using right_operand_type = M;
-  using result_type = M;
-  result_type& operator()(left_operand_type& left_operand,
-                          const right_operand_type& right_operand) const
-  {
-    return left_operand;
-  }
-}; // struct plus_assignment_functor
-
-template<typename M>
-struct plus_assignment_functor<
-  M,
-  M,
-  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M>>>
-{
-  using left_operand_type = M;
-  using right_operand_type = M;
-  using result_type = M;
-  result_type& operator()(left_operand_type& left_operand,
-                          const right_operand_type& right_operand) const
-  {
-    left_operand = left_operand + right_operand;
-    return left_operand;
-  }
-}; // struct plus_assignment_functor
+struct plus_assignment_functor<M, M, enable_if_t<is_matrix_v<M>>>
+  : public default_elementwise_plus_assignment_functor<M, M>
+{}; // struct plus_assignment_functor
 
 } // namespace primordialmachine

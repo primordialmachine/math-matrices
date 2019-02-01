@@ -33,7 +33,6 @@ TEST(matrices_tests, identity_functor_test)
 {
   using namespace primordialmachine;
   auto b = identity<matrix_type>();
-  auto a = matrix_type(1.f, 0.f,
-                       0.f, 1.f);
+  auto a = matrix_type(1.f, 0.f, 0.f, 1.f);
   ASSERT_TRUE(a == b);
 }

@@ -36,7 +36,8 @@ using matrix_type = matrix<matrix_traits<scalar_type, D, D>>;
   static_assert(expr, "static assertion `" #expr " failed")
 
 template<size_t DIMENSIONALITY>
-static void check();
+static void
+check();
 
 template<size_t DIMENSIONALITY>
 static void

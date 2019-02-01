@@ -26,85 +26,32 @@
 #pragma once
 
 #include "primordialmachine/arithmetic_functors/include.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_0.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_n.hpp"
+#include "primordialmachine/math/matrices/matrix.hpp"
+#include "primordialmachine/math/non_scalars/include.hpp"
 
 namespace primordialmachine {
 
-// non-degenerated case
-// M a matrix type
-// S a scalar type
+// Case of a * s where a is of type M and s is of type S.
+// M is a matrix type, S is a scalar type.
 template<typename M, typename S>
 struct binary_star_functor<M, S, enable_if_t<is_matrix_v<M> && is_scalar_v<S>>>
-{
-  using functor =
-    elementwise_binary_functor<M,
-                               scalar_generator_functor<S>,
-                               M,
-                               number_of_elements_v<M>,
-                               binary_star_functor<element_type_t<M>, S>,
-                               void>;
-  using left_operand_type = M;
-  using right_operand_type = S;
-  using result_type = result_type_t<functor>;
-  auto operator()(const left_operand_type& left_operand,
-                  const right_operand_type& right_operand) const
-  {
-    return functor()(left_operand, scalar_generator_functor<S>(right_operand));
-  }
-}; // struct binary_star_functor
+  : public default_elementwise_binary_star_functor<M, S>
+{}; // struct binary_star_functor
 
+// Case of s * a where s is of type S and a is of type M.
+// S is a scalar type, M is a matrix type.
 template<typename S, typename M>
 struct binary_star_functor<S, M, enable_if_t<is_scalar_v<S> && is_matrix_v<M>>>
-{
-  using functor =
-    elementwise_binary_functor<scalar_generator_functor<S>,
-                               M,
-                               M,
-                               number_of_elements_v<M>,
-                               binary_star_functor<element_type_t<M>, S>,
-                               void>;
-  using left_operand_type = S;
-  using right_operand_type = M;
-  using result_type = result_type_t<functor>;
-  auto operator()(const left_operand_type& left_operand,
-                  const right_operand_type& right_operand) const
-  {
-    return functor()(scalar_generator_functor<S>(left_operand), right_operand);
-  }
-}; // struct binary_star_functor
+  : public default_elementwise_binary_star_functor<S, M>
+{}; // struct binary_star_functor
 
+// Case of a *= s where a is of type M and s is of type S.
+// M is a matrix type, S is a scalar type.
 template<typename M, typename S>
-struct star_assignment_functor<
-  M,
-  S,
-  enable_if_t<is_matrix_v<M> && is_degenerate_v<M> && is_scalar_v<S>>>
-{
-  using left_operand_type = M;
-  using right_operand_type = S;
-  using result_type = M;
-  result_type& operator()(left_operand_type& left_operand,
-                          const right_operand_type& right_operand) const
-  {
-    return left_operand;
-  }
-}; // struct star_assignment_functor
-
-template<typename M, typename S>
-struct star_assignment_functor<
-  M,
-  S,
-  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M> && is_scalar_v<S>>>
-{
-  using left_operand_type = M;
-  using right_operand_type = S;
-  using result_type = M;
-  result_type& operator()(left_operand_type& left_operand,
-                          const right_operand_type& right_operand) const
-  {
-    left_operand = left_operand * right_operand;
-    return left_operand;
-  }
-}; // struct star_assignment_functor
+struct star_assignment_functor<M,
+                               S,
+                               enable_if_t<is_matrix_v<M> && is_scalar_v<S>>>
+  : public default_elementwise_star_assignment_functor<M, S>
+{}; // struct star_assignment_functor
 
 } // namespace primordialmachine

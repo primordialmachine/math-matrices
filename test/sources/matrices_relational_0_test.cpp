@@ -56,6 +56,5 @@ TEST(matrices_tests, not_equal_to_matrix_0_test)
   using namespace primordialmachine;
   using matrix_traits_type = matrix_traits<float, 0, 0>;
   using matrix_type = matrix<matrix_traits_type>;
-  ASSERT_FALSE(matrix_type() !=
-               matrix_type());
+  ASSERT_FALSE(matrix_type() != matrix_type());
 }

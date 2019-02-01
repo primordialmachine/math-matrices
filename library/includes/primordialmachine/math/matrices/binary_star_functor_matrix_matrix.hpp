@@ -26,8 +26,8 @@
 #pragma once
 
 #include "primordialmachine/arithmetic_functors/include.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_0.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_n.hpp"
+#include "primordialmachine/math/matrices/matrix.hpp"
+#include "primordialmachine/math/non_scalars/include.hpp"
 
 namespace primordialmachine {
 

@@ -27,8 +27,7 @@
 
 #include "primordialmachine/math/matrices/adjugate_functor.hpp"
 #include "primordialmachine/math/matrices/inverse_functor.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_0.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_n.hpp"
+#include "primordialmachine/math/matrices/matrix.hpp"
 
 namespace primordialmachine {
 

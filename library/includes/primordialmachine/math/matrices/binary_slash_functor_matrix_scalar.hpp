@@ -26,89 +26,25 @@
 #pragma once
 
 #include "primordialmachine/arithmetic_functors/include.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_0.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_n.hpp"
+#include "primordialmachine/math/matrices/matrix.hpp"
+#include "primordialmachine/math/non_scalars/include.hpp"
 
 namespace primordialmachine {
 
-// degenerated case
-// M a matrix type
-// S a scalar type
+// Case of a / s where a is of type M and s is of type S.
+// M is a matrix type, S is a scalar type.
 template<typename M, typename S>
-struct binary_slash_functor<
-  M,
-  S,
-  enable_if_t<is_matrix_v<M> && is_degenerate_v<M> && is_scalar_v<S>>>
-{
-  using left_operand_type = M;
-  using right_operand_type = S;
-  using result_type = matrix<matrix_traits<common_type_t<element_type_t<M>, S>,
-                                           number_of_columns_v<M>,
-                                           number_of_rows_v<M>>>;
-  auto operator()(const left_operand_type& left_operand,
-                  const right_operand_type& right_operand) const
-  {
-    return result_type();
-  }
-}; // struct binary_slash_functor
+struct binary_slash_functor<M, S, enable_if_t<is_matrix_v<M> && is_scalar_v<S>>>
+  : public default_elementwise_binary_slash_functor<M, S>
+{}; // struct binary_slash_functor
 
-// non-degenerated case
-// M a matrix type
-// S a scalar type
+// Case of a /= b where a and b are of type M.
+// M is a matrix type.
 template<typename M, typename S>
-struct binary_slash_functor<
-  M,
-  S,
-  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M> && is_scalar_v<S>>>
-{
-  using functor =
-    elementwise_binary_functor<M,
-                               scalar_generator_functor<S>,
-                               M,
-                               number_of_elements_v<M>,
-                               binary_slash_functor<element_type_t<M>, S>,
-                               void>;
-  using left_operand_type = M;
-  using right_operand_type = S;
-  using result_type = result_type_t<functor>;
-  auto operator()(const left_operand_type& left_operand,
-                  const right_operand_type& right_operand) const
-  {
-    return functor()(left_operand, scalar_generator_functor<S>(right_operand));
-  }
-}; // struct binary_slash_functor
-
-template<typename M, typename S>
-struct slash_assignment_functor<
-  M,
-  S,
-  enable_if_t<is_matrix_v<M> && is_degenerate_v<M> && is_scalar_v<S>>>
-{
-  using left_operand_type = M;
-  using right_operand_type = S;
-  using result_type = M;
-  result_type& operator()(left_operand_type& left_operand,
-                          const right_operand_type& right_operand) const
-  {
-    return left_operand;
-  }
-}; // struct slash_assignment_functor
-
-template<typename M, typename S>
-struct slash_assignment_functor<
-  M,
-  S,
-  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M> && is_scalar_v<S>>>
-{
-  using left_operand_type = M;
-  using right_operand_type = S;
-  using result_type = M;
-  result_type& operator()(left_operand_type& left_operand,
-                          const right_operand_type& right_operand) const
-  {
-    left_operand = left_operand / right_operand;
-    return left_operand;
-  }
-}; // struct slash_assignment_functor
+struct slash_assignment_functor<M,
+                                S,
+                                enable_if_t<is_matrix_v<M> && is_scalar_v<S>>>
+  : public default_elementwise_slash_assignment_functor<M, S>
+{}; // struct slash_assignment_functor
 
 } // namespace primordialmachine

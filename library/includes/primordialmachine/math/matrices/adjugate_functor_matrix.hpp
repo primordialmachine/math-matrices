@@ -36,8 +36,7 @@ namespace primordialmachine {
 template<typename M>
 struct adjugate_functor<
   M,
-  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M> &&
-              is_square_v<M>>>
+  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M> && is_square_v<M>>>
 {
   using cofactor_matrix_functor_type = cofactor_matrix_functor<M>;
   using transpose_functor_type =

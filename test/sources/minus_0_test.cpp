@@ -31,9 +31,7 @@ TEST(matrices_tests, binary_minus_matrix_0_matrix_0_test)
   using namespace primordialmachine;
   using matrix_traits = matrix_traits<float, 0, 0>;
   using matrix_type = matrix<matrix_traits>;
-  auto result =
-    matrix_type() ==
-    matrix_type() - matrix_type();
+  auto result = matrix_type() == matrix_type() - matrix_type();
   ASSERT_TRUE(result);
 }
 

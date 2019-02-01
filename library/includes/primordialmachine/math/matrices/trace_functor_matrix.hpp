@@ -25,8 +25,7 @@
 
 #pragma once
 
-#include "primordialmachine/math/matrices/matrix_default_implementation_0.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_n.hpp"
+#include "primordialmachine/math/matrices/matrix.hpp"
 #include "primordialmachine/math/matrices/trace_functor.hpp"
 
 namespace primordialmachine {
@@ -48,8 +47,8 @@ struct trace_functor<
         return t.i() == t.j();
       }
     };
-    using indices = decltype(
-      filter_seq(make_index_sequence<number_of_elements_v<T>>{}, predicate{}));
+    using indices =
+      decltype(filter_seq(make_element_indices<T>{}, predicate{}));
     return impl(a, indices{});
   }
 

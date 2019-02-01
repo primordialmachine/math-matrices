@@ -26,84 +26,23 @@
 #pragma once
 
 #include "primordialmachine/arithmetic_functors/include.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_0.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_n.hpp"
+#include "primordialmachine/math/matrices/matrix.hpp"
+#include "primordialmachine/math/non_scalars/include.hpp"
 
 namespace primordialmachine {
 
-// degenerate case
-// M a matrix type
-template<typename A, typename B>
-struct binary_slash_functor<
-  A,
-  B,
-  enable_if_t<is_matrix_v<A> && is_matrix_v<B> && is_degenerate_v<A> &&
-              is_degenerate_v<B> &&
-              is_same_v<element_type_t<A>, element_type_t<B>> &&
-              number_of_columns_v<A> == number_of_rows_v<B>>>
-{
-  using result_element_type = element_type_t<A>;
-  using left_operand_type = A;
-  using right_operand_type = B;
-  using result_traits = matrix_traits<result_element_type,
-                                      number_of_columns_v<A>,
-                                      number_of_rows_v<B>>;
-  using result_type = matrix<result_traits>;
-  result_type operator()(const left_operand_type& left_operand,
-                         const right_operand_type& right_operand) const
-  {
-    return result_type();
-  }
-}; // struct binary_slash_functor
-
-// non-degenerate case
-// M a matrix type
+// Case of a / b where a and b are of type M.
+// M is a matrix type.
 template<typename M>
-struct binary_slash_functor<
-  M,
-  M,
-  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M>>>
-  : public elementwise_binary_matrix_functor<
-      M,
-      binary_slash_functor<element_type_t<M>, element_type_t<M>>>
+struct binary_slash_functor<M, M, enable_if_t<is_matrix_v<M>>>
+  : public default_elementwise_binary_slash_functor<M, M>
 {}; // struct binary_slash_functor
 
-// degenerate case
-// M a matrix type
+// Case of a /= b where a and b are of type M.
+// M is a matrix type.
 template<typename M>
-struct slash_assignment_functor<
-  M,
-  M,
-  enable_if_t<is_matrix_v<M> && is_degenerate_v<M>>>
-{
-  using left_operand_type = M;
-  using right_operand_type = M;
-  using result_type = M;
-  result_type& operator()(left_operand_type& left_operand,
-                          const right_operand_type& right_operand) const
-  {
-    left_operand = left_operand / right_operand;
-    return left_operand;
-  }
-}; // struct slash_assignment_functor
-
-// non-degenerate case
-// M a matrix type
-template<typename M>
-struct slash_assignment_functor<
-  M,
-  M,
-  enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M>>>
-{
-  using left_operand_type = M;
-  using right_operand_type = M;
-  using result_type = M;
-  result_type& operator()(left_operand_type& left_operand,
-                          const right_operand_type& right_operand) const
-  {
-    left_operand = left_operand / right_operand;
-    return left_operand;
-  }
-}; // struct slash_assignment_functor
+struct slash_assignment_functor<M, M, enable_if_t<is_matrix_v<M>>>
+  : public default_elementwise_slash_assignment_functor<M, M>
+{}; // struct slash_assignment_functor
 
 } // namespace primordialmachine

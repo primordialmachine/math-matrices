@@ -25,51 +25,17 @@
 
 #pragma once
 
-#include "primordialmachine/math/matrices/matrix_default_implementation_0.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_n.hpp"
+#include "primordialmachine/math/matrices/matrix.hpp"
+#include "primordialmachine/math/non_scalars/include.hpp"
 #include "primordialmachine/relational_functors/include.hpp"
 
 namespace primordialmachine {
 
-template<typename T>
-struct not_equal_to_functor<T,
-                            T,
-                            enable_if_t<is_matrix_v<T> && is_degenerate_v<T>>>
-{
-  using left_operand_type = T;
-  using right_operand_type = T;
-  using result_type = bool;
-  result_type operator()(const left_operand_type& a,
-                         const right_operand_type& b) const
-  {
-    return false;
-  }
-};
-
-template<typename T>
-struct not_equal_to_functor<
-  T,
-  T,
-  enable_if_t<is_matrix_v<T> && is_non_degenerate_v<T>>>
-{
-  using left_operand_type = T;
-  using right_operand_type = T;
-  using result_type = bool;
-  result_type operator()(const left_operand_type& a,
-                         const right_operand_type& b) const
-  {
-    return impl(a, b, make_index_sequence<number_of_elements_v<T>>());
-    return true;
-  }
-
-  template<size_t... N>
-  constexpr bool impl(const left_operand_type& a,
-                      const right_operand_type& b,
-                      index_sequence<N...>) const
-  {
-    auto op = not_equal_to_functor<element_type_t<T>, element_type_t<T>>();
-    return ((op(a(N), b(N))) || ...);
-  }
-};
+// Case of a != b where a and b are of type M.
+// M is a matrix type.
+template<typename M>
+struct not_equal_to_functor<M, M, enable_if_t<is_matrix_v<M>>>
+  : public default_elementwise_not_equal_to_functor<M, M>
+{}; // struct not_equal_to_functor
 
 } // namespace primordialmachine

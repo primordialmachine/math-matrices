@@ -31,9 +31,7 @@ TEST(matrices_tests, binary_star_matrix_0_matrix_0_test)
   using namespace primordialmachine;
   using matrix_traits = matrix_traits<float, 0, 0>;
   using matrix_type = matrix<matrix_traits>;
-  auto result =
-    matrix_type() ==
-    matrix_type() * matrix_type();
+  auto result = matrix_type() == matrix_type() * matrix_type();
   ASSERT_TRUE(result);
 }
 
@@ -42,9 +40,7 @@ TEST(matrices_tests, binary_slash_matrix_0_matrix_0_test)
   using namespace primordialmachine;
   using matrix_traits = matrix_traits<float, 0, 0>;
   using matrix_type = matrix<matrix_traits>;
-  auto result =
-    matrix_type() ==
-    matrix_type() / matrix_type();
+  auto result = matrix_type() == matrix_type() / matrix_type();
   ASSERT_TRUE(result);
 }
 
@@ -64,8 +60,7 @@ TEST(matrices_tests, unary_plus_matrix_0_test)
   using namespace primordialmachine;
   using matrix_traits = matrix_traits<float, 0, 0>;
   using matrix_type = matrix<matrix_traits>;
-  auto result =
-    matrix_type() == +matrix_type();
+  auto result = matrix_type() == +matrix_type();
   ASSERT_TRUE(result);
 }
 
@@ -74,8 +69,7 @@ TEST(matrices_tests, unary_minus_matrix_0_test)
   using namespace primordialmachine;
   using matrix_traits = matrix_traits<float, 0, 0>;
   using matrix_type = matrix<matrix_traits>;
-  auto result =
-    matrix_type() == -matrix_type();
+  auto result = matrix_type() == -matrix_type();
   ASSERT_TRUE(result);
 }
 
@@ -84,8 +78,7 @@ TEST(matrices_tests, binary_star_matrix_0_scalar_test)
   using namespace primordialmachine;
   using matrix_traits = matrix_traits<float, 0, 0>;
   using matrix_type = matrix<matrix_traits>;
-  auto result =
-    matrix_type() == matrix_type() * 2.f;
+  auto result = matrix_type() == matrix_type() * 2.f;
   ASSERT_TRUE(result);
 }
 
@@ -116,8 +109,7 @@ TEST(matrices_tests, binary_slash_matrix_0_scalar_test)
   using namespace primordialmachine;
   using matrix_traits = matrix_traits<float, 0, 0>;
   using matrix_type = matrix<matrix_traits>;
-  auto result =
-    matrix_type() == matrix_type() / 2.f;
+  auto result = matrix_type() == matrix_type() / 2.f;
   ASSERT_TRUE(result);
 }
 TEST(matrices_tests, slash_assignment_matrix_0_scalar_test)

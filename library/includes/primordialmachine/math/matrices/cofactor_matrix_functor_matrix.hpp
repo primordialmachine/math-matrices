@@ -27,8 +27,7 @@
 
 #include "primordialmachine/math/matrices/cofactor_functor.hpp"
 #include "primordialmachine/math/matrices/cofactor_matrix_functor.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_0.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_n.hpp"
+#include "primordialmachine/math/matrices/matrix.hpp"
 
 namespace primordialmachine {
 

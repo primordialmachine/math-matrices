@@ -26,16 +26,14 @@
 #pragma once
 
 #include "primordialmachine/arithmetic_functors/include.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_0.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_n.hpp"
+#include "primordialmachine/math/matrices/matrix.hpp"
+#include "primordialmachine/math/non_scalars/include.hpp"
 
 namespace primordialmachine {
 
 template<typename M>
 struct unary_minus_functor<M, enable_if_t<is_matrix_v<M>>>
-  : public elementwise_unary_matrix_functor<
-      M,
-      unary_minus_functor<element_type_t<M>>>
-{};
+  : public default_elementwise_unary_minus_functor<M>
+{}; // struct unary_minus_functor
 
 } // namespace primordialmachine

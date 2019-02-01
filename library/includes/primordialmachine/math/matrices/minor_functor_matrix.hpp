@@ -25,8 +25,7 @@
 
 #pragma once
 
-#include "primordialmachine/math/matrices/matrix_default_implementation_0.hpp"
-#include "primordialmachine/math/matrices/matrix_default_implementation_n.hpp"
+#include "primordialmachine/math/matrices/matrix.hpp"
 #include "primordialmachine/math/matrices/minor_functor.hpp"
 
 namespace primordialmachine {
@@ -38,7 +37,7 @@ struct minor_functor<
   ROW,
   COLUMN,
   enable_if_t<is_matrix_v<M> && is_non_degenerate_v<M> && is_square_v<M> &&
-              (ROW < number_of_rows_v<M>) && (COLUMN < number_of_columns_v<M>)>>
+              (ROW < number_of_rows_v<M>)&&(COLUMN < number_of_columns_v<M>)>>
 {
   using result_type = element_type_t<M>;
   using operand_type = M;
