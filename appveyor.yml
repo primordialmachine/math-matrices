@@ -1,7 +1,7 @@
 ###################################################################################################
 #
-# Primordial Machine's Math Matrices Library
-# Copyright (c) 2017-2019 Michael Heilmann
+# Primordial Machine Math Matrices Library
+# Copyright (c) 2017-2019 Michael Heilmann <michaelheilmann@primordialmachine.com>
 #
 # This software is provided 'as-is', without any express or implied warranty.
 # In no event will the authors be held liable for any damages arising from the
@@ -23,12 +23,18 @@
 #
 ###################################################################################################
 
+# ORGANIZATION_CANONICAL_NAME:
+#   The canonical name of the organization.
+#   Example: 'primordialmachine'.
 # ORGANIZATION_NAME
 #   The name of the publishing organization.
-#   Example: 'primordialmachine'.
-# PACKAGE_NAME
-#   The name of the published package.
+#   Example: 'Primordial Machine'.
+# PACKAGE_CANONICAL_NAME
+#   The canonical name of the published package.
 #   Example: 'math-matrices'.
+# PACKAGE_NAME:
+#   The name of the published package.
+#   Example: 'Math Matrices'.
 # CONFIGURATION:
 #   The configuration.
 #   Example: 'release'.
@@ -80,7 +86,7 @@ environment:
   # Package (canonical) name.
   PACKAGE_CANONICAL_NAME : "math-matrices"
   PACKAGE_NAME: "Math Matrices"
-  # Pakcage category.
+  # Package category.
   PACKAGE_CATEGORY: "library"
   # Environment variables pertaining to GoogleTestAdapter.
   GOOGLETESTADAPTER_FILENAME : "GoogleTestAdapter-0.14.0.vsix"
@@ -103,7 +109,7 @@ install:
   # If repo tag of the proper format is given, extract the version number.
   - ps: |
       if ($env:APPVEYOR_REPO_TAG -and $($env:APPVEYOR_REPO_TAG_NAME -match "version_[0-9][0-9]*\.[0-9][0-9]*")) {
-         $env:version = $env:appveyor_repo_tag_name -replace "version_", ""
+        $env:version = $env:appveyor_repo_tag_name -replace "version_", ""
       }
   # Download and install GoogleTestAdapter.
   # Use cached archives/installations if possible.
@@ -124,7 +130,7 @@ before_build:
       if (Test-Path env:version) {
         $env:ARTIFACT_NAME="$($env:ORGANIZATION_CANONICAL_NAME.tolower())-$($env:PACKAGE_CANONICAL_NAME.tolower())-v$($env:version.tolower())-$($env:configuration.tolower())-$($env:platform.tolower())"
       } else {
-        $env:ARTIFACT_NAME="$($env:ORGANIZATION_CANONICAL_NAME.tolower())-$($env:PACKAGE_CANONICAL_NAME.tolower())-$($env:configuration.tolower())-$($env:platform.tolower())"    
+        $env:ARTIFACT_NAME="$($env:ORGANIZATION_CANONICAL_NAME.tolower())-$($env:PACKAGE_CANONICAL_NAME.tolower())-$($env:configuration.tolower())-$($env:platform.tolower())"
       }
       $env:ARTIFACT_FILENAME="$($env:ARTIFACT_NAME).zip"
       if (Test-Path env:version) {
@@ -144,9 +150,10 @@ build_script:
 
 after_build:
    - ps: |
-       cd packages
+       cd build/packages
        7z a $env:ARTIFACT_FILENAME $($env:ORGANIZATION_CANONICAL_NAME.tolower())
-       Move-Item -Path ./$env:ARTIFACT_FILENAME -Destination ./../$env:ARTIFACT_FILENAME
+       Move-Item -Path ./$env:ARTIFACT_FILENAME -Destination ./../../$env:ARTIFACT_FILENAME
+       cd ..
        cd ..
    - ps: |
        Move-Item -Path documentation/index.pdf -Destination ./$env:DOCUMENTATION_ARTIFACT_FILENAME
@@ -157,7 +164,7 @@ test_script:
       $configuration=$env:configuration
       $platform=$env:platform
       $testAdapterPath="C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\GoogleTestAdapter-0.14.0"
-      $testPath="products\test\$platform\$configuration\$($env:PACKAGE_CANONICAL_NAME.tolower())-test.exe"
+      $testPath="build\products\test\$platform\$configuration\$($env:PACKAGE_CANONICAL_NAME.tolower())-test.exe"
       vstest.console /Logger:$logger /Platform:$platform /TestAdapterPath:$testAdapterPath /inIsolation $testPath
 
 artifacts:

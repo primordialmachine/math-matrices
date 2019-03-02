@@ -26,9 +26,7 @@
 \documentclass[oneside]{book}
 
 \input{common}
-
-\SetOrganization{Primordial Machine's}
-\SetLibraryName{Math Matrices Library}
+\input{meta}
 
 \SetLibraryIncludeFileName{include.hpp}
 \SetLibraryIncludesDirectoryPath{primordialmachine/math-matrices/\newline\$(PlatformTarget.toLower())/\$(Configuration.toLower())/includes}
@@ -37,11 +35,6 @@
 
 \SetLibraryStaticLibrariesDirectoryPath{primordialmachine/math-matrices/\newline\$(PlatformTarget.toLower())/\$(Configuration.toLower())/libraries}
 \SetLibraryStaticLibraryFileName{math-matrices.lib}
-
-\SetLibraryVersion{v1.0}
-\SetLibraryRepository{https://github.com/primordialmachine/math-matrices}
-\SetAuthor{Michael Heilmann}
-\SetEmail{michaelheilmann@primordialmachine.com}
 
 \SetDocumentType{User Manual}
 
@@ -158,6 +151,16 @@ The first type argument is a matrix type \texttt{M}, the second type parameter i
 such that \texttt{is\_same\_v\textlangle element\_type\_v\textlangle M\textrangle, S\textrangle} holds.
 The result type is \texttt{M}.
 
+\subsubsection{\texttt{operator*=} (compound binary, matrix scalar)}
+This library provides specializations of
+\texttt{star\_assignment\_functor}
+(see \cite{arithmeticfunctors}) to compute the
+product of a matrix and a scalar and assign the result to the matrix.
+The first type argument is a matrix type \texttt{M}, the second type parameter is a scalar type \texttt{S} (see \cite{mathscalars}
+such that \texttt{is\_same\_v\textlangle element\_type\_v\textlangle M\textrangle, S\textrangle} holds.
+The result type is \texttt{M}.
+
+
 \subsubsection{\texttt{operator*} (binary, scalar matrix)}
 This library provides specializations of
 \texttt{binary\_star\_functor}
@@ -172,6 +175,15 @@ This library provides specializations of
 \texttt{binary\_star\_functor}
 (see \cite{arithmeticfunctors} to compute the
 product of a matrix and a scalar.
+The first type argument is a matrix type \texttt{M}, the second type parameter is a scalar type \texttt{S} (see \cite{mathscalars}
+such that \texttt{is\_same\_v\textlangle element\_type\_v\textlangle M\textrangle, S\textrangle} holds.
+The result type is \texttt{M}.
+
+\subsubsection{\texttt{operator/=} (compound binary, matrix scalar)}
+This library provides specializations of
+\texttt{star\_assignment\_functor}
+(see \cite{arithmeticfunctors}) to compute the
+quotient of a matrix and a scalar and assign the result to the matrix.
 The first type argument is a matrix type \texttt{M}, the second type parameter is a scalar type \texttt{S} (see \cite{mathscalars}
 such that \texttt{is\_same\_v\textlangle element\_type\_v\textlangle M\textrangle, S\textrangle} holds.
 The result type is \texttt{M}.
@@ -195,6 +207,23 @@ The result type is a matrix type \texttt{C} such that
 \end{enumerate}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\subsection{Relational Functors Support}
+
+\subsubsection{\texttt{operator==} (compound binary, matrix matrix)}
+This library provides specializations of
+\texttt{equal\_to\_functor}
+(see \cite{relationalfunctors}) to compute
+wether two matrices of the same type are equal.
+
+\subsubsection{\texttt{operator!=} (compound binary, matrix matrix)}
+This library provides specializations of
+\texttt{not\_equal\_to\_functor}
+(see \cite{relationalfunctors}) to compute
+wether two matrices of the same type are not equal.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \input{inverse_functor}
 \input{transpose_functor}
 \input{trace_functor}
