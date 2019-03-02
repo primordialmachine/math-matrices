@@ -31,30 +31,6 @@
 
 namespace primordialmachine {
 
-constexpr index_1
-to_index_1(index_1 source, size_t stride)
-{
-  return source;
-}
-
-constexpr index_1
-to_index_1(index_2 source, size_t stride)
-{
-  return { source.i() * stride + source.j() };
-}
-
-constexpr index_2
-to_index_2(index_1 source, size_t stride)
-{
-  return { source.i() / stride, source.i() % stride };
-}
-
-constexpr index_2
-to_index_2(index_2 source, size_t stride)
-{
-  return source;
-}
-
 template<typename ELEMENT_TYPE, size_t NUMBER_OF_COLUMNS, size_t NUMBER_OF_ROWS>
 struct matrix_traits
 {
