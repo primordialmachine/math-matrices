@@ -26,7 +26,8 @@
 #pragma once
 
 #include "primordialmachine/functors/include.hpp"
-#include "primordialmachine/math/indices/include.hpp"
+#include "primordialmachine/math/non_scalars/to_index_1.hpp"
+#include "primordialmachine/math/non_scalars/to_index_2.hpp"
 #include "primordialmachine/math/non_scalars/number_of_elements.hpp"
 
 namespace primordialmachine {
