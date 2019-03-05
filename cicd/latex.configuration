@@ -11,7 +11,7 @@
 
 "CanonicalPackageTypeName": "library",
 "PackageTypeName" : "Library",
-"PackageVersion" : "1.2",
+"PackageVersion" : "1.3",
 
 "RepositoryUrl" : "https://github.com/primordialmachine/math-matrices",
 "Open" : "{",
