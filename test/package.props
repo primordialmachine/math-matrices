@@ -3,8 +3,6 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
     <PackageName>math-matrices</PackageName>
-    <BuildDir>$(SolutionDir)build\</BuildDir>
-    <PackageDir>$(BuildDir)packages\primordialmachine\$(PackageName)\$(PlatformTarget.toLower())\$(Configuration.toLower())\</PackageDir>
   </PropertyGroup>
   <PropertyGroup>
     <_PropertySheetDisplayName>Package</_PropertySheetDisplayName>
@@ -13,14 +11,6 @@
   <ItemGroup>
     <BuildMacro Include="PackageName">
       <Value>$(PackageName)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
-    </BuildMacro>
-    <BuildMacro Include="BuildDir">
-      <Value>$(BuildDir)</Value>
-      <EnvironmentVariable>true</EnvironmentVariable>
-    </BuildMacro>
-    <BuildMacro Include="PackageDir">
-      <Value>$(PackageDir)</Value>
       <EnvironmentVariable>true</EnvironmentVariable>
     </BuildMacro>
   </ItemGroup>

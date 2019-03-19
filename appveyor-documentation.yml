@@ -1,0 +1,156 @@
+###################################################################################################
+#
+# Primordial Machine Math Matrices Library
+# Copyright (c) 2017-2019 Michael Heilmann <michaelheilmann@primordialmachine.com>
+#
+# This software is provided 'as-is', without any express or implied warranty.
+# In no event will the authors be held liable for any damages arising from the
+# use of this software.
+#
+# Permission is granted to anyone to use this software for any purpose,
+# including commercial applications, and to alter it and redistribute it
+# freely, subject to the following restrictions:
+#
+# 1. The origin of this software must not be misrepresented;
+#    you must not claim that you wrote the original software.
+#    If you use this software in a product, an acknowledgment
+#    in the product documentation would be appreciated but is not required.
+#
+# 2. Altered source versions must be plainly marked as such,
+#    and must not be misrepresented as being the original software.
+#
+# 3. This notice may not be removed or altered from any source distribution.
+#
+###################################################################################################
+
+# ORGANIZATION_CANONICAL_NAME:
+#   The canonical name of the organization.
+#   Example: 'primordialmachine'.
+# ORGANIZATION_NAME
+#   The name of the publishing organization.
+#   Example: 'Primordial Machine'.
+# PACKAGE_CANONICAL_NAME
+#   The canonical name of the published package.
+#   Example: 'math-matrices'.
+# PACKAGE_NAME:
+#   The name of the published package.
+#   Example: 'Math Matrices'.
+# CONFIGURATION:
+#   The configuration.
+#   Example: 'release'.
+# PLATFORM:
+#   The platform.
+#   Example: 'x64'.
+# ARTIFACT_FILENAME
+#   The file name of the artifact.
+#   Example: 'primordialmachine-math-matrices-release-x64.zip'.
+# ARTIFACT_NAME
+#   The name of the artifact.
+#   Example: 'primordialmachine-math-matrices-release-x64'.
+#
+# GOOGLETESTADAPTER_FILENAME
+#   The filename of the archive of GoogleTestAdapter.
+#   Example: 'GoogleTestAdapter-0.14.0.vsix'.
+# GOOGLETESTADAPTER_URL
+#   The URL of the archive of GoogleTestAdapter.
+#   Example: 'https://github.com/csoltenborn/GoogleTestAdapter/releases/download/v0.14.0/GoogleTestAdapter-0.14.0.vsix'.
+# MIKTEX_FILENAME
+#   The filename of the archive of MikTex.
+#   Example: 'miktex-portable-2.9.6942.exe'.
+# MIKTEX_URL
+#   The URL of the archive of MikTex.
+#   Example: 'https://miktex.org/download/ctan/systems/win32/miktex/setup/windows-x86/miktex-portable-2.9.6942.exe'.
+
+clone_depth: 1
+
+image: Visual Studio 2017 # Build worker image (VM template)
+
+branches:
+  only:
+    - develop
+    - master
+
+platform:
+  - documentation
+
+configuration:
+  - Documentation
+
+environment:
+  # Environment variables pertaining to the organization and package.
+  # Organization (canonical) name.
+  ORGANIZATION_CANONICAL_NAME : "primordialmachine"
+  ORGANIZATION_NAME: "Primordial Machine"
+  # Package (canonical) name.
+  PACKAGE_CANONICAL_NAME : "math-matrices"
+  PACKAGE_NAME: "Math Matrices"
+  # Package category.
+  PACKAGE_CATEGORY: "library"
+  # Environment variables pertaining to MikTex.
+  MIKTEX_FILENAME : "miktex-portable-2.9.6942.exe"
+  MIKTEX_URL : "https://miktex.org/download/ctan/systems/win32/miktex/setup/windows-x86/miktex-portable-2.9.6942.exe"
+  MIKTEX_INSTALL_PATH : "C:\\miktex"
+
+cache:
+  # Cache archive and installation of MikTex.
+  - "%MIKTEX_FILENAME% -> appveyor-develop.yml"
+  - "%MIKTEX_INSTALL_PATH% -> appveyor-develop.yml"
+
+install:
+  # If repo tag of the proper format is given, extract the version number.
+  - ps: |
+      if ($env:APPVEYOR_REPO_TAG -and $($env:APPVEYOR_REPO_TAG_NAME -match "version_[0-9][0-9]*\.[0-9][0-9]*")) {
+        $env:version = $env:appveyor_repo_tag_name -replace "version_", ""
+      }
+  # Download and install MikTex.
+  # Use cached archives/installations if possible.
+  - IF NOT EXIST "%MIKTEX_FILENAME%" (appveyor DownloadFile "%MIKTEX_URL%" -FileName "%MIKTEX_FILENAME%")
+  - IF EXIST "%MIKTEX_INSTALL_PATH%" (ECHO "using cached MikTex")
+  - IF NOT EXIST "%MIKTEX_INSTALL_PATH%" (7z x "%MIKTEX_FILENAME%" -o"%MIKTEX_INSTALL_PATH%" > nul)
+  - set "PATH=%PATH%;%MIKTEX_INSTALL_PATH%\texmfs\install\miktex\bin"
+  - initexmf --set-config-value "[MPM]AutoInstall=1"
+
+before_build:
+  - ps: |
+      if (Test-Path env:version) {
+        $env:ARTIFACT_NAME="$($env:ORGANIZATION_CANONICAL_NAME.tolower())-$($env:PACKAGE_CANONICAL_NAME.tolower())-v$($env:version.tolower())"
+      } else {
+        $env:ARTIFACT_NAME="$($env:ORGANIZATION_CANONICAL_NAME.tolower())-$($env:PACKAGE_CANONICAL_NAME.tolower())"
+      }
+      $env:ARTIFACT_FILENAME="$($env:ARTIFACT_NAME).pdf"
+
+build_script:
+  - cmd: |
+      cd documentation
+      latexmk -f -pdf index.tex
+      cd ..
+
+after_build:
+   - ps: |
+       Move-Item -Path documentation/index.pdf -Destination ./$env:ARTIFACT_FILENAME
+
+test_script:
+  # Intentionally empty.
+
+artifacts:
+  - path: $(ARTIFACT_FILENAME)
+    name: $(ARTIFACT_NAME)
+
+matrix:
+  fast_finish: true       # If one matrix entry fails, all entries fails.
+
+notifications:
+
+# GitHub Prerelease.
+deploy:
+  tag: "$(appveyor_repo_tag_name)"
+  release: "Version $(version)"
+  description: "Version $(version) of $(organization_name)'s $(package_name) $(package_category)."
+  provider: GitHub
+  auth_token:
+    secure: 46x+mlkXPA9TkpptTOTfkhkmDrswaZvDrwUFPLFCCNcbL3lh98gFpxnGgO5eW2eT # Encrypted personal access token.
+  draft: true
+  prerelease: true
+  force_update: true
+  on:
+    APPVEYOR_REPO_TAG: true        # Deploy on tag push only.

@@ -34,91 +34,91 @@ template<>
 struct zero_functor<char>
 {
   using result_type = char;
-  constexpr char operator()() noexcept { return 0; }
+  constexpr char operator()() const noexcept { return 0; }
 }; // struct zero_functor
 
 template<>
 struct zero_functor<signed char>
 {
   using result_type = signed char;
-  constexpr signed char operator()() noexcept { return 0; }
+  constexpr signed char operator()() const noexcept { return 0; }
 }; // struct zero_functor
 template<>
 struct zero_functor<unsigned char>
 {
   using result_type = unsigned char;
-  constexpr unsigned char operator()() noexcept { return 0; }
+  constexpr unsigned char operator()() const noexcept { return 0; }
 }; // struct zero_functor
 
 template<>
 struct zero_functor<signed short int>
 {
   using result_type = signed short int;
-  constexpr signed short int operator()() noexcept { return 0; }
+  constexpr signed short int operator()() const noexcept { return 0; }
 }; // struct zero_functor
 template<>
 struct zero_functor<unsigned short int>
 {
   using result_type = unsigned short int;
-  constexpr unsigned short int operator()() noexcept { return 0; }
+  constexpr unsigned short int operator()() const noexcept { return 0; }
 }; // struct zero_functor
 
 template<>
 struct zero_functor<signed int>
 {
   using result_type = signed int;
-  constexpr signed int operator()() noexcept { return 0; }
+  constexpr signed int operator()() const noexcept { return 0; }
 }; // struct zero_functor
 template<>
 struct zero_functor<unsigned int>
 {
   using result_type = unsigned int;
-  constexpr unsigned int operator()() noexcept { return 0; }
+  constexpr unsigned int operator()() const noexcept { return 0; }
 }; // struct zero_functor
 
 template<>
 struct zero_functor<signed long int>
 {
   using result_type = signed long int;
-  constexpr signed long int operator()() noexcept { return 0L; }
+  constexpr signed long int operator()() const noexcept { return 0L; }
 }; // struct zero_functor
 template<>
 struct zero_functor<unsigned long int>
 {
   using result_type = unsigned long int;
-  constexpr unsigned long int operator()() noexcept { return 0UL; }
+  constexpr unsigned long int operator()() const noexcept { return 0UL; }
 }; // struct zero_functor
 
 template<>
 struct zero_functor<signed long long int>
 {
   using result_type = signed long long int;
-  constexpr signed long long int operator()() noexcept { return 0LL; }
+  constexpr signed long long int operator()() const noexcept { return 0LL; }
 }; // struct zero_functor
 template<>
 struct zero_functor<unsigned long long int>
 {
   using result_type = unsigned long long int;
-  constexpr unsigned long long int operator()() noexcept { return 0ULL; }
+  constexpr unsigned long long int operator()() const noexcept { return 0ULL; }
 }; // struct zero_functor
 
 template<>
 struct zero_functor<float>
 {
   using result_type = float;
-  constexpr float operator()() noexcept { return 0.F; }
+  constexpr float operator()() const noexcept { return 0.F; }
 }; // struct zero_functor
 template<>
 struct zero_functor<double>
 {
   using result_type = double;
-  constexpr double operator()() noexcept { return 0.; }
+  constexpr double operator()() const noexcept { return 0.; }
 }; // struct zero_functor
 template<>
 struct zero_functor<long double>
 {
   using result_type = long double;
-  constexpr long double operator()() noexcept { return 0.L; }
+  constexpr long double operator()() const noexcept { return 0.L; }
 }; // struct zero_functor
 
 } // namespace primordialmachine
