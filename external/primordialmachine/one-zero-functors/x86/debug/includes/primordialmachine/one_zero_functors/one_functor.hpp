@@ -25,100 +25,18 @@
 
 #pragma once
 
+#include "primordialmachine/one_zero_functors/one_expr.hpp"
+
 namespace primordialmachine {
 
-template<typename TYPE>
-struct one_functor;
-
-template<>
-struct one_functor<char>
+template<typename T>
+struct one_functor
 {
-  using result_type = char;
-  constexpr char operator()() const noexcept { return 1; }
-}; // struct one_functor
-
-template<>
-struct one_functor<signed char>
-{
-  using result_type = signed char;
-  constexpr signed char operator()() const noexcept { return 1; }
-}; // struct one_functor
-template<>
-struct one_functor<unsigned char>
-{
-  using result_type = unsigned char;
-  constexpr unsigned char operator()() const noexcept { return 1; }
-}; // struct one_functor
-
-template<>
-struct one_functor<signed short int>
-{
-  using result_type = signed short int;
-  constexpr signed short int operator()() const noexcept { return 1; }
-}; // struct one_functor
-template<>
-struct one_functor<unsigned short int>
-{
-  using result_type = unsigned short int;
-  constexpr unsigned short int operator()() const noexcept { return 1; }
-}; // struct one_functor
-
-template<>
-struct one_functor<signed int>
-{
-  using result_type = signed int;
-  constexpr signed int operator()() const noexcept { return 1; }
-}; // struct one_functor
-template<>
-struct one_functor<unsigned int>
-{
-  using result_type = unsigned int;
-  constexpr unsigned int operator()() const noexcept { return 1; }
-}; // struct one_functor
-
-template<>
-struct one_functor<signed long int>
-{
-  using result_type = signed long int;
-  constexpr signed long int operator()() const noexcept { return 1L; }
-}; // struct one_functor
-template<>
-struct one_functor<unsigned long int>
-{
-  using result_type = unsigned long int;
-  constexpr unsigned long int operator()() const noexcept { return 1UL; }
-}; // struct one_functor
-
-template<>
-struct one_functor<signed long long int>
-{
-  using result_type = signed long long int;
-  constexpr signed long long int operator()() const noexcept { return 1LL; }
-}; // struct one_functor
-template<>
-struct one_functor<unsigned long long int>
-{
-  using result_type = unsigned long long int;
-  constexpr unsigned long long int operator()() const noexcept { return 1ULL; }
-}; // struct one_functor
-
-template<>
-struct one_functor<float>
-{
-  using result_type = float;
-  constexpr float operator()() const noexcept { return 1.F; };
-}; // struct one_functor
-template<>
-struct one_functor<double>
-{
-  using result_type = double;
-  constexpr double operator()() const noexcept { return 1.; };
-}; // struct one_functor
-template<>
-struct one_functor<long double>
-{
-  using result_type = long double;
-  constexpr long double operator()() const noexcept { return 1.L; }
+  using result_type = typename one_expr<T>::result_type;
+  constexpr result_type operator()() const noexcept
+  {
+    return one_expr<result_type>();
+  }
 }; // struct one_functor
 
 } // namespace primordialmachine
